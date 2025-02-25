@@ -1,0 +1,120 @@
+/* 基礎樣式 */
+body {
+    font-family: "標楷體", KaiTi, serif;
+    margin: 0;
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+    margin-top: 150px;
+    transform: scale(1.5);
+}
+
+/* 頁首樣式 */
+.header {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.title {
+    color: red;
+    display: flex;
+    justify-content: space-between;
+    width: calc(18px * 9);
+    margin: 20px auto 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.subtitle {
+    color: red;
+    display: flex;
+    justify-content: center;
+    font-size: 18px;
+    margin: 0 auto;
+}
+
+/* 網格容器 */
+.grid-container {
+    display: grid;
+    grid-template-rows: repeat(17, 30px);
+    grid-template-columns: repeat(20, 1fr);
+    border: 1px solid black;
+    width: 400px;
+    max-width: 1000px;
+    margin: 10px auto 30px;
+    border-collapse: collapse;
+    box-sizing: border-box;
+}
+
+/* 網格單元格基礎樣式 */
+.grid-cell-base {
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+}
+
+/* 各種網格單元格變體 */
+.grid-cell {
+    border: 1px solid black;
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    /* grid-cell 特有的樣式 */
+    font-size: 12px;
+    justify-content: space-around;
+    grid-column: span 1;
+    min-height: 80%;
+}
+
+/* 其他網格單元格樣式... */
+
+/* 天干地支表格樣式 */
+.vertical-column_table {
+    display: flex;
+    flex-direction: column;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    margin: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.vertical-column_table span {
+    display: inline-block;
+    border: 1px solid black;
+    text-align: center;
+    font-size: 10px;
+    margin: 0;
+    width: 12.8px;
+    height: 23px;
+}
+
+/* 頁尾樣式 */
+.footer {
+    text-align: center;
+    margin-top: 30px;
+    font-size: 14px;
+}
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .grid-container {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 600px) {
+    .main-content {
+        grid-template-columns: 1fr;
+        width: 100%;
+    }
+} 

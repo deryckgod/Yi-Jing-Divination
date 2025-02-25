@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卦單</title>
+    <link rel="stylesheet" type="text/css" href="/css/divination.css">
+    <style>
+
+        body {
+            font-family: "標楷體", KaiTi, serif;
+            margin: 0;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+            margin-top: 150px; /* 調整標題上方空隙 */
+            transform: scale(1.5);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 5px;
+        }
+        
+        .title {
+            color: red;
+            display: flex;
+            justify-content: space-between;  /* Changed from center to space-between */
+            width: calc(18px * 9);  /* 8 gaps × 20px + 9 chars × 18px (font-size) */
+            margin: 20px auto;  /* Center the container */
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 0px;
+        }
+        
+        .title span {
+            display: inline-block;
+        }
+        
+        .subtitle {
+            color: red;
+            display: flex;
+            justify-content: center;
+            font-size: 18px;
+            margin: 0 auto;  /* Center the container */
+        }
+        
+        .grid-container {
+            display: grid;
+            grid-template-rows: repeat(17, 30px);
+            grid-template-columns: repeat(20, 1fr);
+            border: 1px solid black;
+            width: 400px; /* 調整表格寬度 */
+            max-width: 1000px;
+            margin: 30px auto;
+            margin-top: 10px;
+            border-collapse: collapse;
+            box-sizing: border-box; /* 包含内边距和边框在内的总宽度 */
+        }
+
+        .grid-cell_批示 {
+            border: 1px solid black;
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            justify-content: space-around;  /* Changed from center to space-between */
+            margin: 0;
+            padding: 0;
+            grid-column: span 9;
+            box-sizing: border-box; /* 包含内边距和边框在内的总宽度 */
+        }
+
+        .grid-cell { /*80%高度*/
+            border: 1px solid black;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            justify-content: space-around;  /* Changed from center to space-between */
+            margin: 0;
+            padding: 0;
+            grid-column: span 1;
+            writing-mode: vertical-rl;        /* 設定垂直方向，從右到左 */
+            text-orientation: upright;        /* 讓文字保持正立 */
+            min-height: 80%;                /* 確保高度填滿 */
+            box-sizing: border-box; /* 包含内边距和边框在内的总宽度 */
+        }
+
+        .grid-cell_one_row { /*100%高度*/
+            border: 1px solid black;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            justify-content: space-around;  /* Changed from center to space-between */
+            margin: 0;
+            padding: 0;
+            grid-column: span 1;
+            writing-mode: vertical-rl;        /* 設定垂直方向，從右到左 */
+            text-orientation: upright;        /* 讓文字保持正立 */
+            min-height: 100%;                /* 確保高度填滿 */
+            box-sizing: border-box; /* 包含内边距和边框在内的总宽度 */
+        }
+
+        .grid-cell_three_rows {
+            border: 1px solid black;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            justify-content: space-around;  /* Changed from center to space-between */
+            margin: 0;
+            padding: 0;
+            grid-column: span 1;
+            grid-row: span 2;
+            writing-mode: vertical-rl;        /* 設定垂直方向，從右到左 */
+            text-orientation: upright;        /* 讓文字保持正立 */
+            min-height: 80%;                /* 確保高度填滿 */
+            box-sizing: border-box; /* 包含内边距和边框在内的总宽度 */
+        }
+        
+        .grid-cell_block {
+            border: 1px solid black;
+            display: flex;
+            align-items: flex-start;
+            font-size: 12px;
+            justify-content: space-between;  /* Changed from center to space-between */
+            margin: 0;
+            padding-left: 0px;
+            grid-column: span 7;
+            grid-row: span 5;
+            writing-mode: vertical-rl;        /* 設定垂直方向，從右到左 */
+            text-orientation: upright;        /* 讓文字保持正立 */
+            min-height: 100%;                /* 確保高度填滿 */
+            box-sizing: border-box; /* 包含内边距和边框在内的总宽度 */
+        }
+
+        .grid-cell_table {
+            border: 1px solid black;
+            display: flex;
+            align-items: flex-start;
+            font-size: 12px;
+            justify-content: space-between;  /* Changed from center to space-between */
+            margin: 0;
+            padding-left: 0px;
+            grid-column: span 8;
+            grid-row: span 5;
+            writing-mode: vertical-rl;        /* 設定垂直方向，從右到左 */
+            text-orientation: upright;        /* 讓文字保持正立 */
+            min-height: 100%;                /* 確保高度填滿 */
+            box-sizing: border-box; /* 包含内边距和边框在内的总宽度 */
+        }
+
+        .grid-cell_占卜事項 {
+            border: 1px solid black;
+            grid-column: span 2;
+            writing-mode: ve3tical-rl;
+            text-orientation: upright;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            box-sizing: border-box; /* 包含内边距和边框在内的总宽度 */
+        }
+
+        .grid-cell_first_column {
+            border: 1px solid black;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            justify-content: space-around;  /* Changed from center to space-between */
+            margin: 0;
+            padding: 0;
+            grid-row: span 12;
+            writing-mode: vertical-rl;        /* 設定垂直方向，從右到左 */
+            text-orientation: upright;        /* 讓文字保持正立 */
+            min-height: 100%;                /* 確保高度填滿 */
+            box-sizing: border-box; /* 包含内边距和边框在内的总宽度 */
+        }
+
+        .grid-cell_one_width_column {
+            border: 1px solid black;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            justify-content: space-between;  /* Changed from center to space-between */
+            margin: 0;
+            grid-row: span 11;
+            writing-mode: vertical-rl;        /* 設定垂直方向，從右到左 */
+            text-orientation: upright;        /* 讓文字保持正立 */
+            min-height: 100%;                /* 確保高度填滿 */
+            box-sizing: border-box; /* 包含内边距和边框在内的总宽度 */
+        }
+        
+        .grid-cell_one_width_column_whole {
+            border: 1px solid black;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            justify-content: space-between;  /* Changed from center to space-between */
+            margin: 0;
+            grid-row: span 16;
+            writing-mode: vertical-rl;        /* 設定垂直方向，從右到左 */
+            text-orientation: upright;        /* 讓文字保持正立 */
+            min-height: 100%;                /* 確保高度填滿 */
+            box-sizing: border-box; /* 包含内边距和边框在内的总宽度 */
+        }
+
+        .grid-cell_date {
+            border: 1px solid black;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            margin: 0;
+            grid-row: span 5;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            min-height: 100%;
+            padding: 5px; /* 设置内边距 */
+            box-sizing: border-box; /* 包含内边距和边框在内的总宽度 */
+        }
+
+        .grid-cell_two_width_column {
+            border: 0px solid black;
+            display: flex;
+            align-items: flex-start;
+            font-size: 12px;
+            justify-content: space-between;  /* Changed from center to space-between */
+            margin: 0;
+            padding-left: 5px;
+            grid-column: span 2;
+            grid-row: span 11;
+            writing-mode: vertical-rl;        /* 設定垂直方向，從右到左 */
+            text-orientation: upright;        /* 讓文字保持正立 */
+            min-height: 100%;                /* 確保高度填滿 */
+        }
+
+        .vertical-column {
+            display: flex;
+            flex-direction: column;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            box-sizing: border-box; /* 包含内边距和边框在内的总宽度 */
+        }
+
+        .vertical-column_table {
+            display: flex;
+            flex-direction: column;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            margin: 0;
+            max-width: 100%; /* 確保表格不超過父容器寬度 */
+            box-sizing: border-box; /* 包含内边距和边框在内的总宽度 */
+        }
+
+        .vertical-column_table span {
+            display: inline-block;
+            border: 1px solid black;
+            text-align: center;
+            font-size: 10px;
+            margin-top: 0;
+            margin-bottom: 0;
+            width: 12.8px;
+            height: 23px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-container {
+                font-size: 14px;
+            }
+        }
+        
+        .section {
+            border: 1px solid #000;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 600px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- #region 標題-->
+    <div class="header">
+        <div class="title">
+            <span>卦</span>
+            <span>聖</span>
+            <span>音</span>
+            <span>觀</span>
+        </div>
+        <div class="subtitle">
+            <span>會</span>
+            <span>協</span>
+            <span>善</span>
+            <span>慈</span>
+            <span>音</span>
+            <span>觀</span>
+            <span>聖</span>
+            <span>華</span>
+            <span>中</span>
+        </div>
+    </div>
+    <!-- #endregion -->
+
+    <div class="grid-container">
+
+        <!-- #region 第一行-->
+        <div class="grid-cell_批示">
+            <span>示</span>
+            <span>批</span>
+        </div> <!-- This cell will now be 9 columns wide -->
+        <div class="grid-cell">
+            <span>卦</span>
+            <span>身</span>
+        </div>
+        <div class="grid-cell">
+            <span>空</span>
+            <span>亡</span>
+        </div>
+        <div class="grid-cell">
+            <span>日</span>
+            <span>沖</span>
+        </div>
+        <div class="grid-cell">
+            <span>月</span>
+            <span>破</span>
+        </div>
+        <div class="grid-cell">
+            <span>時</span>
+        </div>
+        <div class="grid-cell">
+            <span>日</span>
+        </div>
+        <div class="grid-cell">
+            <span>月</span>
+        </div>
+        <div class="grid-cell">
+            <span>年</span>
+        </div>
+        <div class="grid-cell_占卜事項">
+            <span>占事</span>
+            <span>卜項</span>
+        </div>
+        <div class="grid-cell_first_column">
+            <span>  </span>
+            <span>造</span>
+            <span>  </span>
+            <span>  </span>
+            <span>  </span>
+            <span>民國</span>
+            <span>  </span>
+            <span>年</span>
+            <span>  </span>
+            <span>月</span>
+            <span>  </span>
+            <span>日</span>
+            <span>  </span>
+            <span>時生</span>
+            <span>  </span>
+            <span>  </span>
+        </div>
+        <!-- #endregion -->
+        
+        <!-- #region 用神、動爻、總分數-->
+        <div class="grid-cell_one_width_column">
+            <span>三、總分數:</span>
+        </div>
+
+        <div class="grid-cell_one_width_column">
+            <span></span>
+        </div>
+        
+        <div class="grid-cell_one_width_column">
+            <span>  </span>
+        </div>
+
+        <div class="grid-cell_one_width_column">
+            <span>  </span>
+        </div>
+
+        <div class="grid-cell_one_width_column">
+            <span>  </span>
+        </div>
+        
+        <div class="grid-cell_one_width_column">
+            <span>  </span>
+        </div>
+
+        <div class="grid-cell_one_width_column">
+            <span>二、動爻:</span>
+        </div>
+
+        <div class="grid-cell_two_width_column">
+            <div class="vertical-column">
+                <span>一、用神:</span>
+            </div>
+            <div class="vertical-column">
+                <span>日辰:</span>
+                <span>月建:</span>
+            </div>
+            <span>  </span>
+            <span>天意:</span>
+            <span>  </span>
+        </div>
+        <!-- #endregion -->
+
+        <!-- 年到卦身區塊 -->
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        
+        <!-- #region 占卜事項區塊-->
+        <div class="grid-cell_one_width_column_whole">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_width_column_whole">
+            <span>  </span>
+        </div>
+        <!-- #endregion -->
+        
+        <div class="grid-cell_one_row">
+            <span>變卦</span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>閒神</span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>仇神</span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>忌神</span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>原神</span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>用神</span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>原卦</span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>首卦</span>
+        </div>
+        
+        <div class="grid-cell_three_rows">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_three_rows">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_three_rows">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_three_rows">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_three_rows">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_three_rows">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_three_rows">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_three_rows">
+            <span>  </span>
+        </div>
+        
+        <div class="grid-cell_one_row">
+            <span>六親</span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>干支</span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>變爻</span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>原爻</span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>世應</span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>干支</span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>六親</span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>伏神</span>
+        </div>
+
+        <!-- #region 六爻區塊 -->
+        <!-- 上 -->
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+
+        <!-- 五 -->
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        
+        <!-- 四 -->
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        
+        <!-- 三 -->
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        
+        <!-- 二 -->
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        
+        <!-- 一 -->
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <div class="grid-cell_one_row">
+            <span>  </span>
+        </div>
+        <!-- #endregion -->
+        
+        <div class="grid-cell_block">
+            <span>  </span>
+        </div>
+
+        <div class="grid-cell_two_width_column">
+            <span>  </span>
+        </div>
+        
+        <!-- #region 天干地支表 -->
+        <div class="grid-cell_table">
+            <div class="vertical-column_table">
+                <span>甲子</span>
+                <span>乙丑</span>
+                <span>丙寅</span>
+                <span>丁卯</span>
+                <span>戊辰</span>
+                <span>己巳</span>
+                <span>庚午</span>
+                <span>辛未</span>
+                <span>壬申</span>
+                <span>癸酉</span>
+                <span style="background-color: lightgray;">戌亥</span>
+            </div>
+            <div class="vertical-column_table">
+                <span>甲戌</span>
+                <span>乙亥</span>
+                <span>丙子</span>
+                <span>丁丑</span>
+                <span>戊寅</span>
+                <span>己卯</span>
+                <span>庚辰</span>
+                <span>辛巳</span>
+                <span>壬午</span>
+                <span>癸未</span>
+                <span style="background-color: lightgray;">申酉</span>
+            </div>
+            <div class="vertical-column_table">
+                <span>甲申</span>
+                <span>乙酉</span>
+                <span>丙戌</span>
+                <span>丁亥</span>
+                <span>戊子</span>
+                <span>己丑</span>
+                <span>庚寅</span>
+                <span>辛卯</span>
+                <span>壬辰</span>
+                <span>癸巳</span>
+                <span style="background-color: lightgray;">午未</span>
+            </div>
+            <div class="vertical-column_table">
+                <span>甲午</span>
+                <span>乙未</span>
+                <span>丙申</span>
+                <span>丁酉</span>
+                <span>戊戌</span>
+                <span>己亥</span>
+                <span>庚子</span>
+                <span>辛丑</span>
+                <span>壬寅</span>
+                <span>癸卯</span>
+                <span style="background-color: lightgray;">辰巳</span>
+            </div>
+            <div class="vertical-column_table">
+                <span>甲辰</span>
+                <span>乙巳</span>
+                <span>丙午</span>
+                <span>丁未</span>
+                <span>戊申</span>
+                <span>己酉</span>
+                <span>庚戌</span>
+                <span>辛亥</span>
+                <span>壬子</span>
+                <span>癸丑</span>
+                <span style="background-color: lightgray;">寅卯</span>
+            </div>
+            <div class="vertical-column_table">
+                <span>甲寅</span>
+                <span>乙卯</span>
+                <span>丙辰</span>
+                <span>丁巳</span>
+                <span>戊午</span>
+                <span>己未</span>
+                <span>庚申</span>
+                <span>辛酉</span>
+                <span>壬戌</span>
+                <span>癸亥</span>
+                <span style="background-color: lightgray;">子丑</span>
+            </div>
+        </div>
+        <!-- #endregion -->
+    
+        <div class="grid-cell_date">
+            <span>占卜日期:</span>
+        </div>
+    </div>
+
+    <div class="footer">
+        <a class="btn btn-primary" href="/clients">查詢</a> <!-- 測試暫寫 -->
+        <p>黎大士 : 台北市中正區杭州南路一段 6 巷 12 號 1 樓 電話:０２-２３５１９９０５</p>
+    </div>
+</body>
+</html>
