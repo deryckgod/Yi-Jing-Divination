@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卦單</title>
+    <link rel="stylesheet" href="./css/god-willing.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <script type="module" src="../calendar-main/src/calendar.js"></script>
+    <script type="module" src="../calendar-main/src/widget-calendar.js"></script>
+</head>
+<body>
+    <div class="god-willing">
+        <div class="mainGod">用神：</div>
+        <div class="mainGodInfo">main</div>
+        <div class="sun">日辰：</div>
+        <div class="sunInfo">sun</div>
+        <div class="moon">月建：</div>
+        <div class="moonInfo">moon</div>
+        <div class="willing">天意：</div>
+        <div class="willingInfo">willing</div>
+    </div>
+
+    <div class="parent">
+        <div class="div1">年</div>
+        <div class="div2">月</div>
+        <div class="div3">日</div>
+        <div class="div4">時</div>
+        <div class="div5">月破</div>
+        <div class="div6">日沖</div>
+        <div class="div7">空亡</div>
+        <div class="div8">卦身</div>
+        <div class="div9">9</div>
+        <div class="div10">10</div>
+        <div class="div12">12</div>
+        <div class="div13"></div>
+        <div class="div14">14</div>
+        <div class="div15">15</div>
+        <div class="div16">16</div>
+        <div class="div17">17</div>
+        <div class="div18">首卦</div>
+        <div class="div19">原卦</div>
+        <div class="div20">用神</div>
+        <div class="div21">原神</div>
+        <div class="div22">忌神</div>
+        <div class="div23">仇神</div>
+        <div class="div24">閒神</div>
+        <div class="div25">變卦</div>
+        <div class="div26">26</div>
+        <div class="div27">27</div>
+        <div class="div28">
+            <select class="six-relation-select">
+                <option value="財">財</option>
+                <option value="子">子</option>
+                <option value="兄">兄</option>
+                <option value="父">父</option>
+                <option value="官">官</option>
+            </select>
+        </div>
+        <div class="div29">29</div>
+        <div class="div30">30</div>
+        <div class="div31">31</div>
+        <div class="div32">32</div>
+        <div class="div33">33</div>
+        <div class="div34">伏神</div>
+        <div class="div35">六親</div>
+        <div class="div36">干支</div>
+        <div class="div37">世應</div>
+        <div class="div38">原爻</div>
+        <div class="div39">變爻</div>
+        <div class="div40">干支</div>
+        <div class="div41">六親</div>
+        <div class="div42">42</div>
+        <div class="div43">43</div>
+        <div class="div44">44</div>
+        <div class="div45">45</div>
+        <div class="div46">46</div>
+        <div class="div47">47</div>
+        <div class="div48">48</div>
+        <div class="div49">49</div>
+        <div class="div50">50</div>
+        <div class="div51">51</div>
+        <div class="div52">52</div>
+        <div class="div53">53</div>
+        <div class="div54">54</div>
+        <div class="div55">55</div>
+        <div class="div56">56</div>
+        <div class="div57">57</div>
+        <div class="div58">58</div>
+        <div class="div59">59</div>
+        <div class="div60">60</div>
+        <div class="div61">61</div>
+        <div class="div62">62</div>
+        <div class="div63">63</div>
+        <div class="div64">64</div>
+        <div class="div65">65</div>
+        <select class="div66 original-yao">
+            <option value="/">/</option>
+            <option value="//">//</option>
+            <option value="O">O</option>
+            <option value="X">X</option>
+        </select>
+        <select class="div67 original-yao">
+            <option value="/">/</option>
+            <option value="//">//</option>
+            <option value="O">O</option>
+            <option value="X">X</option>
+        </select>
+        <select class="div68 original-yao">
+            <option value="/">/</option>
+            <option value="//">//</option>
+            <option value="O">O</option>
+            <option value="X">X</option>
+        </select>
+        <select class="div69 original-yao">
+            <option value="/">/</option>
+            <option value="//">//</option>
+            <option value="O">O</option>
+            <option value="X">X</option>
+        </select>
+        <select class="div70 original-yao">
+            <option value="/">/</option>
+            <option value="//">//</option>
+            <option value="O">O</option>
+            <option value="X">X</option>
+        </select>
+        <select class="div71 original-yao">
+            <option value="/">/</option>
+            <option value="//">//</option>
+            <option value="O">O</option>
+            <option value="X">X</option>
+        </select>
+        <div class="div72">72</div>
+        <div class="div73">73</div>
+        <div class="div74">74</div>
+        <div class="div75">75</div>
+        <div class="div76">76</div>
+        <div class="div77">77</div>
+        <div class="div78">78</div>
+        <div class="div79">79</div>
+        <div class="div80">80</div>
+        <div class="div81">81</div>
+        <div class="div82">82</div>
+        <div class="div83">83</div>
+        <div class="div84">84</div>
+        <div class="div85">85</div>
+        <div class="div86">86</div>
+        <div class="div87">87</div>
+        <div class="div88">88</div>
+        <div class="div89">89</div>
+        
+        <button id="query-btn" class="query-button">查詢</button>
+        <button id="store-btn" class="store-button">儲存</button>
+    </div>
+
+    <widget-calendar class="widget-calendar" date=""></widget-calendar>
+
+    <script type="module">
+        import { updateDate, updateGua, updateSixRelations } from './javascript/lunar-utils.js';
+
+        // 添加按鈕點擊事件
+        document.getElementById('query-btn').addEventListener('click', function(e){
+            updateGua();
+        });
+        
+        // 監聽六親選擇變化
+        document.querySelector('.div28').addEventListener('change', function(e) {
+            updateSixRelations(e.target.value);
+        });
+
+        // 監聽原爻選單變化
+        document.querySelector('.parent').addEventListener('change', function (e) {
+            if (e.target.classList.contains('original-yao')) {
+                updateGua();
+                e.target.setAttribute('data-selected', e.target.value);
+            }
+        });
+
+        // 日期變更
+        document.querySelector('widget-calendar').addEventListener('onChange',function(event){
+            updateDate(event);
+        });
+         
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     // 設置日期選擇器的默認值為今天
+        //     const datePicker = document.getElementById('date-picker');
+        //     const today = new Date();
+        //     const formattedDate = today.toISOString().split('T')[0];
+        //     datePicker.value = formattedDate;
+            
+        //     // 初始化更新日期信息
+        //     updateDateInfo(today);
+            
+        //     // 添加日期選擇器的change事件
+        //     datePicker.addEventListener('change', function() {
+        //         console.log("日期已變更，自動更新");
+        //         const selectedDate = new Date(this.value);
+        //         updateDateInfo(selectedDate);
+        //     });
+            
+        //     // 保留更新按鈕的點擊事件作為備用
+        //     document.getElementById('update-date-btn').addEventListener('click', function() {
+        //         console.log("手動更新日期");
+        //         const selectedDate = new Date(datePicker.value);
+        //         updateDateInfo(selectedDate);
+        //     });
+            
+        //     // 更新日期信息的函數
+        //     function updateDateInfo(date) {
+        //         console.log("更新日期");
+        //         // 使用lunar-utils.js中的函數獲取農曆信息
+        //         const lunarInfo = lunarUtils.getSolarToLunar(date);
+        //         const info = calendar.getToday();
+        //         console.log(info);
+
+        //         // 更新年月日的公曆和農曆信息
+        //         const div9 = document.querySelector('.div9'); // 年
+        //         const div10 = document.querySelector('.div10'); // 月
+        //         const div12 = document.querySelector('.div12'); // 日
+                
+        //         // 格式化公曆年月日
+        //         const year = date.getFullYear();
+        //         const month = date.getMonth() + 1;
+        //         const day = date.getDate();
+                
+        //         // 更新顯示內容
+        //         div9.textContent = `${year}年\n${lunarInfo.yearGanZhi}`;
+        //         div10.textContent = `${month}月\n${lunarInfo.monthGanZhi}`;
+        //         div12.textContent = `${day}日\n${lunarInfo.dayGanZhi}`;
+        //     }
+        // });
+    </script>
+</body>

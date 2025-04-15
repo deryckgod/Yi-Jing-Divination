@@ -1,0 +1,91 @@
+.god-willing{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(17, 1fr);
+    border: 1px solid black; /* 添加外邊框 */
+    background-color: rgb(255, 255, 255); /* 設置網格線顏色 */
+    margin-bottom: 20px;
+    margin-left: auto;
+}
+.god-willing > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    writing-mode: vertical-rl; /* 垂直文字方向，從右到左 */
+    text-orientation: mixed; /* 允許漢字自然垂直排列 */
+    padding: 5px;
+    box-sizing: border-box;
+    min-height: 40px;
+    min-width: 30px;
+    font-size: 30px;
+    overflow: hidden;
+    background-color: white; /* 設置單元格背景為白色 */
+}
+
+.mainGod{
+    grid-row: span 2 / span 2;
+    grid-column-start: 2;
+    grid-row-start: 1;
+}
+
+.mainGodInfo{
+    grid-row: span 6 / span 6;
+    grid-column-start: 2;
+    grid-row-start: 3;
+}
+
+.sun{
+    grid-row: span 2 / span 2;
+    grid-column-start: 1;
+    grid-row-start: 1;
+}
+
+.sunInfo{
+    grid-row: span 4 / span 4;
+    grid-column-start: 1;
+    grid-row-start: 3; 
+}
+
+.sunInfo span {
+    writing-mode: horizontal-tb; /* 水平顯示數字 */
+    display: block;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.moon{
+    grid-row: span 2 / span 2;
+    grid-column-start: 1;
+    grid-row-start: 7;
+}
+
+.moonInfo{
+    grid-row: span 4 / span 4;
+    grid-column-start: 1;
+    grid-row-start: 9; 
+}
+
+.moonInfo span {
+    writing-mode: horizontal-tb; /* 水平顯示數字 */
+    display: block;
+    text-align: center;
+    margin-top: 5px;
+}
+
+.willing{
+    grid-row: span 2 / span 2;
+    grid-column-start: 1;
+    grid-row-start: 13;
+}
+
+.willingInfo{
+    grid-row: span 4 / span 4;
+    grid-column-start: 1;
+    grid-row-start: 15;
+}
+
+.willingInfo span {
+    writing-mode: horizontal-tb; /* 水平顯示數字 */
+    display: block;
+    text-align:justify;
+}
