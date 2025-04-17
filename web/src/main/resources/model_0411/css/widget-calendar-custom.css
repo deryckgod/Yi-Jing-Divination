@@ -78,10 +78,19 @@
     .widget-calendar {
         max-width: 95vw;
     }
+
+    .calendar-container {
+        max-width: 95vw;
+    }
 }
 
 @media (max-width: 480px) {
     .widget-calendar {
+        max-width: 100vw;
+        max-height: 80vh;
+    }
+
+    .calendar-container {
         max-width: 100vw;
         max-height: 80vh;
         top: auto;
@@ -90,5 +99,14 @@
         right: 0;
         transform: none;
         border-radius: 8px 8px 0 0;
+        position: fixed;
+    }
+
+    .calendar-container.visible {
+        display: block !important;
+    }
+
+    .calendar-overlay.visible {
+        display: block !important;
     }
 }

@@ -32,13 +32,22 @@ function initCalendarUI() {
     }
 
     // 點擊按鈕顯示日曆
-    calendarToggleBtn.addEventListener('click', toggleCalendar);
+    calendarToggleBtn.addEventListener('click', function (e) {
+        e.preventDefault(); // 防止默認行為
+        toggleCalendar();
+    });
 
     // 點擊關閉按鈕隱藏日曆
-    calendarCloseBtn.addEventListener('click', toggleCalendar);
+    calendarCloseBtn.addEventListener('click', function (e) {
+        e.preventDefault(); // 防止默認行為
+        toggleCalendar();
+    });
 
     // 點擊遮罩層隱藏日曆
-    calendarOverlay.addEventListener('click', toggleCalendar);
+    calendarOverlay.addEventListener('click', function (e) {
+        e.preventDefault(); // 防止默認行為
+        toggleCalendar();
+    });
 
     // 阻止日曆內部點擊事件冒泡到遮罩層
     // calendarContainer.addEventListener('click', function (event) {
@@ -89,6 +98,16 @@ export function toggleCalendar() {
     const calendarContainer = document.querySelector('.calendar-container');
 
     if (widgetCalendar && calendarOverlay && calendarCloseBtn && calendarContainer) {
+        // 檢查當前是否可見
+        const isVisible = calendarContainer.classList.contains('visible');
+
+        // 強制設置樣式，確保在移動設備上也能正確顯示
+        if (!isVisible) {
+            calendarContainer.style.display = 'block';
+        } else {
+            calendarContainer.style.display = 'none';
+        }
+
         widgetCalendar.classList.toggle('visible');
         calendarOverlay.classList.toggle('visible');
         calendarCloseBtn.classList.toggle('visible');
