@@ -137,6 +137,7 @@ class WidgetCalendar extends HTMLElement {
                 // 即使點擊的是今日日期，也要觸發事件
                 if (thatDay['date'] === _.today['date']) {
                     // 直接觸發onChange事件，不需要改變日期
+                    changeDate(thatDay['sYear'], thatDay['sMonth'], thatDay['sDay']); // 選擇日期方框位置連動變更
                     _.dispatchEvent(new CustomEvent('onChange', { 'detail': thatDay }));
                     _.dispatchEvent(new CustomEvent('onSelect', { 'detail': calendar.getDateBySolar(thatDay['sYear'], thatDay['sMonth'], thatDay['sDay']) }));
                 } else {

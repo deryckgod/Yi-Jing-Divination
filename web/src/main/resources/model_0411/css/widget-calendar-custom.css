@@ -90,11 +90,15 @@
     .widget-calendar {
         max-width: 100vw;
         max-height: 80vh;
+        min-height: 200px;
+        overflow: auto !important;
+        display: block !important;
     }
 
     .calendar-container {
         max-width: 100vw;
         max-height: 80vh;
+        min-height: 200px;
         top: auto;
         bottom: 0;
         left: 0;
@@ -102,6 +106,8 @@
         transform: none;
         border-radius: 8px 8px 0 0;
         position: fixed;
+        overflow: auto !important;
+        /* display: block !important; */
     }
 
     .calendar-container.visible {
