@@ -44,6 +44,15 @@ class WidgetCalendar extends HTMLElement {
     }
     connectedCallback() {
         let _ = this;
+
+        // 檢查瀏覽器是否支持 Web Components
+        if (!('customElements' in window) || !('attachShadow' in Element.prototype)) {
+            alert('您的瀏覽器不支持 Web Components，請使用支持的瀏覽器。');
+            return;
+        } else {
+            console.log('瀏覽器支持 Web Components。');
+        }
+
         // 模板
         if (_.shadowRoot.adoptedStyleSheets) {
             _.shadowRoot.adoptedStyleSheets = [styleSheet];
