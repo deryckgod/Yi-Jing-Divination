@@ -1,8 +1,3 @@
-.widget-calendar{
-    display: flex;
-    width: 400px;
-}
-
 body {
     display: flex;
     justify-content: center;
@@ -20,28 +15,33 @@ body {
     display: grid;
     grid-template-columns: repeat(10, 1fr);
     grid-template-rows: repeat(19, 1fr);
-    border: 1px solid black; /* 添加外邊框 */
-    background-color: rgb(255, 255, 255); /* 設置網格線顏色 */
+    border: 1px solid black;
+    /* 添加外邊框 */
+    background-color: rgb(255, 255, 255);
+    /* 設置網格線顏色 */
     margin-bottom: 20px;
 }
 
 /* 為所有單元格添加邊框和垂直文字排列 */
-.parent > div {
+.parent>div {
     border: 1px solid black;
     display: flex;
     justify-content: center;
     align-items: center;
-    writing-mode: vertical-rl; /* 垂直文字方向，從右到左 */
-    text-orientation: mixed; /* 允許漢字自然垂直排列 */
+    writing-mode: vertical-rl;
+    /* 垂直文字方向，從右到左 */
+    text-orientation: mixed;
+    /* 允許漢字自然垂直排列 */
     padding: 5px;
     box-sizing: border-box;
     min-height: 40px;
     min-width: 30px;
     font-size: 30px;
     overflow: hidden;
-    background-color: white; /* 設置單元格背景為白色 */
+    background-color: white;
+    /* 設置單元格背景為白色 */
 }
-    
+
 .div1 {
     grid-row: span 2 / span 2;
     grid-column-start: 8;
@@ -205,6 +205,7 @@ body {
     grid-column-start: 6;
     grid-row-start: 7;
 }
+
 /* 
 .six-relation-container {
     display: flex;
@@ -230,7 +231,7 @@ body {
     bottom: 0px;
 }
 
-.six-relation-select{
+.six-relation-select {
     top: 0px;
     margin-bottom: 60px;
     font-size: 25px;
@@ -238,7 +239,7 @@ body {
     grid-row: span 5 / span 5;
     grid-column-start: 6;
     grid-row-start: 7;
-    writing-mode: horizontal-tb; 
+    writing-mode: horizontal-tb;
 }
 
 .div29 {
@@ -560,12 +561,13 @@ body {
 }
 
 .original-yao {
-  font-size: 30px;
-  text-align: center;
+    font-size: 30px;
+    text-align: center;
 }
 
-.hidden-god{
-    font-size: 15px !important; /* !important => 不受父類別影響 */
+.hidden-god {
+    font-size: 15px !important;
+    /* !important => 不受父類別影響 */
     text-align: center;
     writing-mode: horizontal-tb;
 }
@@ -632,3 +634,44 @@ body {
 .date-picker-container button:hover {
     background-color: #45a049;
 } */
+
+@media (max-width: 900px) {
+    .parent {
+        max-width: 500vw;
+        width: 500vw;
+        grid-template-columns: repeat(5, 1fr);
+        font-size: 18px;
+    }
+
+    .parent>div,
+    .parent select {
+        font-size: 18px;
+        min-width: 20px;
+        min-height: 28px;
+        padding: 2px;
+    }
+}
+
+@media (max-width: 600px) {
+    .parent {
+        max-width: 300vw;
+        width: 300vw;
+        grid-template-columns: repeat(2, 1fr);
+        font-size: 14px;
+        padding: 2vw;
+    }
+
+    .parent>div,
+    .parent select {
+        font-size: 14px;
+        min-width: 10px;
+        min-height: 18px;
+        padding: 1px;
+    }
+
+    .query-button,
+    .store-button {
+        font-size: 14px;
+        padding: 4px 8px;
+    }
+}

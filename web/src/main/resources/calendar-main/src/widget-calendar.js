@@ -19,7 +19,7 @@ class WidgetCalendar extends HTMLElement {
         _.today = calendar.getToday();
         _.currentDateInfo = _.today;
         _.currentMonthData = [];    // 当前日期所在月份数据
-        _.currentMonthDay = 1;     // 当前日期当月几号
+        _.currentMonthDay = _.today['sDay'];     // 当前日期当月几号，預設為今日
     }
     static get observedAttributes() {
         return ['date', 'mode'];
@@ -134,8 +134,16 @@ class WidgetCalendar extends HTMLElement {
             if (target.tagName == 'TD' && id) {
                 let thatDay = _.currentMonthData[id];
                 _.currentMonthDay = thatDay['sDay'];
-                changeDate(thatDay['sYear'], thatDay['sMonth'], thatDay['sDay']);
-                _.dispatchEvent(new CustomEvent('onSelect', { 'detail': calendar.getDateBySolar(thatDay['sYear'], thatDay['sMonth'], thatDay['sDay']) }));
+                // 即使點擊的是今日日期，也要觸發事件
+                if (thatDay['date'] === _.today['date']) {
+                    // 直接觸發onChange事件，不需要改變日期
+                    _.dispatchEvent(new CustomEvent('onChange', { 'detail': thatDay }));
+                    _.dispatchEvent(new CustomEvent('onSelect', { 'detail': calendar.getDateBySolar(thatDay['sYear'], thatDay['sMonth'], thatDay['sDay']) }));
+                } else {
+                    // 其他日期正常處理
+                    changeDate(thatDay['sYear'], thatDay['sMonth'], thatDay['sDay']);
+                    _.dispatchEvent(new CustomEvent('onSelect', { 'detail': calendar.getDateBySolar(thatDay['sYear'], thatDay['sMonth'], thatDay['sDay']) }));
+                }
             }
         };
         _.formatDate(_.date);
@@ -351,15 +359,18 @@ class WidgetCalendar extends HTMLElement {
     }
     formatDate(date) {
         let _ = this;
-        if (date) {
+        if (date && date !== '') {
             _.date = date;
             let [year, month, day] = date.split('-');
             _.formatSetting(year);
             _.formatTable({ 'year': year, 'month': month, 'day': day });
         } else {
+            // 如果沒有日期或日期為空字符串，則使用今日日期
             _.date = _.today['date'];
-            _.formatSetting();
-            _.formatTable();
+            _.formatSetting(_.today['sYear']);
+            _.formatTable({ 'year': _.today['sYear'], 'month': _.today['sMonth'], 'day': _.today['sDay'] });
+            // 確保觸發onChange事件
+            _.dispatchEvent(new CustomEvent('onChange', { 'detail': _.today }));
         }
     }
 }

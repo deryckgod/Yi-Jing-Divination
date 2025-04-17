@@ -6,6 +6,7 @@
     <title>卦單</title>
     <link rel="stylesheet" href="./css/god-willing.css">
     <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="./css/widget-calendar-custom.css">
     <script type="module" src="../calendar-main/src/calendar.js"></script>
     <script type="module" src="../calendar-main/src/widget-calendar.js"></script>
 </head>
@@ -153,10 +154,16 @@
         <button id="store-btn" class="store-button">儲存</button>
     </div>
 
-    <widget-calendar class="widget-calendar" date=""></widget-calendar>
+    <button id="calendar-toggle-btn" class="calendar-toggle-btn">選擇日期</button>
+    <div class="calendar-overlay"></div>
+    <div class="calendar-container">
+        <button class="calendar-close-btn">X</button>
+        <widget-calendar class="widget-calendar" date=""></widget-calendar>
+    </div>
 
     <script type="module">
         import { updateDate, updateGua, updateSixRelations } from './javascript/lunar-utils.js';
+        import { toggleCalendar } from './javascript/calendar-ui.js';
 
         // 添加按鈕點擊事件
         document.getElementById('query-btn').addEventListener('click', function(e){
@@ -179,8 +186,8 @@
         // 日期變更
         document.querySelector('widget-calendar').addEventListener('onChange',function(event){
             updateDate(event);
+            //toggleCalendar(); // 選擇日期後自動關閉日曆
         });
-         
         // document.addEventListener('DOMContentLoaded', function() {
         //     // 設置日期選擇器的默認值為今天
         //     const datePicker = document.getElementById('date-picker');

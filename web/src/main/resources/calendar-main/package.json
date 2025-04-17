@@ -48,5 +48,8 @@
         "watch": "rollup -wc"
     },
     "homepage": "https://passer-by.com/calendar/",
-    "directories": {}
+    "directories": {},
+    "dependencies": {
+        "calendar-tool": "file:"
+    }
 }
