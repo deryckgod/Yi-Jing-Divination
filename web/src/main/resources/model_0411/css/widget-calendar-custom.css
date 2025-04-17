@@ -1,19 +1,21 @@
 .calendar-container {
     position: fixed;
-    top: 50%;
+    top: -100%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     z-index: 1000;
     display: none;
     max-width: 90vw;
     max-height: 90vh;
     overflow: auto;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
+    border-radius: 0 0 8px 8px;
+    transition: top 0.3s ease-in-out;
 }
 
 .calendar-container.visible {
     display: block;
+    top: 0;
 }
 
 .widget-calendar {
