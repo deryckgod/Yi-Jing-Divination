@@ -107,7 +107,7 @@
         border-radius: 8px 8px 0 0;
         position: fixed;
         overflow: auto !important;
-        /* display: block !important; */
+        display: block !important;
     }
 
     .calendar-container.visible {
