@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Compiled class file
 *.class
 
@@ -44,3 +45,7 @@ nbdist/
 
 # VS Code
 .vscode/
+=======
+
+.qodo
+>>>>>>> 修改卦爻格式
