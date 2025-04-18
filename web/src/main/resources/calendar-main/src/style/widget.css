@@ -33,7 +33,8 @@ a {
 
 .mod-calendar {
     display: flex;
-    flex-direction: row-reverse;
+    flex-direction: column;
+    /*row-reverse; (2025/4/18 13:07)*/
     padding: calc(var(--base-size) * 2);
     background: var(--primary-color);
     font-size: calc(var(--base-size) * 14);

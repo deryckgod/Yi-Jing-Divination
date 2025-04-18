@@ -78,17 +78,17 @@
 /* 響應式調整 */
 @media (max-width: 768px) {
     .widget-calendar {
-        max-width: auto;
+        max-width: 95vw;
     }
 
     .calendar-container {
-        max-width: auto;
+        max-width: 95vw;
     }
 }
 
 @media (max-width: 480px) {
     .widget-calendar {
-        max-width: auto;
+        max-width: 100vw;
         max-height: 80vh;
         min-height: 200px;
         /* overflow: auto !important;
@@ -96,8 +96,8 @@
     }
 
     .calendar-container {
-        max-width: auto;
-        max-height: 90vh;
+        max-width: 100vw;
+        max-height: 80vh;
         min-height: 200px;
         top: auto;
         bottom: 0;

@@ -71,8 +71,8 @@ function initCalendarUI() {
         //     calendarContainer.style.maxHeight = '80vh';
         // } else if (viewportWidth <= 768) {
         //     // 平板設備上的調整
-        //     calendarContainer.style.width = '95vw';
-        //     calendarContainer.style.maxHeight = '90vh';
+        //     calendarContainer.style.width = '100%';
+        //     calendarContainer.style.maxHeight = '80vh';
         // } else {
         // 桌面設備上的調整
         calendarContainer.style.width = 'auto';

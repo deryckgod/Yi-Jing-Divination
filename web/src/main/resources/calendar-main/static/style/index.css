@@ -178,7 +178,7 @@ a:hover {
     transition: color .2s, opacity .2s;
     font-family: Tahoma, Arial, Helvetica, "Microsoft YaHei";
     outline: none;
-    -webkit-appearance: none;
+    /* webkit-appearance: none; */
 }
 
 .mod-head .btn:after {
