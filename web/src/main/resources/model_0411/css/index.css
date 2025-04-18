@@ -4,7 +4,7 @@ body {
     align-items: flex-start;
     min-height: 100vh;
     margin: 0;
-    padding: 20px;
+    padding: 2px;
     font-family: "標楷體", KaiTi, serif;
     position: relative;
 }
@@ -662,13 +662,17 @@ body {
     .parent>div,
     .parent select {
         font-size: 14px;
-        min-width: 10px;
-        min-height: 18px;
+        min-width: 16px;
+        min-height: 24px;
     }
 
     .query-button,
     .store-button {
         font-size: 14px;
         padding: 4px 8px;
+    }
+
+    .hidden-god {
+        font-size: 10px !important;
     }
 }
