@@ -8,8 +8,6 @@ import { getTimestampBySolar, getSolarByTimestamp, getSolarMonthDays } from './m
 import { sFestival, lFestival, oFestival, tFestival } from './module/festival.js';
 import calendar from './calendar.js';
 
-import styleSheet from './style/widget.css' with { type: 'css'};
-
 class WidgetCalendar extends HTMLElement {
     constructor() {
         super();
@@ -44,24 +42,16 @@ class WidgetCalendar extends HTMLElement {
     }
     connectedCallback() {
         let _ = this;
+        // 動態插入 CSS
+        fetch(new URL('./style/widget.css', import.meta.url))
+            .then(response => response.text())
+            .then(cssText => {
+                const $style = document.createElement('style');
+                $style.textContent = cssText;
+                _.shadowRoot.appendChild($style);
+            });
 
-        // 檢查瀏覽器是否支持 Web Components
-        if (!('customElements' in window) || !('attachShadow' in Element.prototype)) {
-            alert('您的瀏覽器不支持 Web Components，請使用支持的瀏覽器。');
-            return;
-        } else {
-            console.log('瀏覽器支持 Web Components。');
-        }
-
-        // 模板
-        if (_.shadowRoot.adoptedStyleSheets) {
-            _.shadowRoot.adoptedStyleSheets = [styleSheet];
-        } else {
-            const $style = document.createElement('style');
-            $style.rel = 'stylesheet';
-            $style.textContent = [...styleSheet.cssRules].map(item => item.cssText).join('');
-            _.shadowRoot.appendChild($style);
-        }
+        // 渲染模板
         _.render();
         // 节点
         _.$module = _.shadowRoot.querySelector('.mod-calendar');
