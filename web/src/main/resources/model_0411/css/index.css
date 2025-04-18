@@ -648,7 +648,6 @@ body {
         font-size: 18px;
         min-width: 20px;
         min-height: 28px;
-        padding: 2px;
     }
 }
 
@@ -658,7 +657,6 @@ body {
         width: 300vw;
         grid-template-columns: repeat(2, 1fr);
         font-size: 14px;
-        padding: 2vw;
     }
 
     .parent>div,
@@ -666,7 +664,6 @@ body {
         font-size: 14px;
         min-width: 10px;
         min-height: 18px;
-        padding: 1px;
     }
 
     .query-button,

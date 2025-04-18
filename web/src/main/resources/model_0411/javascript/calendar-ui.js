@@ -60,24 +60,24 @@ function initCalendarUI() {
         //setTimeout(toggleCalendar, 300);
     });
 
-    // 響應式調整
+    // 響應式調整 (CSS響應式調整其他設定)
     function adjustCalendarSize() {
         const viewportWidth = window.innerWidth;
         const viewportHeight = window.innerHeight;
 
-        if (viewportWidth <= 480) {
-            // 移動設備上的調整
-            calendarContainer.style.width = '100%';
-            calendarContainer.style.maxHeight = '80vh';
-        } else if (viewportWidth <= 768) {
-            // 平板設備上的調整
-            calendarContainer.style.width = '95vw';
-            calendarContainer.style.maxHeight = '90vh';
-        } else {
-            // 桌面設備上的調整
-            calendarContainer.style.width = 'auto';
-            calendarContainer.style.maxHeight = '90vh';
-        }
+        // if (viewportWidth <= 480) {
+        //     // 移動設備上的調整
+        //     calendarContainer.style.width = '100%';
+        //     calendarContainer.style.maxHeight = '80vh';
+        // } else if (viewportWidth <= 768) {
+        //     // 平板設備上的調整
+        //     calendarContainer.style.width = '95vw';
+        //     calendarContainer.style.maxHeight = '90vh';
+        // } else {
+        // 桌面設備上的調整
+        calendarContainer.style.width = 'auto';
+        calendarContainer.style.maxHeight = '90vh';
+        // }
     }
 
     // 初始調整大小
