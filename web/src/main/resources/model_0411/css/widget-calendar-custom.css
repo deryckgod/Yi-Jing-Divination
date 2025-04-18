@@ -76,7 +76,7 @@
 }
 
 /* 響應式調整 */
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     .widget-calendar {
         max-width: 95vw;
     }
@@ -84,18 +84,18 @@
     .calendar-container {
         max-width: 95vw;
     }
-}
+} */
 
-@media (max-width: 480px) {
+/* @media (max-width: 480px) {
     .widget-calendar {
         max-width: 100vw;
         max-height: 80vh;
         min-height: 200px;
         overflow: auto !important;
-        display: block !important;
-    }
+        display: block !important; 
+    } */
 
-    .calendar-container {
+/* .calendar-container {
         max-width: 100vw;
         max-height: 80vh;
         min-height: 200px;
@@ -106,15 +106,15 @@
         transform: none;
         border-radius: 8px 8px 0 0;
         position: fixed;
-        overflow: auto !important;
-        /* display: block !important; */
-    }
+        overflow: auto !important; 
+        display: block !important;
+    } */
 
-    .calendar-container.visible {
+/* .calendar-container.visible {
         display: block !important;
     }
 
     .calendar-overlay.visible {
         display: block !important;
     }
-}
+} */
