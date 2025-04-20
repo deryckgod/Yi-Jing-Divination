@@ -2,6 +2,7 @@
  * 歷史記錄管理模塊
  * 處理卦象記錄的儲存、讀取、刪除和下載功能
  */
+const downloadFlag = false; // 設置為true以開放下載功能，設置為false以關閉下載功能
 
 // 初始化歷史記錄管理
 document.addEventListener('DOMContentLoaded', function () {
@@ -319,6 +320,10 @@ function previewRecord(record) {
  * 下載選中的記錄
  */
 function downloadSelectedRecords() {
+    if (!downloadFlag) {
+        alert("目前下載功能未開放");
+        return;
+    }
     const checkboxes = document.querySelectorAll('.record-checkbox:checked');
     if (checkboxes.length === 0) {
         alert('請至少選擇一條記錄');
