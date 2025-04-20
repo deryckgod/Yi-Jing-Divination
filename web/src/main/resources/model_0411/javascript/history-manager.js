@@ -251,6 +251,12 @@ function createThumbnail(record, recordItem) {
         </div>
     `;
 
+    // 設置askInfo文本區域的值
+    const askInfoTextarea = tempContainer.querySelector('.askInfo');
+    if (askInfoTextarea && record.askInfo) {
+        askInfoTextarea.value = record.askInfo;
+    }
+
     // 處理原爻值顯示
     if (record.yaoValues && Array.isArray(record.yaoValues)) {
         const previewParent = tempContainer.querySelector('.parent');
@@ -271,7 +277,7 @@ function createThumbnail(record, recordItem) {
                     div.style.writingMode = 'horizontal-tb';
                     div.style.textOrientation = 'mixed';
                     div.style.gridColumnStart = 4;
-                    div.style.gridRowStart = 13 + idx;
+                    div.style.gridRowStart = 12 + idx;
                     div.style.fontFamily = '標楷體, KaiTi, serif';
 
                     // 替換select元素
@@ -310,7 +316,7 @@ function createThumbnail(record, recordItem) {
         quality: 0.8,
         bgcolor: 'white',
         width: 400,
-        height: 500,
+        height: 450,
         style: {
             'transform': 'scale(0.5)',
             'transform-origin': 'top'
@@ -353,8 +359,6 @@ function previewRecord(record) {
         return;
     }
 
-
-
     // 顯示預覽容器
     previewContainer.classList.add('visible');
 
@@ -369,6 +373,12 @@ function previewRecord(record) {
             ${record.parentHTML}
         </div>
     `;
+
+    // 設置askInfo文本區域的值
+    const askInfoTextarea = previewContainer.querySelector('.askInfo');
+    if (askInfoTextarea && record.askInfo) {
+        askInfoTextarea.value = record.askInfo;
+    }
 
     // 設定預覽內容的原爻值並將選單替換為純文本顯示
     if (record.yaoValues && Array.isArray(record.yaoValues)) {
@@ -393,7 +403,7 @@ function previewRecord(record) {
                     div.style.writingMode = 'horizontal-tb';
                     div.style.textOrientation = 'mixed';
                     div.style.gridColumnStart = 4;
-                    div.style.gridRowStart = 13 + idx;
+                    div.style.gridRowStart = 12 + idx;
                     div.style.fontFamily = '標楷體';
                     div.style.KaiTi = 'serif';
 

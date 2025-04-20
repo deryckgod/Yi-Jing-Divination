@@ -667,7 +667,7 @@ textarea.askInfo::placeholder {
     .parent {
         max-width: 500vw;
         width: 500vw;
-        grid-template-columns: repeat(5, 1fr);
+        grid-template-columns: repeat(10, 1fr);
         font-size: 18px;
     }
 
@@ -683,7 +683,7 @@ textarea.askInfo::placeholder {
     .parent {
         max-width: 300vw;
         width: 300vw;
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(10, 1fr);
         font-size: 14px;
     }
 
