@@ -14,7 +14,7 @@ body {
     width: 90%;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(19, 1fr);
+    grid-template-rows: repeat(18, 1fr);
     border: 1px solid black;
     /* 添加外邊框 */
     background-color: rgb(255, 255, 255);
@@ -187,13 +187,13 @@ body {
 }
 
 .div26 {
-    grid-row: span 5 / span 5;
+    grid-row: span 4 / span 4;
     grid-column-start: 8;
     grid-row-start: 7;
 }
 
 .div27 {
-    grid-row: span 5 / span 5;
+    grid-row: span 4 / span 4;
     grid-column-start: 7;
     grid-row-start: 7;
 }
@@ -201,7 +201,7 @@ body {
 .div28 {
     font-size: 25px;
     text-align: center;
-    grid-row: span 5 / span 5;
+    grid-row: span 4 / span 4;
     grid-column-start: 6;
     grid-row-start: 7;
 }
@@ -219,7 +219,7 @@ body {
     min-width: 0;
     padding: 0 0px;
     top: 0px;
-    margin-bottom: 60px;
+    margin-bottom: 10px;
 }
 
 .six-relation-item-lower {
@@ -227,13 +227,12 @@ body {
     text-align: center;
     min-width: 0;
     padding: 0 0px;
-    margin-top: 60px;
+    margin-top: 10px;
     bottom: 0px;
 }
 
 .six-relation-select {
     top: 0px;
-    margin-bottom: 60px;
     font-size: 25px;
     text-align: center;
     grid-row: span 5 / span 5;
@@ -243,31 +242,31 @@ body {
 }
 
 .div29 {
-    grid-row: span 5 / span 5;
+    grid-row: span 4 / span 4;
     grid-column-start: 5;
     grid-row-start: 7;
 }
 
 .div30 {
-    grid-row: span 5 / span 5;
+    grid-row: span 4 / span 4;
     grid-column-start: 4;
     grid-row-start: 7;
 }
 
 .div31 {
-    grid-row: span 5 / span 5;
+    grid-row: span 4 / span 4;
     grid-column-start: 3;
     grid-row-start: 7;
 }
 
 .div32 {
-    grid-row: span 5 / span 5;
+    grid-row: span 4 / span 4;
     grid-column-start: 2;
     grid-row-start: 7;
 }
 
 .div33 {
-    grid-row: span 5 / span 5;
+    grid-row: span 4 / span 4;
     grid-column-start: 1;
     grid-row-start: 7;
 }
@@ -275,289 +274,295 @@ body {
 .div34 {
     grid-row: span 2 / span 2;
     grid-column-start: 8;
-    grid-row-start: 12;
+    grid-row-start: 11;
 }
 
 .div35 {
     grid-row: span 2 / span 2;
     grid-column-start: 7;
-    grid-row-start: 12;
+    grid-row-start: 11;
 }
 
 .div36 {
     grid-row: span 2 / span 2;
     grid-column-start: 6;
-    grid-row-start: 12;
+    grid-row-start: 11;
 }
 
 .div37 {
     grid-row: span 2 / span 2;
     grid-column-start: 5;
-    grid-row-start: 12;
+    grid-row-start: 11;
 }
 
 .div38 {
     grid-row: span 2 / span 2;
     grid-column-start: 4;
-    grid-row-start: 12;
+    grid-row-start: 11;
 }
 
 .div39 {
     grid-row: span 2 / span 2;
     grid-column-start: 3;
-    grid-row-start: 12;
+    grid-row-start: 11;
 }
 
 .div40 {
     grid-row: span 2 / span 2;
     grid-column-start: 2;
-    grid-row-start: 12;
+    grid-row-start: 11;
 }
 
 .div41 {
     grid-row: span 2 / span 2;
     grid-column-start: 1;
-    grid-row-start: 12;
+    grid-row-start: 11;
 }
 
 .div42 {
     grid-column-start: 8;
-    grid-row-start: 14;
+    grid-row-start: 13;
 }
 
 .div43 {
     grid-column-start: 8;
-    grid-row-start: 15;
+    grid-row-start: 14;
 }
 
 .div44 {
     grid-column-start: 8;
-    grid-row-start: 16;
+    grid-row-start: 15;
 }
 
 .div45 {
     grid-column-start: 8;
-    grid-row-start: 17;
+    grid-row-start: 16;
 }
 
 .div46 {
     grid-column-start: 8;
-    grid-row-start: 18;
+    grid-row-start: 17;
 }
 
 .div47 {
     grid-column-start: 8;
-    grid-row-start: 19;
+    grid-row-start: 18;
 }
 
 .div48 {
     grid-column-start: 7;
-    grid-row-start: 14;
+    grid-row-start: 13;
 }
 
 .div49 {
     grid-column-start: 7;
-    grid-row-start: 15;
+    grid-row-start: 14;
 }
 
 .div50 {
     grid-column-start: 7;
-    grid-row-start: 16;
+    grid-row-start: 15;
 }
 
 .div51 {
     grid-column-start: 7;
-    grid-row-start: 17;
+    grid-row-start: 16;
 }
 
 .div52 {
     grid-column-start: 7;
-    grid-row-start: 18;
+    grid-row-start: 17;
 }
 
 .div53 {
     grid-column-start: 7;
-    grid-row-start: 19;
+    grid-row-start: 18;
 }
 
 .div54 {
     grid-column-start: 6;
-    grid-row-start: 14;
+    grid-row-start: 13;
 }
 
 .div55 {
     grid-column-start: 6;
-    grid-row-start: 15;
+    grid-row-start: 14;
 }
 
 .div56 {
     grid-column-start: 6;
-    grid-row-start: 16;
+    grid-row-start: 15;
 }
 
 .div57 {
     grid-column-start: 6;
-    grid-row-start: 17;
+    grid-row-start: 16;
 }
 
 .div58 {
     grid-column-start: 6;
-    grid-row-start: 18;
+    grid-row-start: 17;
 }
 
 .div59 {
     grid-column-start: 6;
-    grid-row-start: 19;
+    grid-row-start: 18;
 }
 
 .div60 {
     grid-column-start: 5;
-    grid-row-start: 14;
+    grid-row-start: 13;
 }
 
 .div61 {
     grid-column-start: 5;
-    grid-row-start: 15;
+    grid-row-start: 14;
 }
 
 .div62 {
     grid-column-start: 5;
-    grid-row-start: 16;
+    grid-row-start: 15;
 }
 
 .div63 {
     grid-column-start: 5;
-    grid-row-start: 17;
+    grid-row-start: 16;
 }
 
 .div64 {
     grid-column-start: 5;
-    grid-row-start: 18;
+    grid-row-start: 17;
 }
 
 .div65 {
     grid-column-start: 5;
-    grid-row-start: 19;
+    grid-row-start: 18;
 }
 
 .div66 {
     grid-column-start: 4;
-    grid-row-start: 14;
+    grid-row-start: 13;
 }
 
 .div67 {
     grid-column-start: 4;
-    grid-row-start: 15;
+    grid-row-start: 14;
 }
 
 .div68 {
     grid-column-start: 4;
-    grid-row-start: 16;
+    grid-row-start: 15;
 }
 
 .div69 {
     grid-column-start: 4;
-    grid-row-start: 17;
+    grid-row-start: 16;
 }
 
 .div70 {
     grid-column-start: 4;
-    grid-row-start: 18;
+    grid-row-start: 17;
 }
 
 .div71 {
     grid-column-start: 4;
-    grid-row-start: 19;
+    grid-row-start: 18;
 }
 
 .div72 {
     grid-column-start: 3;
-    grid-row-start: 14;
+    grid-row-start: 13;
+    writing-mode: horizontal-tb !important;
 }
 
 .div73 {
     grid-column-start: 3;
-    grid-row-start: 15;
+    grid-row-start: 14;
+    writing-mode: horizontal-tb !important;
 }
 
 .div74 {
     grid-column-start: 3;
-    grid-row-start: 16;
+    grid-row-start: 15;
+    writing-mode: horizontal-tb !important;
 }
 
 .div75 {
     grid-column-start: 3;
-    grid-row-start: 17;
+    grid-row-start: 16;
+    writing-mode: horizontal-tb !important;
 }
 
 .div76 {
     grid-column-start: 3;
-    grid-row-start: 18;
+    grid-row-start: 17;
+    writing-mode: horizontal-tb !important;
 }
 
 .div77 {
     grid-column-start: 3;
-    grid-row-start: 19;
+    grid-row-start: 18;
+    writing-mode: horizontal-tb !important;
 }
 
 .div78 {
     grid-column-start: 2;
-    grid-row-start: 14;
+    grid-row-start: 13;
 }
 
 .div79 {
     grid-column-start: 2;
-    grid-row-start: 15;
+    grid-row-start: 14;
 }
 
 .div80 {
     grid-column-start: 2;
-    grid-row-start: 16;
+    grid-row-start: 15;
 }
 
 .div81 {
     grid-column-start: 2;
-    grid-row-start: 17;
+    grid-row-start: 16;
 }
 
 .div82 {
     grid-column-start: 2;
-    grid-row-start: 18;
+    grid-row-start: 17;
 }
 
 .div83 {
     grid-column-start: 2;
-    grid-row-start: 19;
+    grid-row-start: 18;
 }
 
 .div84 {
     grid-column-start: 1;
-    grid-row-start: 14;
+    grid-row-start: 13;
 }
 
 .div85 {
     grid-column-start: 1;
-    grid-row-start: 15;
+    grid-row-start: 14;
 }
 
 .div86 {
     grid-column-start: 1;
-    grid-row-start: 16;
+    grid-row-start: 15;
 }
 
 .div87 {
     grid-column-start: 1;
-    grid-row-start: 17;
+    grid-row-start: 16;
 }
 
 .div88 {
     grid-column-start: 1;
-    grid-row-start: 18;
+    grid-row-start: 17;
 }
 
 .div89 {
     grid-column-start: 1;
-    grid-row-start: 19;
+    grid-row-start: 18;
 }
 
 .original-yao {
@@ -573,7 +578,7 @@ body {
 }
 
 .query-button {
-    grid-row-start: 20;
+    grid-row-start: 19;
     width: 100%;
     padding: 8px 16px;
     font-family: 標楷體;
@@ -586,7 +591,7 @@ body {
 }
 
 .store-button {
-    grid-row-start: 21;
+    grid-row-start: 20;
     width: 100%;
     padding: 8px 16px;
     font-family: 標楷體;

@@ -220,7 +220,7 @@ export function updateDiv26(shiYaoPosition, compare, upperTrigram, lowerTrigram)
         shouGua = isDifferent ? trigramMap[upperTrigram] : trigramMap[lowerTrigram];
     }
 
-    document.querySelector('.div26').textContent = `${shouGua}    ${EightTrigramsFiveElements[shouGua]}`;
+    document.querySelector('.div26').textContent = `${shouGua}　${EightTrigramsFiveElements[shouGua]}`;
     //console.log(document.querySelector('.six-relation-select').value);
     updateSixRelations(document.querySelector('.six-relation-select').value, shouGua);
 
@@ -236,11 +236,15 @@ export function updateSixRelations(selectValue, shouGua) {
 
     // 提取共用生成函式
     const generateSelectElement = (selectedValue) => {
-        return `<select class="six-relation-select">
+        return `<div class="six-relation-container">
+            <span class="six-relation-item-upper">
+            <select class="six-relation-select">
             ${reorderedSequence.map(opt =>
             `<option value="${opt}" ${opt === selectedValue ? 'selected' : ''}>${opt}</option>`
         ).join('')}
-        </select>`;
+        </select>
+        </span>
+        `;
     };
 
     const generateRelationContainer = (relation, value) => {
@@ -259,7 +263,7 @@ export function updateSixRelations(selectValue, shouGua) {
 
         if (i === 0) {
             relationDiv.innerHTML = generateSelectElement(currentRelation) +
-                (relations ? `<span class="six-relation-item-lower">${relations[currentRelation]}</span>` : '');
+                (relations ? `<span class="six-relation-item-lower">${relations[currentRelation]}</span></div>` : '</div>');
         } else {
             relationDiv.innerHTML = generateRelationContainer(currentRelation, relations?.[currentRelation]);
         }

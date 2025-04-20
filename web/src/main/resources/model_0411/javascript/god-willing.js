@@ -230,16 +230,16 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
     }
 
     if (isChanged) {
-        mainGodInfo += '(變爻)';
+        mainGodInfo += '（變爻）';
     }
     if (isFuShan) {
-        mainGodInfo += '(伏神)';
+        mainGodInfo += '（伏神）';
     }
     if (isKongWang) {
-        mainGodInfo += ' (空亡)';
+        mainGodInfo += '（空亡）';
     }
     if (isShi) {
-        mainGodInfo += ' (持世)';
+        mainGodInfo += '（持世）';
     }
     // 更新用神資訊顯示
     document.querySelector('.mainGodInfo').textContent = mainGodInfo;

@@ -7,12 +7,43 @@
     <link rel="stylesheet" href="./css/god-willing.css">
     <link rel="stylesheet" href="./css/index.css">
     <link rel="stylesheet" href="./css/widget-calendar-custom.css">
+    <link rel="stylesheet" href="./css/history-manager.css">
     <!-- 引入 Web Components 的 Polyfill -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/2.4.4/webcomponents-bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image-more/3.1.1/dom-to-image-more.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script type="module" src="../calendar-main/src/calendar.js"></script>
     <script type="module" src="../calendar-main/src/widget-calendar.js"></script>
 </head>
 <body>
+    <!-- 歷史記錄按鈕 -->
+    <button id="history-btn" class="history-btn">📜</button>
+    
+    <!-- 歷史記錄視窗 -->
+    <div class="history-overlay"></div>
+    <div class="history-container">
+        <div class="history-header">
+            <h2>歷史記錄</h2>
+            <button class="history-close-btn">X</button>
+        </div>
+        <div class="history-toolbar">
+            <div class="toolbar-left">
+                <button id="select-all-btn">全選</button>
+                <button class="toolbar-left" id="delete-selected-btn">刪除選中</button>
+            </div>
+            <div class="toolbar-right">
+                <select id="download-format">
+                    <option value="jpeg">JPEG</option>
+                    <option value="pdf">PDF</option>
+                </select>
+                <button id="download-selected-btn">下載選中</button>
+            </div>
+        </div>
+        <div id="history-records" class="history-records"></div>
+    </div>
+
+    <div id="record-preview-container" class="record-preview-container"></div>
+    
     <div class="god-willing">
         <div class="mainGod">用神：</div>
         <div class="mainGodInfo">main</div>
@@ -156,6 +187,7 @@
         <button id="store-btn" class="store-button">儲存</button>
     </div>
 
+    <!-- 日曆選擇器 -->
     <button id="calendar-toggle-btn" class="calendar-toggle-btn">選擇日期</button>
     <div class="calendar-overlay"></div>
     <div class="calendar-container">
@@ -166,6 +198,7 @@
     <script type="module">
         import { updateDate, updateGua, updateSixRelations } from './javascript/lunar-utils.js';
         import { toggleCalendar } from './javascript/calendar-ui.js';
+        import './javascript/history-manager.js';
 
         // 添加按鈕點擊事件
         document.getElementById('query-btn').addEventListener('click', function(e){
