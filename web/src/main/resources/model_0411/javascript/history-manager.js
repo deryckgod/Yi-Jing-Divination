@@ -120,6 +120,9 @@ function saveCurrentRecord() {
         });
     }
 
+    // 獲取askInfo區塊內容
+    const askInfo = document.querySelector('.askInfo')?.value;
+
     // 創建記錄對象
     const record = {
         id: Date.now().toString(), // 使用時間戳作為唯一ID
@@ -127,7 +130,8 @@ function saveCurrentRecord() {
         timestamp: timeStamp,
         godWillingHTML: godWillingHTML,
         parentHTML: parentHTML,
-        yaoValues: yaoValues
+        yaoValues: yaoValues,
+        askInfo: askInfo
     };
 
     // 從localStorage獲取現有記錄
@@ -194,16 +198,23 @@ function loadHistoryRecords() {
             const recordTime = new Date(record.timestamp);
             const timeStr = recordTime.toLocaleTimeString();
 
+            // 檢查askInfo是否為undefined
+            record.askInfo = record.askInfo || '';
+
             // 創建記錄內容
             recordItem.innerHTML = `
                 <div class="record-header">
                     <input type="checkbox" class="record-checkbox" data-id="${record.id}">
+                    <span>${record.askInfo}</span>
                     <span class="record-time">${timeStr}</span>
                 </div>
                 <div class="record-preview">
-                    <div class="preview-icon">👁️</div>
+                    <div class="preview-loading">載入中...</div>
                 </div>
             `;
+
+            // 創建縮圖預覽
+            createThumbnail(record, recordItem);
 
             // 添加點擊預覽事件
             recordItem.querySelector('.record-preview').addEventListener('click', function () {
@@ -215,6 +226,120 @@ function loadHistoryRecords() {
 
         dateSection.appendChild(recordsList);
         recordsContainer.appendChild(dateSection);
+    });
+}
+
+/**
+ * 為記錄創建縮圖
+ */
+function createThumbnail(record, recordItem) {
+    // 創建一個臨時容器用於渲染記錄
+    const tempContainer = document.createElement('div');
+    tempContainer.className = 'record-preview-container';
+    tempContainer.style.position = 'absolute';
+    tempContainer.style.left = '-9999px';
+    tempContainer.style.width = 'auto'; // 設定固定寬度以確保圖片質量
+    tempContainer.style.height = ''; // 設定固定高度以確保圖片質量
+    tempContainer.style.backgroundColor = 'white';
+    document.body.appendChild(tempContainer);
+
+    // 添加記錄內容
+    tempContainer.innerHTML = `
+        <div class="preview-content" style="padding: 10px;">
+            ${record.godWillingHTML || ''}
+            ${record.parentHTML || ''}
+        </div>
+    `;
+
+    // 處理原爻值顯示
+    if (record.yaoValues && Array.isArray(record.yaoValues)) {
+        const previewParent = tempContainer.querySelector('.parent');
+        if (previewParent) {
+            const selects = previewParent.querySelectorAll('.original-yao');
+            selects.forEach((select, idx) => {
+                if (record.yaoValues[idx] !== undefined) {
+                    // 創建一個div元素來替換select
+                    const div = document.createElement('div');
+                    div.className = 'original-yao-text';
+                    div.textContent = record.yaoValues[idx];
+                    div.style.padding = '2px 5px';
+                    div.style.border = '1px solid black';
+                    div.style.backgroundColor = '#f8f8f8';
+                    div.style.display = 'inline-block';
+                    div.style.minWidth = '20px';
+                    div.style.textAlign = 'center';
+                    div.style.writingMode = 'horizontal-tb';
+                    div.style.textOrientation = 'mixed';
+                    div.style.gridColumnStart = 4;
+                    div.style.gridRowStart = 13 + idx;
+                    div.style.fontFamily = '標楷體, KaiTi, serif';
+
+                    // 替換select元素
+                    select.parentNode.replaceChild(div, select);
+                }
+            });
+        }
+        // 保存六親選擇器值
+        const sixRelationSelect = tempContainer.querySelector('.six-relation-select');
+        const sixRelationValue = sixRelationSelect?.value;
+
+        // 如果找到六親選擇器且有值，則替換為文本顯示
+        if (sixRelationSelect && sixRelationValue) {
+            // 創建一個div元素來替換select
+            const div = document.createElement('div');
+            div.className = 'original-yao-text';
+            div.textContent = sixRelationValue;
+            div.style.padding = '2px 5px';
+            div.style.backgroundColor = '#f8f8f8';
+            div.style.display = 'inline-block';
+            div.style.minWidth = '20px';
+            div.style.textAlign = 'center';
+            div.style.writingMode = 'horizontal-tb';
+            div.style.textOrientation = 'mixed';
+            div.style.gridColumnStart = 6;
+            div.style.gridRowStart = 7;
+            div.style.fontFamily = '標楷體, KaiTi, serif';
+
+            // 替換select元素
+            sixRelationSelect.parentNode.replaceChild(div, sixRelationSelect);
+        }
+    }
+
+    // 使用dom-to-image-more將容器轉換為縮略圖
+    domtoimage.toJpeg(tempContainer, {
+        quality: 0.8,
+        bgcolor: 'white',
+        width: 400,
+        height: 500,
+        style: {
+            'transform': 'scale(0.5)',
+            'transform-origin': 'top'
+
+        }
+    }).then(dataUrl => {
+        // 移除臨時容器
+        document.body.removeChild(tempContainer);
+
+        // 創建縮略圖
+        const thumbnail = document.createElement('img');
+        thumbnail.src = dataUrl;
+        thumbnail.style.width = '100%';
+        thumbnail.style.height = '100%';
+        thumbnail.style.objectFit = 'contain';
+
+        // 替換載入中的提示
+        const previewDiv = recordItem.querySelector('.record-preview');
+        previewDiv.innerHTML = '';
+        previewDiv.appendChild(thumbnail);
+    }).catch(error => {
+        console.error('生成縮略圖時發生錯誤:', error);
+        // 移除臨時容器
+        if (document.body.contains(tempContainer)) {
+            document.body.removeChild(tempContainer);
+        }
+        // 顯示錯誤提示
+        const previewDiv = recordItem.querySelector('.record-preview');
+        previewDiv.innerHTML = '<div class="preview-icon">👁️</div>';
     });
 }
 

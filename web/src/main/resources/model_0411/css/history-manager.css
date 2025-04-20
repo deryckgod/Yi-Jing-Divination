@@ -68,6 +68,10 @@
     display: flex;
 }
 
+.history-records {
+    overflow-y: auto;
+}
+
 /* 歷史記錄標題欄 */
 .history-header {
     display: flex;
@@ -158,6 +162,7 @@
     border-bottom: 1px solid #eee;
     color: #333;
     font-size: 16px;
+    margin-left: 10px;
 }
 
 /* 記錄列表 */
@@ -194,17 +199,25 @@
 }
 
 .record-preview {
-    height: 100px;
+    height: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #fafafa;
     cursor: pointer;
+    overflow: hidden;
+    position: relative;
 }
 
 .preview-icon {
     font-size: 24px;
     color: #4a90e2;
+}
+
+.preview-loading {
+    font-size: 14px;
+    color: #666;
+    position: absolute;
 }
 
 /* 記錄預覽容器 */

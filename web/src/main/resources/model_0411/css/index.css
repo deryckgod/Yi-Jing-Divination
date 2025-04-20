@@ -14,7 +14,7 @@ body {
     width: 90%;
     display: grid;
     grid-template-columns: repeat(10, 1fr);
-    grid-template-rows: repeat(18, 1fr);
+    grid-template-rows: repeat(17, 1fr);
     border: 1px solid black;
     /* 添加外邊框 */
     background-color: rgb(255, 255, 255);
@@ -187,13 +187,13 @@ body {
 }
 
 .div26 {
-    grid-row: span 4 / span 4;
+    grid-row: span 3 / span 3;
     grid-column-start: 8;
     grid-row-start: 7;
 }
 
 .div27 {
-    grid-row: span 4 / span 4;
+    grid-row: span 3 / span 3;
     grid-column-start: 7;
     grid-row-start: 7;
 }
@@ -201,7 +201,7 @@ body {
 .div28 {
     font-size: 25px;
     text-align: center;
-    grid-row: span 4 / span 4;
+    grid-row: span 3 / span 3;
     grid-column-start: 6;
     grid-row-start: 7;
 }
@@ -235,38 +235,38 @@ body {
     top: 0px;
     font-size: 25px;
     text-align: center;
-    grid-row: span 5 / span 5;
+    grid-row: span 3 / span 3;
     grid-column-start: 6;
     grid-row-start: 7;
     writing-mode: horizontal-tb;
 }
 
 .div29 {
-    grid-row: span 4 / span 4;
+    grid-row: span 3 / span 3;
     grid-column-start: 5;
     grid-row-start: 7;
 }
 
 .div30 {
-    grid-row: span 4 / span 4;
+    grid-row: span 3 / span 3;
     grid-column-start: 4;
     grid-row-start: 7;
 }
 
 .div31 {
-    grid-row: span 4 / span 4;
+    grid-row: span 3 / span 3;
     grid-column-start: 3;
     grid-row-start: 7;
 }
 
 .div32 {
-    grid-row: span 4 / span 4;
+    grid-row: span 3 / span 3;
     grid-column-start: 2;
     grid-row-start: 7;
 }
 
 .div33 {
-    grid-row: span 4 / span 4;
+    grid-row: span 3 / span 3;
     grid-column-start: 1;
     grid-row-start: 7;
 }
@@ -274,295 +274,295 @@ body {
 .div34 {
     grid-row: span 2 / span 2;
     grid-column-start: 8;
-    grid-row-start: 11;
+    grid-row-start: 10;
 }
 
 .div35 {
     grid-row: span 2 / span 2;
     grid-column-start: 7;
-    grid-row-start: 11;
+    grid-row-start: 10;
 }
 
 .div36 {
     grid-row: span 2 / span 2;
     grid-column-start: 6;
-    grid-row-start: 11;
+    grid-row-start: 10;
 }
 
 .div37 {
     grid-row: span 2 / span 2;
     grid-column-start: 5;
-    grid-row-start: 11;
+    grid-row-start: 10;
 }
 
 .div38 {
     grid-row: span 2 / span 2;
     grid-column-start: 4;
-    grid-row-start: 11;
+    grid-row-start: 10;
 }
 
 .div39 {
     grid-row: span 2 / span 2;
     grid-column-start: 3;
-    grid-row-start: 11;
+    grid-row-start: 10;
 }
 
 .div40 {
     grid-row: span 2 / span 2;
     grid-column-start: 2;
-    grid-row-start: 11;
+    grid-row-start: 10;
 }
 
 .div41 {
     grid-row: span 2 / span 2;
     grid-column-start: 1;
-    grid-row-start: 11;
+    grid-row-start: 10;
 }
 
 .div42 {
     grid-column-start: 8;
-    grid-row-start: 13;
+    grid-row-start: 12;
 }
 
 .div43 {
     grid-column-start: 8;
-    grid-row-start: 14;
+    grid-row-start: 13;
 }
 
 .div44 {
     grid-column-start: 8;
-    grid-row-start: 15;
+    grid-row-start: 14;
 }
 
 .div45 {
     grid-column-start: 8;
-    grid-row-start: 16;
+    grid-row-start: 15;
 }
 
 .div46 {
     grid-column-start: 8;
-    grid-row-start: 17;
+    grid-row-start: 16;
 }
 
 .div47 {
     grid-column-start: 8;
-    grid-row-start: 18;
+    grid-row-start: 17;
 }
 
 .div48 {
     grid-column-start: 7;
-    grid-row-start: 13;
+    grid-row-start: 12;
 }
 
 .div49 {
     grid-column-start: 7;
-    grid-row-start: 14;
+    grid-row-start: 13;
 }
 
 .div50 {
     grid-column-start: 7;
-    grid-row-start: 15;
+    grid-row-start: 14;
 }
 
 .div51 {
     grid-column-start: 7;
-    grid-row-start: 16;
+    grid-row-start: 15;
 }
 
 .div52 {
     grid-column-start: 7;
-    grid-row-start: 17;
+    grid-row-start: 16;
 }
 
 .div53 {
     grid-column-start: 7;
-    grid-row-start: 18;
+    grid-row-start: 17;
 }
 
 .div54 {
     grid-column-start: 6;
-    grid-row-start: 13;
+    grid-row-start: 12;
 }
 
 .div55 {
     grid-column-start: 6;
-    grid-row-start: 14;
+    grid-row-start: 13;
 }
 
 .div56 {
     grid-column-start: 6;
-    grid-row-start: 15;
+    grid-row-start: 14;
 }
 
 .div57 {
     grid-column-start: 6;
-    grid-row-start: 16;
+    grid-row-start: 15;
 }
 
 .div58 {
     grid-column-start: 6;
-    grid-row-start: 17;
+    grid-row-start: 16;
 }
 
 .div59 {
     grid-column-start: 6;
-    grid-row-start: 18;
+    grid-row-start: 17;
 }
 
 .div60 {
     grid-column-start: 5;
-    grid-row-start: 13;
+    grid-row-start: 12;
 }
 
 .div61 {
     grid-column-start: 5;
-    grid-row-start: 14;
+    grid-row-start: 13;
 }
 
 .div62 {
     grid-column-start: 5;
-    grid-row-start: 15;
+    grid-row-start: 14;
 }
 
 .div63 {
     grid-column-start: 5;
-    grid-row-start: 16;
+    grid-row-start: 15;
 }
 
 .div64 {
     grid-column-start: 5;
-    grid-row-start: 17;
+    grid-row-start: 16;
 }
 
 .div65 {
     grid-column-start: 5;
-    grid-row-start: 18;
+    grid-row-start: 17;
 }
 
 .div66 {
     grid-column-start: 4;
-    grid-row-start: 13;
+    grid-row-start: 12;
 }
 
 .div67 {
     grid-column-start: 4;
-    grid-row-start: 14;
+    grid-row-start: 13;
 }
 
 .div68 {
     grid-column-start: 4;
-    grid-row-start: 15;
+    grid-row-start: 14;
 }
 
 .div69 {
     grid-column-start: 4;
-    grid-row-start: 16;
+    grid-row-start: 15;
 }
 
 .div70 {
     grid-column-start: 4;
-    grid-row-start: 17;
+    grid-row-start: 16;
 }
 
 .div71 {
     grid-column-start: 4;
-    grid-row-start: 18;
+    grid-row-start: 17;
 }
 
 .div72 {
     grid-column-start: 3;
-    grid-row-start: 13;
+    grid-row-start: 12;
     writing-mode: horizontal-tb !important;
 }
 
 .div73 {
     grid-column-start: 3;
-    grid-row-start: 14;
+    grid-row-start: 13;
     writing-mode: horizontal-tb !important;
 }
 
 .div74 {
     grid-column-start: 3;
-    grid-row-start: 15;
+    grid-row-start: 14;
     writing-mode: horizontal-tb !important;
 }
 
 .div75 {
     grid-column-start: 3;
-    grid-row-start: 16;
+    grid-row-start: 15;
     writing-mode: horizontal-tb !important;
 }
 
 .div76 {
     grid-column-start: 3;
-    grid-row-start: 17;
+    grid-row-start: 16;
     writing-mode: horizontal-tb !important;
 }
 
 .div77 {
     grid-column-start: 3;
-    grid-row-start: 18;
+    grid-row-start: 17;
     writing-mode: horizontal-tb !important;
 }
 
 .div78 {
     grid-column-start: 2;
-    grid-row-start: 13;
+    grid-row-start: 12;
 }
 
 .div79 {
     grid-column-start: 2;
-    grid-row-start: 14;
+    grid-row-start: 13;
 }
 
 .div80 {
     grid-column-start: 2;
-    grid-row-start: 15;
+    grid-row-start: 14;
 }
 
 .div81 {
     grid-column-start: 2;
-    grid-row-start: 16;
+    grid-row-start: 15;
 }
 
 .div82 {
     grid-column-start: 2;
-    grid-row-start: 17;
+    grid-row-start: 16;
 }
 
 .div83 {
     grid-column-start: 2;
-    grid-row-start: 18;
+    grid-row-start: 17;
 }
 
 .div84 {
     grid-column-start: 1;
-    grid-row-start: 13;
+    grid-row-start: 12;
 }
 
 .div85 {
     grid-column-start: 1;
-    grid-row-start: 14;
+    grid-row-start: 13;
 }
 
 .div86 {
     grid-column-start: 1;
-    grid-row-start: 15;
+    grid-row-start: 14;
 }
 
 .div87 {
     grid-column-start: 1;
-    grid-row-start: 16;
+    grid-row-start: 15;
 }
 
 .div88 {
     grid-column-start: 1;
-    grid-row-start: 17;
+    grid-row-start: 16;
 }
 
 .div89 {
     grid-column-start: 1;
-    grid-row-start: 18;
+    grid-row-start: 17;
 }
 
 .original-yao {
@@ -578,7 +578,7 @@ body {
 }
 
 .query-button {
-    grid-row-start: 19;
+    grid-row-start: 18;
     width: 100%;
     padding: 8px 16px;
     font-family: 標楷體;
@@ -591,7 +591,7 @@ body {
 }
 
 .store-button {
-    grid-row-start: 20;
+    grid-row-start: 19;
     width: 100%;
     padding: 8px 16px;
     font-family: 標楷體;
@@ -601,6 +601,30 @@ body {
     border: 1px solid black;
     cursor: pointer;
     grid-column: span 8 / span 8;
+}
+
+
+.askInfo {
+    grid-column-start: 9;
+    grid-column: span 2 / span 2;
+    grid-row-start: 1;
+    grid-row: span 11 / span 11;
+    border: 1px solid black;
+    transform-origin: top right !important;
+    writing-mode: vertical-rl !important;
+    text-orientation: upright !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    padding: 10px !important;
+    overflow-wrap: break-word !important;
+    font-size: 30px !important;
+    background-color: white;
+    resize: none;
+    font-family: "標楷體", KaiTi, serif;
+}
+
+textarea.askInfo::placeholder {
+    color: #888;
 }
 
 /* .date-picker-container {

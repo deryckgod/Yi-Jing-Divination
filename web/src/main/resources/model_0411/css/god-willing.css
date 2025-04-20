@@ -1,7 +1,7 @@
 .god-willing {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(16, 1fr);
+    grid-template-rows: repeat(15, 1fr);
     border: 1px solid black;
     /* 添加外邊框 */
     background-color: rgb(255, 255, 255);
@@ -12,7 +12,7 @@
 
 .god-willing>div {
     display: flex;
-    justify-content: center;
+    /* justify-content: center; */
     align-items: center;
     writing-mode: vertical-rl;
     /* 垂直文字方向，從右到左 */
@@ -35,7 +35,7 @@
 }
 
 .mainGodInfo {
-    grid-row: span 6 / span 6;
+    grid-row: span 11 / span 11;
     grid-column-start: 2;
     grid-row-start: 3;
 }
