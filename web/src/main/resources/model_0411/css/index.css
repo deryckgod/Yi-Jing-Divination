@@ -677,6 +677,11 @@ textarea.askInfo::placeholder {
         min-width: 20px;
         min-height: 28px;
     }
+
+    .askInfo {
+        width: auto;
+        font-size: 20px !important;
+    }
 }
 
 @media (max-width: 600px) {
@@ -702,5 +707,10 @@ textarea.askInfo::placeholder {
 
     .hidden-god {
         font-size: 10px !important;
+    }
+
+    .askInfo {
+        width: auto;
+        font-size: 20px !important;
     }
 }
