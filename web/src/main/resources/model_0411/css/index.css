@@ -568,6 +568,15 @@ body {
 .original-yao {
     font-size: 30px;
     text-align: center;
+    appearance: none;
+    /* 移除預設的下拉箭頭樣式 */
+    padding-right: 15px;
+    /* 為自定義箭頭留出空間 */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>');
+    /* 自定義下拉箭頭 */
+    background-repeat: no-repeat;
+    background-position: right 3px center;
+    background-size: 15px;
 }
 
 .hidden-god {
@@ -678,6 +687,13 @@ textarea.askInfo::placeholder {
         min-height: 28px;
     }
 
+    .original-yao {
+        font-size: 18px;
+        background-size: 8px;
+        padding-right: 12px;
+        background-position: right 2px center;
+    }
+
     .askInfo {
         width: auto;
         font-size: 18px !important;
@@ -697,6 +713,14 @@ textarea.askInfo::placeholder {
         font-size: 14px;
         min-width: 16px;
         min-height: 24px;
+    }
+
+    .original-yao {
+        font-size: 14px;
+        background-size: 6px;
+        padding-right: 8px;
+        background-position: right 0px center;
+        padding-left: 2px;
     }
 
     .query-button,
