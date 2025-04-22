@@ -7,6 +7,44 @@ body {
     padding: 2px;
     font-family: "標楷體", KaiTi, serif;
     position: relative;
+    /* transform-origin: top; */
+}
+
+/* 空亡沖標記樣式 */
+.markup {
+    font-size: 15px;
+    display: flex;
+    width: 100%;
+    writing-mode: horizontal-tb;
+}
+
+.markup span {
+    align-self: flex-end;
+}
+
+.markup-both {
+    justify-content: space-between;
+}
+
+.markup-kong {
+    justify-content: flex-start;
+}
+
+.markup-clash {
+    justify-content: flex-end;
+}
+
+/* 響應式調整標記字體大小 */
+@media screen and (max-width: 768px) {
+    .markup {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .markup {
+        font-size: 10px;
+    }
 }
 
 .parent {
@@ -635,6 +673,60 @@ textarea.askInfo::placeholder {
     color: #888;
 }
 
+.first-yao {
+    font-size: 15px !important;
+    text-align: center;
+    grid-column-start: 9;
+    grid-column: span 2 / span 2;
+    grid-row-start: 17;
+    writing-mode: horizontal-tb !important;
+}
+
+.second-yao {
+    font-size: 15px !important;
+    text-align: center;
+    grid-column-start: 9;
+    grid-column: span 2 / span 2;
+    grid-row-start: 16;
+    writing-mode: horizontal-tb !important;
+}
+
+.third-yao {
+    font-size: 15px !important;
+    text-align: center;
+    grid-column-start: 9;
+    grid-column: span 2 / span 2;
+    grid-row-start: 15;
+    writing-mode: horizontal-tb !important;
+}
+
+.fourth-yao {
+    font-size: 15px !important;
+    text-align: center;
+    grid-column-start: 9;
+    grid-column: span 2 / span 2;
+    grid-row-start: 14;
+    writing-mode: horizontal-tb !important;
+}
+
+.fifth-yao {
+    font-size: 15px !important;
+    text-align: center;
+    grid-column-start: 9;
+    grid-column: span 2 / span 2;
+    grid-row-start: 13;
+    writing-mode: horizontal-tb !important;
+}
+
+.sixth-yao {
+    font-size: 15px !important;
+    text-align: center;
+    grid-column-start: 9;
+    grid-column: span 2 / span 2;
+    grid-row-start: 12;
+    writing-mode: horizontal-tb !important;
+}
+
 /* .date-picker-container {
     position: fixed;
     right: 20px;
@@ -729,6 +821,12 @@ textarea.askInfo::placeholder {
         padding: 4px 8px;
     }
 
+    .first-yao,
+    .second-yao,
+    .third-yao,
+    .fourth-yao,
+    .fifth-yao,
+    .sixth-yao,
     .hidden-god {
         font-size: 10px !important;
     }
@@ -736,5 +834,37 @@ textarea.askInfo::placeholder {
     .askInfo {
         width: auto;
         font-size: 14px !important;
+    }
+}
+
+.markup {
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+    border-radius: 50%;
+    padding: 0 2px;
+    border: none;
+    justify-content: space-between;
+}
+
+/* 視覺標記模式下的紅色圓圈和藍色底線可由 JS 動態加上 style 或 class，這裡只設基本樣式 */
+
+@media (max-width: 600px) {
+    .markup {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+    .markup {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 901px) {
+    .markup {
+        font-size: 15px;
     }
 }

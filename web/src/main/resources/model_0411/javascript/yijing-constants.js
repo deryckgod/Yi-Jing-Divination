@@ -1,3 +1,5 @@
+// 地支順序 (用於判斷化進神/化退神)
+export const zhiList = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
 // 檢查是否為相生關係
 export const generatingElements = {
     '金': '水', // 金生水
@@ -153,3 +155,17 @@ export const dizhiGroups = {
     front: ['子', '丑', '寅', '卯', '辰', '巳'].reverse(),
     back: ['午', '未', '申', '酉', '戌', '亥'].reverse()
 };
+
+// 五種神的基本分數
+export const godScores = {
+    '用神': 15,
+    '原神': 10,
+    '忌神': -15,
+    '仇神': -10,
+    '閒神': -5
+};
+
+export const yaoClasses = ['first-yao', 'second-yao', 'third-yao', 'fourth-yao', 'fifth-yao', 'sixth-yao'];
+
+// 全域標記顯示方式設定，可為 'visual' 或 'text'
+export let markupStyle = 'text';

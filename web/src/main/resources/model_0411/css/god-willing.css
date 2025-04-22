@@ -8,6 +8,7 @@
     /* 設置網格線顏色 */
     margin-bottom: 20px;
     margin-left: auto;
+    /* transform-origin: top; */
 }
 
 .god-willing>div {

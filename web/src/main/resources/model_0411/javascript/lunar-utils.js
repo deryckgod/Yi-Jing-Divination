@@ -7,7 +7,9 @@ import {
     FiveElementsCycle,
     EarthlyBranchClash,
     earthlyBranchToElement,
-    dizhiGroups
+    dizhiGroups,
+    markupStyle,
+    yaoClasses
 } from './yijing-constants.js';
 
 import {
@@ -16,6 +18,17 @@ import {
     updateMoonScore,
     updateGodWillingScore
 } from './god-willing.js';
+
+import {
+    varietyScoreOrigin,
+    varietyScoreChanging
+} from './advancedScore/varietyScore.js';
+
+import {
+    calculateTransformationScore,
+    calculateHiddenTransformation,
+    convertRelationToGodType
+} from './advancedScore/transformationScore.js';
 
 // updateGua函數
 export function updateGua() {
@@ -77,11 +90,18 @@ export function updateGua() {
     // 更新卦身
     updateDiv17(shiYaoPosition, yaos);
 
+    // 清空動化分數紀錄
+    for (let yaoPosition = 0; yaoPosition < 6; yaoPosition++) {
+        const initializeYaoDisplay = document.querySelector(`.${yaoClasses[yaoPosition]}`);
+        initializeYaoDisplay.innerHTML = '';
+    }
+
+    // 更新變爻地支六親(計算分數會看是否有變爻干支六親，故優先原爻執行)
+    updateChangeDizhiAndRelation(changedLowerDizhi, changedUpperDizhi, relationElements, bianYaoPositions);
+
     // 更新原爻地支六親
     updateOriginalDizhiAndRelation(originalLowerDizhi, originalUpperDizhi, relationElements);
 
-    // 更新變爻地支六親
-    updateChangeDizhiAndRelation(changedLowerDizhi, changedUpperDizhi, relationElements, bianYaoPositions);
 
     // 更新用神資訊
     const { isKongWang, isShi, isChanged, isFuShan } = determineMainGod(yaos, originalLowerDizhi.concat(originalUpperDizhi), changedLowerDizhi.concat(changedUpperDizhi),
@@ -104,12 +124,49 @@ export function updateOriginalDizhiAndRelation(originalLowerDizhi, originalUpper
 
     originalLowerDizhi.concat(originalUpperDizhi).forEach((dz, index) => {
         const element = earthlyBranchToElement[dz];
-        const relation = Object.entries(relationElements)
+        let relation = Object.entries(relationElements)
             .find(([_, v]) => v === element)?.[0] || '';
         // 更新div48-53顯示
         document.querySelector(`.div${53 - index}`).textContent = relation;
         // 更新原卦地支顯示（div54-59）
         document.querySelector(`.div${59 - index}`).textContent = dz;
+        // 新增原爻空亡、沖
+        varietyScoreOrigin(dz, index);
+
+        // 獲取原爻值
+        const originalYao = document.querySelectorAll('.original-yao')[5 - index];
+        if (originalYao) {
+            const yaoValue = originalYao.value;
+            relation = convertRelationToGodType(relation); // 將六親關係轉換為神類型，如：用神、原神、忌神、仇神、閒神
+            // 判斷是否為靜爻
+            if (yaoValue === '/' || yaoValue === '//') {
+                // 檢查是否與日沖地支相同
+                const dayClashBranch = document.querySelector('.div15').textContent;
+                const isClash = dz === dayClashBranch;
+                if (isClash) {
+                    // 計算靜爻暗動分數
+                    calculateHiddenTransformation(dz, index, relation);
+                }
+            } else if (yaoValue === 'O' || yaoValue === 'X') {
+                // 動爻情況
+                // 檢查是否與日沖地支相同
+                const dayClashBranch = document.querySelector('.div15').textContent;
+                const isClash = dz === dayClashBranch;
+
+                // 檢查是否與空亡地支相同
+                const kongWangText = document.querySelector('.div16').textContent;
+                const kongWangDizhi = kongWangText.split('');
+                const isKongWang = kongWangDizhi.includes(dz);
+
+                // 獲取變爻地支 (從變卦地支顯示中獲取)
+                const changeDizhi = document.querySelector(`.div${83 - index}`).textContent.charAt(0);
+
+                // 計算動爻動化分數 (使用原爻地支的relation作為神的判斷依據)
+                if (changeDizhi) {
+                    calculateTransformationScore(dz, changeDizhi, index, relation, isKongWang, isClash);
+                }
+            }
+        }
     });
 }
 
@@ -122,12 +179,25 @@ export function updateChangeDizhiAndRelation(changedLowerDizhi, changedUpperDizh
 
         // 有變卦才顯示(倒敘)
         if (bianYaoPositions.includes(5 - index)) {
-            // 更新div84-89顯示
             document.querySelector(`.div${89 - index}`).textContent = relation;
-            // 更新變卦地支显示（div78-83）
-            document.querySelector(`.div${83 - index}`).textContent = dz;
-        }
-        else {
+            // 新增變爻空亡
+            varietyScoreChanging(dz, index);
+
+            // // 獲取原爻地支
+            // const originalDizhi = document.querySelector(`.div${59 - index}`).textContent.charAt(0);
+
+            // // 檢查是否與日沖地支相同
+            // const dayClashBranch = document.querySelector('.div15').textContent;
+            // const isClash = originalDizhi === dayClashBranch;
+
+            // // 檢查是否與空亡地支相同
+            // const kongWangText = document.querySelector('.div16').textContent;
+            // const kongWangDizhi = kongWangText.split('');
+            // const isKongWang = kongWangDizhi.includes(originalDizhi);
+
+            // // 計算動爻動化分數
+            // calculateTransformationScore(originalDizhi, dz, index, relation, isKongWang, isClash);
+        } else {
             document.querySelector(`.div${89 - index}`).textContent = '';
             document.querySelector(`.div${83 - index}`).textContent = '';
         }
