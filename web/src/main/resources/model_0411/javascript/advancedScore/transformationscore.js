@@ -86,7 +86,12 @@ export function calculateTransformationScore(originalDizhi, changeDizhi, index, 
                 originalElement === '土' && changeElement === '金') {
                 // 4. 化洩
                 transformationType = '化洩';
-                score = score > 0 ? score - 2 : score + 2; // 正負號放外面，裡面數字-2
+                if (relation === '原神') {
+                    transformationType = '化用神';
+                }
+                else {
+                    score = score > 0 ? score - 2 : score + 2; // 正負號放外面，裡面數字-2
+                }
                 scoreMultiplier = 1;
             } else if (originalElement === '金' && changeElement === '木' ||
                 originalElement === '木' && changeElement === '土' ||

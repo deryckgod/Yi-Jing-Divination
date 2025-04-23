@@ -182,21 +182,6 @@ export function updateChangeDizhiAndRelation(changedLowerDizhi, changedUpperDizh
             document.querySelector(`.div${89 - index}`).textContent = relation;
             // 新增變爻空亡
             varietyScoreChanging(dz, index);
-
-            // // 獲取原爻地支
-            // const originalDizhi = document.querySelector(`.div${59 - index}`).textContent.charAt(0);
-
-            // // 檢查是否與日沖地支相同
-            // const dayClashBranch = document.querySelector('.div15').textContent;
-            // const isClash = originalDizhi === dayClashBranch;
-
-            // // 檢查是否與空亡地支相同
-            // const kongWangText = document.querySelector('.div16').textContent;
-            // const kongWangDizhi = kongWangText.split('');
-            // const isKongWang = kongWangDizhi.includes(originalDizhi);
-
-            // // 計算動爻動化分數
-            // calculateTransformationScore(originalDizhi, dz, index, relation, isKongWang, isClash);
         } else {
             document.querySelector(`.div${89 - index}`).textContent = '';
             document.querySelector(`.div${83 - index}`).textContent = '';

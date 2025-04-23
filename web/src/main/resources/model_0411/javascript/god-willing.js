@@ -16,6 +16,8 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
     let isShi = false;
     let isChanged = false;
     let isFuShan = false;
+    let isMoving = false;
+    let isStatic = false;
 
     // 獲取空亡地支
     const kongWangText = document.querySelector('.div16').textContent;
@@ -83,6 +85,9 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
                 const firstYao = matchingMovingYaos[0];
                 mainGodInfo = `${firstYao.dizhi}${firstYao.relation}`;
             }
+
+            // 主要用神為動爻取得
+            isMoving = true;
         }
     }
 
@@ -145,6 +150,9 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
                     const firstYao = matchingStaticYaos[0];
                     mainGodInfo = `${firstYao.dizhi}${firstYao.relation}`;
                 }
+
+                // 主要用神為靜爻取得
+                isStatic = true;
             }
         }
     }
@@ -229,6 +237,11 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
         updateFuShen(shouGua, relationElements, false);
     }
 
+    // 7. 檢查是否有其餘相同六親持世
+    if (isMoving || isStatic) {
+        isShi = shiYaoExceptionScore(yaos, originalDizhi, relationElements, selectedRelation, shiYaoPosition, isShi);
+    }
+
     if (isChanged) {
         mainGodInfo += '（變爻）';
     }
@@ -247,6 +260,32 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
     return { isKongWang, isShi, isChanged, isFuShan };
 }
 
+// 世爻例外情況計分
+function shiYaoExceptionScore(yaos, originalDizhi, relationElements, selectedRelation, shiYaoPosition, isShi) {
+    const matchingStaticYaos = [];
+
+    yaos.forEach(yao => {
+        const position = yao.position;
+        const dizhi = originalDizhi[5 - position]; // 倒序索引
+        const element = earthlyBranchToElement[dizhi];
+        const relation = Object.entries(relationElements)
+            .find(([_, v]) => v === element)?.[0] || '';
+
+        if (relation === selectedRelation) {
+            matchingStaticYaos.push({
+                isShi: position === shiYaoPosition
+            });
+        }
+    });
+    // 按優先順序選擇用神
+    if (matchingStaticYaos.length > 0) {
+        const shiYao = matchingStaticYaos.find(y => y.isShi);
+        if (shiYao) {
+            isShi = true;
+        }
+    }
+    return isShi;
+}
 
 export function updateSunScore(relationElements) {
     const selectedRelation = document.querySelector('.six-relation-select').value;
