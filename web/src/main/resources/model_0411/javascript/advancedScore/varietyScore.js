@@ -90,27 +90,21 @@ export function varietyScoreChanging(dz, index) {
     if (isClash || isKongWang) {
         let markupHTML = '';
         if (markupStyle === 'visual') {
-            if (isKongWang) {
+            if (isKongWang && isClash) {
+                markupHTML = `<span style="color: purple; border: 2px solid red; border-radius: 50%; padding: 0 2px;">${dz}</span>`;
+            } else if (isKongWang) {
                 markupHTML = `<span style="color: red; border: 2px solid red; border-radius: 50%; padding: 0 2px;">${dz}</span>`;
+            } else if (isClash) {
+                markupHTML = `${dz}`;
             }
-            // if (isKongWang && isClash) {
-            //     markupHTML = `<span style="color: purple; border: 2px solid red; border-radius: 50%; box-shadow : 0 0 0 1px blue; text-decoration-color: blue; padding: 0 2px;">${dz}</span>`;
-            // } else if (isKongWang) {
-            //     markupHTML = `<span style="color: red; border: 2px solid red; border-radius: 50%; padding: 0 2px;">${dz}</span>`;
-            // } else if (isClash) {
-            //     markupHTML = `<span style="color: blue; border-botten : 1px solid blue; text-decoration-color: blue; padding: 0 2px;">${dz}</span>`;
-            // }
         } else {
-            if (isKongWang) {
+            if (isKongWang && isClash) {
                 markupHTML = `${dz}<div class="markup"><span>空</span></div>`;
+            } else if (isKongWang) {
+                markupHTML = `${dz}<div class="markup"><span>空</span></div>`;
+            } else if (isClash) {
+                markupHTML = `${dz}`;
             }
-            // if (isKongWang && isClash) {
-            //     markupHTML = `${dz}<div class="markup"><span>空</span><span>沖</span></div>`;
-            // } else if (isKongWang) {
-            //     markupHTML = `${dz}<div class="markup"><span>空</span></div>`;
-            // } else if (isClash) {
-            //     markupHTML = `${dz}<div class="markup"><span>沖</span></div>`;
-            // }
         }
         dizhiDiv.innerHTML = markupHTML;
         const yaoPosition = index;
