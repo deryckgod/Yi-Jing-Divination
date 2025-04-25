@@ -27,7 +27,8 @@ import {
 import {
     calculateTransformationScore,
     calculateHiddenTransformation,
-    convertRelationToGodType
+    convertRelationToGodType,
+    checkYaoTombExtinction
 } from './advancedScore/transformationScore.js';
 
 // updateGua函數
@@ -96,25 +97,24 @@ export function updateGua() {
         initializeYaoDisplay.innerHTML = '';
     }
 
+    // 更新用神資訊
+    const { isKongWang, isShi, isChanged, isFuShan } = determineMainGod(yaos, originalLowerDizhi.concat(originalUpperDizhi), changedLowerDizhi.concat(changedUpperDizhi),
+        bianYaoPositions, relationElements, shouGua, shiPosition, yingPosition);
+
     // 更新變爻地支六親(計算分數會看是否有變爻干支六親，故優先原爻執行)
     updateChangeDizhiAndRelation(changedLowerDizhi, changedUpperDizhi, relationElements, bianYaoPositions);
 
     // 更新原爻地支六親
     updateOriginalDizhiAndRelation(originalLowerDizhi, originalUpperDizhi, relationElements);
 
-
-    // 更新用神資訊
-    const { isKongWang, isShi, isChanged, isFuShan } = determineMainGod(yaos, originalLowerDizhi.concat(originalUpperDizhi), changedLowerDizhi.concat(changedUpperDizhi),
-        bianYaoPositions, relationElements, shouGua, shiPosition, yingPosition);
-
     // 更新日辰分數
-    const sunScore = updateSunScore(relationElements);
+    const { sunScore, isTomb, isExtinction } = updateSunScore(relationElements);
 
     // 更新月辰分數
     const moonScore = updateMoonScore(relationElements);
 
     // 更新天意分數
-    updateGodWillingScore(isKongWang, isShi, sunScore, moonScore, isChanged, isFuShan);
+    updateGodWillingScore(isKongWang, isShi, sunScore, moonScore, isChanged, isFuShan, isTomb, isExtinction);
 }
 
 // 原爻地支六親

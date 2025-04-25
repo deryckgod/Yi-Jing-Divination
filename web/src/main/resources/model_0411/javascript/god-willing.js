@@ -6,6 +6,13 @@ import {
     generatingElements
 } from './yijing-constants.js';
 
+import {
+    calculateTransformationScore,
+    calculateHiddenTransformation,
+    convertRelationToGodType,
+    checkTombExtinction
+} from './advancedScore/transformationScore.js';
+
 // 用神資訊mainGodInfo處理邏輯
 export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPositions, relationElements, shouGua, shiPosition, yingPosition) {
     // 獲取用神五行（div28的六親五行）
@@ -317,10 +324,23 @@ export function updateSunScore(relationElements) {
         }
     }
 
+    const mainGodDizhi = document.querySelector('.mainGodInfo').textContent.slice(0, 1);
+
+    // 檢查主要用神地支是否入日辰墓絕
+    const { isTomb, isExtinction } = checkTombExtinction(mainGodDizhi, dayBranch);
+    if (isTomb) {
+        sunScore = 50;
+        sunInfo = '入日墓';
+    }
+    else if (isExtinction) {
+        sunScore = 50;
+        sunInfo = '入日絕';
+    }
+
     // 更新日辰分數顯示
     document.querySelector('.sunInfo').innerHTML = `${sunInfo} <span>${sunScore}</span>`;
 
-    return sunScore;
+    return { sunScore, isTomb, isExtinction };
 }
 
 export function updateMoonScore(relationElements) {
@@ -347,11 +367,11 @@ export function updateMoonScore(relationElements) {
     return moonScore;
 }
 
-export function updateGodWillingScore(isKongWang, isShi, sunScore, moonScore, isChanged, isFuShan) {
+export function updateGodWillingScore(isKongWang, isShi, sunScore, moonScore, isChanged, isFuShan, isTomb, isExtinction) {
     let result = 0;
 
-    // 月旺相
-    if (moonScore === 70) {
+    // 月旺相 且 用神不為入日墓絕
+    if (moonScore === 70 && !isTomb && !isExtinction) {
         if (sunScore > 60) {// 日助 日生
             result = sunScore;
         } else if (sunScore === 60) {// 日平

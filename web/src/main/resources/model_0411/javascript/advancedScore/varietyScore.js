@@ -6,6 +6,8 @@ import {
     EightTrigramsFiveElements,
     FiveElementsCycle,
     EarthlyBranchClash,
+    EarthlyBranchTomb,
+    EarthlyBranchExtinction,
     earthlyBranchToElement,
     dizhiGroups,
     markupStyle,
