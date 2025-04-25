@@ -91,9 +91,6 @@ export function calculateTransformationScore(originalDizhi, changeDizhi, index, 
                 if (relation === '原神') {
                     transformationType = '化用神';
                 }
-                else {
-                    score = score > 0 ? score - 2 : score + 2; // 正負號放外面，裡面數字-2
-                }
                 scoreMultiplier = 1;
             } else if (originalElement === '金' && changeElement === '木' ||
                 originalElement === '木' && changeElement === '土' ||
@@ -102,7 +99,6 @@ export function calculateTransformationScore(originalDizhi, changeDizhi, index, 
                 originalElement === '火' && changeElement === '金') {
                 // 5. 化制
                 transformationType = '化制';
-                score = score > 0 ? score - 3 : score + 3; // 正負號放外面，裡面數字-3
                 scoreMultiplier = 1;
             } else if (changeElement === '金' && originalElement === '水' ||
                 changeElement === '水' && originalElement === '木' ||
@@ -179,6 +175,13 @@ export function calculateTransformationScore(originalDizhi, changeDizhi, index, 
             scoreMultiplier = 1;
             transformationType = isTomb ? ' 入日墓' : ' 入日絕';
         }
+    }
+
+    // 化洩、化制 加減分
+    if (transformationType.includes('化洩')) {
+        score = score > 0 ? score - 2 : score + 2; // 正負號放外面，裡面數字-2
+    } else if (transformationType.includes('化制')) {
+        score = score > 0 ? score - 3 : score + 3; // 正負號放外面，裡面數字-3
     }
 
     // 計算最終分數
