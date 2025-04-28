@@ -9,10 +9,12 @@ import {
 import {
     calculateTransformationScore,
     calculateHiddenTransformation,
-    convertRelationToGodType,
     checkTombExtinction
 } from './advancedScore/transformationScore.js';
 
+import {
+    convertRelationToGodType
+} from './advancedScore/utils.js';
 // 用神資訊mainGodInfo處理邏輯
 export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPositions, relationElements, shouGua, shiPosition, yingPosition) {
     // 獲取用神五行（div28的六親五行）

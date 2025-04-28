@@ -26,11 +26,27 @@ import {
 
 import {
     calculateTransformationScore,
-    calculateHiddenTransformation,
-    convertRelationToGodType,
-    checkYaoTombExtinction
+    calculateHiddenTransformation
 } from './advancedScore/transformationScore.js';
 
+import {
+    calculateTombExtinctionScore,
+    checkYaotoTombExtinction
+} from './advancedScore/tombExtinctionScore.js';
+
+import {
+    calculateDaySunThreeHarmony,
+    calculateStraightThreeHarmony,
+    calculateTriangleThreeHarmony
+} from './advancedScore/threeHarmonyScore.js';
+
+import { calculateGreedyLifeScore } from './advancedScore/greedyLifeScore.js';
+
+import { calculateSixClashScore } from './advancedScore/sixClashScore.js';
+
+import {
+    convertRelationToGodType
+} from './advancedScore/utils.js';
 // updateGua函數
 export function updateGua() {
     // 原爻
@@ -104,10 +120,24 @@ export function updateGua() {
     // 更新變爻地支六親(計算分數會看是否有變爻干支六親，故優先原爻執行)
     updateChangeDizhiAndRelation(changedLowerDizhi, changedUpperDizhi, relationElements, bianYaoPositions);
 
-    // 更新原爻地支六親
+    // 更新原爻地支六親 
     updateOriginalDizhiAndRelation(originalLowerDizhi, originalUpperDizhi, relationElements);
 
-    // 更新日辰分數
+    // 計算三合分數 
+    calculateDaySunThreeHarmony();
+    calculateStraightThreeHarmony();
+    calculateTriangleThreeHarmony();
+
+    // 計算貪生忘剋分數 
+    calculateGreedyLifeScore();
+
+    // 計算六沖分數 
+    calculateSixClashScore();
+
+    // 計算入墓入絕分數
+    calculateTombExtinctionScore();
+
+    // 更新日辰分數 
     const { sunScore, isTomb, isExtinction } = updateSunScore(relationElements);
 
     // 更新月辰分數

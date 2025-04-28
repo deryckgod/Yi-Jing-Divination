@@ -188,6 +188,19 @@ export const godScores = {
 };
 
 export const yaoClasses = ['first-yao', 'second-yao', 'third-yao', 'fourth-yao', 'fifth-yao', 'sixth-yao'];
+export const yaoNameClasses = ['初爻', '二爻', '三爻', '四爻', '五爻', '上爻'];
+
+// 四種三合組合
+export const harmonyGroups = [
+    { branches: ['寅', '午', '戌'], element: '火' },
+    { branches: ['巳', '酉', '丑'], element: '金' },
+    { branches: ['亥', '卯', '未'], element: '木' },
+    { branches: ['申', '子', '辰'], element: '水' }
+];
 
 // 全域標記顯示方式設定，可為 'visual' 或 'text'
+// 在 yijing-constants.js 中
 export let markupStyle = 'text';
+export function setMarkupStyle(style) {
+    markupStyle = style;
+}
