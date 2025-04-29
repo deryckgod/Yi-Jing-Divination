@@ -105,8 +105,8 @@ function saveCurrentRecord() {
     const timeStamp = now.toISOString();
 
     // 獲取god-willing區塊內容
-    const godWillingElement = document.querySelector('.god-willing');
-    const godWillingHTML = godWillingElement ? godWillingElement.outerHTML : '';
+    const contentWrapperElement = document.querySelector('.content-wrapper');
+    const contentWrapperHTML = contentWrapperElement ? contentWrapperElement.outerHTML : '';
 
     // 獲取parent區塊內容
     const parentElement = document.querySelector('.parent');
@@ -128,7 +128,7 @@ function saveCurrentRecord() {
         id: Date.now().toString(), // 使用時間戳作為唯一ID
         dateKey: dateKey,
         timestamp: timeStamp,
-        godWillingHTML: godWillingHTML,
+        contentWrapperHTML: contentWrapperHTML,
         parentHTML: parentHTML,
         yaoValues: yaoValues,
         askInfo: askInfo
@@ -246,7 +246,7 @@ function createThumbnail(record, recordItem) {
     // 添加記錄內容
     tempContainer.innerHTML = `
         <div class="preview-content" style="padding: 10px;">
-            ${record.godWillingHTML || ''}
+            ${record.contentWrapperHTML || ''}
             ${record.parentHTML || ''}
         </div>
     `;
@@ -369,7 +369,7 @@ function previewRecord(record) {
             <button class="preview-close-btn">X</button>
         </div>
         <div class="preview-content">
-            ${record.godWillingHTML}
+            ${record.contentWrapperHTML}
             ${record.parentHTML}
         </div>
     `;
@@ -551,7 +551,7 @@ function downloadAsPDF(records) {
         contentDiv.style.backgroundColor = 'white';
         contentDiv.innerHTML = `        
             <div class="preview-content">
-                ${record.godWillingHTML}
+                ${record.contentWrapperHTML}
                 ${record.parentHTML}
             </div>
         `;
@@ -717,7 +717,7 @@ function downloadAsJPEG(records) {
         contentDiv.style.backgroundColor = 'white';
         contentDiv.innerHTML = `        
             <div class="preview-content">
-                ${record.godWillingHTML}
+                ${record.contentWrapperHTML}
                 ${record.parentHTML}
             </div>
         `;
