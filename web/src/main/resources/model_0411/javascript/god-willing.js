@@ -91,7 +91,7 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
             }
             // 1.4 最後選擇第一個
             else {
-                const firstYao = matchingMovingYaos[0];
+                const firstYao = matchingMovingYaos.pop();
                 mainGodInfo = `${firstYao.dizhi}${firstYao.relation}`;
             }
 
@@ -156,7 +156,7 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
                 }
                 // 2.4 最後選擇第一個
                 else {
-                    const firstYao = matchingStaticYaos[0];
+                    const firstYao = matchingStaticYaos.pop();
                     mainGodInfo = `${firstYao.dizhi}${firstYao.relation}`;
                 }
 
@@ -222,7 +222,7 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
         }
         // 由下往上取第一個
         else if (matchingChangedYaos.length > 0) {
-            const firstChangedYao = matchingChangedYaos[0];
+            const firstChangedYao = matchingChangedYaos.pop();
             mainGodInfo = `${firstChangedYao.dizhi}${firstChangedYao.relation}`;
             isChanged = true;
         }

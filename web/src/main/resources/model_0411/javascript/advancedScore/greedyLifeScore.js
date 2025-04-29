@@ -12,8 +12,10 @@ import {
     dizhiGroups,
     markupStyle,
     yaoClasses,
+    yaoNameClasses,
     godScores,
-    zhiList
+    zhiList,
+    generatingElements
 } from '../yijing-constants.js';
 
 import { isScoreAboveThreshold } from './transformationScore.js';
@@ -49,7 +51,7 @@ export function calculateGreedyLifeScore() {
             const score = scoreMatch ? parseFloat(scoreMatch[0]) : 0;
 
             // 檢查分數是否達到閾值
-            if (isScoreAboveThreshold(score, godType)) {
+            if (isScoreAboveThreshold(score, godType) && !yaoInfo.includes("三合")) {
                 // 獲取地支對應的五行
                 const element = earthlyBranchToElement[dizhi];
                 movingYaos.push({
@@ -87,30 +89,47 @@ export function calculateGreedyLifeScore() {
  */
 function checkGreedyLifeRelation(yao1, yao2) {
     // 檢查五行生剋關係
-    const isYao1GeneratingYao2 = FiveElementsCycle[yao1.element] === yao2.element; // yao1生yao2
-    const isYao2GeneratingYao1 = FiveElementsCycle[yao2.element] === yao1.element; // yao2生yao1
-    const isYao1RestrainingYao2 = yao1.element === FiveElementsCycle[FiveElementsCycle[yao2.element]]; // yao1剋yao2
-    const isYao2RestrainingYao1 = yao2.element === FiveElementsCycle[FiveElementsCycle[yao1.element]]; // yao2剋yao1
+    const isYao1GeneratingYao2 = generatingElements[yao1.element] === yao2.element; // yao1生yao2
+    const isYao2GeneratingYao1 = generatingElements[yao2.element] === yao1.element; // yao2生yao1
+    console.log(yao1, yao2, isYao1GeneratingYao2, isYao2GeneratingYao1);
 
     // 獲取用神五行
     const selectedRelation = document.querySelector('.six-relation-select').value;
     const relationElements = {};
-    document.querySelectorAll('.six-relation-item').forEach(item => {
-        const relation = item.querySelector('.six-relation-item-upper').textContent;
-        const elementText = item.querySelector('.six-relation-item-lower').textContent;
-        relationElements[relation] = elementText;
-    });
+
+    // 獲取並處理所有六親關係容器
+    const relationContainers = Array.from(document.querySelectorAll('.six-relation-container'));
+
+    if (relationContainers.length > 0) {
+        // 處理第一個容器（用神選擇器）
+        const firstContainer = relationContainers[0];
+        relationElements[firstContainer.querySelector('.six-relation-select').value] =
+            firstContainer.querySelector('.six-relation-item-lower').textContent;
+
+        // 處理其餘容器
+        relationContainers.slice(1).forEach(item => {
+            try {
+                const relation = item.querySelector('.six-relation-item-upper').textContent;
+                const elementText = item.querySelector('.six-relation-item-lower').textContent;
+                if (relation && elementText) {
+                    relationElements[relation] = elementText;
+                }
+            } catch (error) {
+                console.error('處理六親關係時出錯:', error);
+            }
+        });
+    }
     const mainGodElement = relationElements[selectedRelation];
 
     // 檢查貪生忘剋情況
-    if (isYao1GeneratingYao2 && isYao2RestrainingYao1) {
-        // yao1生yao2，yao2剋yao1，yao1貪生忘剋
-        processGreedyLife(yao1, yao2, mainGodElement);
+    if (isYao1GeneratingYao2 && mainGodElement != yao1.element) {
+        // yao1生yao2，yao1貪生忘剋
+        processGreedyLife(yao1, yao2);
     }
 
-    if (isYao2GeneratingYao1 && isYao1RestrainingYao2) {
-        // yao2生yao1，yao1剋yao2，yao2貪生忘剋
-        processGreedyLife(yao2, yao1, mainGodElement);
+    if (isYao2GeneratingYao1 && mainGodElement != yao2.element) {
+        // yao2生yao1，yao2貪生忘剋
+        processGreedyLife(yao2, yao1);
     }
 }
 
@@ -120,31 +139,10 @@ function checkGreedyLifeRelation(yao1, yao2) {
  * @param {object} otherYao - 另一個爻
  * @param {string} mainGodElement - 用神五行
  */
-function processGreedyLife(greedyYao, otherYao, mainGodElement) {
-    // 計算分數
-    let score = 0;
-
-    // 根據貪生忘剋爻的六親關係和用神五行計算分數
-    if (greedyYao.relation === '用神') {
-        // 用神貪生忘剋，分數為-10
-        score = -10;
-    } else if (greedyYao.relation === '原神') {
-        // 原神貪生忘剋，分數為-8
-        score = -8;
-    } else if (greedyYao.relation === '忌神') {
-        // 忌神貪生忘剋，分數為8
-        score = 8;
-    } else if (greedyYao.relation === '仇神') {
-        // 仇神貪生忘剋，分數為5
-        score = 5;
-    } else if (greedyYao.relation === '閒神') {
-        // 閒神貪生忘剋，分數為0
-        score = 0;
-    }
-
+function processGreedyLife(greedyYao, otherYao) {
     // 更新爻位顯示
     const yaoDiv = document.querySelector(`.${yaoClasses[greedyYao.index]}`);
-    const greedyText = `${greedyYao.relation} 貪生忘剋 ${score}`;
+    const greedyText = `貪生忘剋 ${yaoNameClasses[otherYao.index]} 不計分 0`;
 
     // 更新爻位顯示
     if (!yaoDiv.textContent.includes(greedyText)) {

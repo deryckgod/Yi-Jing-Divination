@@ -191,7 +191,7 @@ export function calculateStraightThreeHarmony() {
             }
         }
     });
-    console.log(movingYaos);
+
     // 如果動爻少於3個，無法構成直線三合
     if (movingYaos.length < 3) {
         return;
@@ -333,13 +333,29 @@ function calculateHarmonyScore(element, yaos, type, changeDizhi = null) {
     // 獲取用神五行
     const selectedRelation = document.querySelector('.six-relation-select').value;
     const relationElements = {};
-    let count = 0;
-    document.querySelectorAll('.six-relation-container').forEach(item => {
-        count++;
-        const relation = count === 1 ? item.querySelector('.six-relation-select').value : item.querySelector('.six-relation-item-upper').textContent;
-        const elementText = item.querySelector('.six-relation-item-lower').textContent;
-        relationElements[relation] = elementText;
-    });
+
+    // 獲取並處理所有六親關係容器
+    const relationContainers = Array.from(document.querySelectorAll('.six-relation-container'));
+
+    if (relationContainers.length > 0) {
+        // 處理第一個容器（用神選擇器）
+        const firstContainer = relationContainers[0];
+        relationElements[firstContainer.querySelector('.six-relation-select').value] =
+            firstContainer.querySelector('.six-relation-item-lower').textContent;
+
+        // 處理其餘容器
+        relationContainers.slice(1).forEach(item => {
+            try {
+                const relation = item.querySelector('.six-relation-item-upper').textContent;
+                const elementText = item.querySelector('.six-relation-item-lower').textContent;
+                if (relation && elementText) {
+                    relationElements[relation] = elementText;
+                }
+            } catch (error) {
+                console.error('處理六親關係時出錯:', error);
+            }
+        });
+    }
     const mainGodElement = relationElements[selectedRelation];
 
     // 計算分數
@@ -369,7 +385,7 @@ function calculateHarmonyScore(element, yaos, type, changeDizhi = null) {
     // 三合分數乘以1.5倍
     const finalScore = score * 1.5;
 
-    count = 0;
+    let count = 0;
     // 更新爻位顯示
     yaos.forEach(yao => {
         count++;
