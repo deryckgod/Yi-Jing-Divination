@@ -106,8 +106,8 @@ function calculateClashScore(yao1, yao2) {
     // 計算分數
     const score1 = parseFloat((yao1.score * 0.1).toFixed(2));
     const score2 = parseFloat((yao2.score * 0.1).toFixed(2));
-    const clashText1 = `與${yaoNameClasses[yao2.index]} ${yao2.dizhi}相沖 ${score1}`;
-    const clashText2 = `與${yaoNameClasses[yao1.index]} ${yao1.dizhi}相沖 ${score2}`;
+    const clashText1 = `與${yaoNameClasses[yao2.index]} ${yao2.dizhi} 相沖 ${score1}`;
+    const clashText2 = `與${yaoNameClasses[yao1.index]} ${yao1.dizhi} 相沖 ${score2}`;
 
     // 更新爻位顯示
     if (!yaoDiv1.textContent.includes(clashText1)) {
