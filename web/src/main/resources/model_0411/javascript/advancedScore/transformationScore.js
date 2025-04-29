@@ -17,10 +17,6 @@ import {
 } from '../yijing-constants.js';
 
 import {
-    convertRelationToGodType
-} from './utils.js';
-
-import {
     mainGodtoTombExtinctionScore
 } from './tombExtinctionScore.js';
 
@@ -287,12 +283,11 @@ export function isScoreAboveThreshold(currentScore, relation) {
     // 根據原始分數的正負性質進行不同的比較
     if (originalScore > 0) {
         // 原分數為正，當前分數需大於等於原分數的40%
-        return currentScore >= threshold;
+        return originalScore >= currentScore && currentScore >= threshold;
     } else if (originalScore < 0) {
         // 原分數為負，當前分數需小於等於原分數的40%
-        return currentScore <= threshold;
+        return originalScore <= currentScore && currentScore <= threshold;
     }
 
-    // 原分數為0的情況，直接返回true
-    return true;
+    return false; // 原分數為0，可能為三合、貪生忘剋，不進行判斷
 }

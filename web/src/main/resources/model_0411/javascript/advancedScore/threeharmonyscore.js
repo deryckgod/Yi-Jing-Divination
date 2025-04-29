@@ -381,17 +381,17 @@ function calculateHarmonyScore(element, yaos, type, changeDizhi = null) {
             const dayBranch = document.querySelector('.div12').textContent.slice(-1);
             const otherYao = yaos.find(y => y.index !== yao.index);
             harmonyText = `${yaoNameClasses[yao.index]}、${yaoNameClasses[otherYao.index]} ${otherYao.dizhi}${yao.dizhi}${dayBranch} 日辰三合合化「${element}」局 `;
-            harmonyText += (count === yaos.length) ? `${finalScore} ` : '0';
+            harmonyText += (count === yaos.length) ? `${finalScore}` : '0';
         } else if (type === '直線') {
             // 直線三合
             const otherYaos = yaos.filter(y => y.index !== yao.index);
             harmonyText = `${yaoNameClasses[yao.index]}、${yaoNameClasses[otherYaos[0].index]}、${yaoNameClasses[otherYaos[1].index]} ${otherYaos[0].dizhi}${yao.dizhi}${otherYaos[1].dizhi} 直線三合合化「${element}」局 `;
-            harmonyText += (count === yaos.length) ? `${finalScore} ` : '0';
+            harmonyText += (count === yaos.length) ? `${finalScore}` : '0';
         } else if (type === '三角') {
             // 三角三合
             const otherYao = yaos.find(y => y.index !== yao.index);
             harmonyText = `${yaoNameClasses[yao.index]}、${yaoNameClasses[otherYao.index]} ${yao.originalDizhi}${otherYao.originalDizhi}${changeDizhi} 三角三合合化「${element}」局 `;
-            harmonyText += (count === yaos.length) ? `${finalScore} ` : '0';
+            harmonyText += (count === yaos.length) ? `${finalScore}` : '0';
         }
 
         // 更新爻位顯示

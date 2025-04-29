@@ -54,6 +54,7 @@ export function calculateTombExtinctionScore() {
 
             // 檢查分數是否達到閾值
             if (isScoreAboveThreshold(score, godType)) {
+                console.log(score, godType);
                 movingYaos.push({
                     index: yaoIndex,
                     dizhi,
@@ -85,8 +86,8 @@ export function calculateTombExtinctionScore() {
 
         // 如果有入墓入絕情況，更新顯示
         if (transformationType) {
-            // 獲取基本分數 (根據六親關係)
-            let score = godScores[relation] || 0;
+            // 獲取當前爻動化分數 
+            let score = yao.score;
 
             // 計算最終分數
             const finalScore = parseFloat((score * scoreMultiplier).toFixed(2));
@@ -134,10 +135,22 @@ export function checkYaotoTombExtinction(originalDizhi, index, relation, transfo
                 const yaoIndex = 71 - parseInt(Array.from(yao.classList).find(cls => cls.startsWith('div')).substring(3));
                 if (yaoIndex !== index) { // 不是當前爻
                     const otherYaoDizhi = document.querySelector(`.div${59 - yaoIndex}`).textContent.charAt(0);
-                    const { isTomb, isExtinction } = checkTombExtinction(originalDizhi, otherYaoDizhi);
-                    // 迴圈檢查全部可能會入墓絕的爻
-                    isTombOther = isTombOther || isTomb;
-                    isExtinctionOther = isExtinctionOther || isExtinction;
+                    const otherYaoRelation = convertRelationToGodType(document.querySelector(`.div${53 - yaoIndex}`).textContent.charAt(0));
+
+                    // 獲取非用神動爻的分數
+                    const otherYaoDiv = document.querySelector(`.${yaoClasses[yaoIndex]}`);
+                    const otherYaoInfo = otherYaoDiv.textContent || '';
+                    const scoreMatch = otherYaoInfo.match(/[-+]?\d+(\.\d+)?$/);
+                    const score = scoreMatch ? parseFloat(scoreMatch[0]) : 0;
+                    console.log(score, otherYaoRelation);
+                    // 檢查分數是否達到閾值，只有達到閾值的動爻才會影響用神
+                    if (isScoreAboveThreshold(score, otherYaoRelation) && !otherYaoInfo.includes("三合") && !otherYaoInfo.includes("貪生")) {
+                        console.log(score, otherYaoRelation);
+                        const { isTomb, isExtinction } = checkTombExtinction(originalDizhi, otherYaoDizhi);
+                        // 迴圈檢查全部可能會入墓絕的爻
+                        isTombOther = isTombOther || isTomb;
+                        isExtinctionOther = isExtinctionOther || isExtinction;
+                    }
                 }
             }
         });
