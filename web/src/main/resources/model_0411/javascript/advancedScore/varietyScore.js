@@ -56,24 +56,6 @@ export function varietyScoreOrigin(dz, index) {
         }
         // 直接用標記替換原有內容
         dizhiDiv.innerHTML = markupHTML;
-
-        // 更新first-yao~sixth-yao的對應ROW區塊
-        const yaoPosition = index; // 轉換為爻位置 (0-5)
-        const yaoDiv = document.querySelector(`.${yaoClasses[yaoPosition]}`);
-
-        // // 添加標記到對應爻位
-        // let yaoInfo = yaoDiv.textContent || '';
-        // if (isClash) {
-        //     if (!yaoInfo.includes('日沖')) {
-        //         yaoInfo += (yaoInfo ? ' ' : '') + '日沖';
-        //     }
-        // }
-        // if (isKongWang) {
-        //     if (!yaoInfo.includes('空亡')) {
-        //         yaoInfo += (yaoInfo ? ' ' : '') + '空亡';
-        //     }
-        // }
-        // yaoDiv.textContent = yaoInfo;
     }
 
     // 返回空亡和日沖狀態，供其他函數使用
@@ -109,19 +91,5 @@ export function varietyScoreChanging(dz, index) {
             }
         }
         dizhiDiv.innerHTML = markupHTML;
-        const yaoPosition = index;
-        const yaoDiv = document.querySelector(`.${yaoClasses[yaoPosition]}`);
-        // let yaoInfo = yaoDiv.textContent || '';
-        // if (isClash) {
-        //     if (!yaoInfo.includes('日沖')) {
-        //         yaoInfo += (yaoInfo ? ' ' : '') + '日沖';
-        //     }
-        // }
-        // if (isKongWang) {
-        //     if (!yaoInfo.includes('變爻空亡')) {
-        //         yaoInfo += (yaoInfo ? ' ' : '') + '變爻空亡';
-        //     }
-        // }
-        // yaoDiv.textContent = yaoInfo;
     }
 }
