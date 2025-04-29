@@ -197,7 +197,7 @@ export function calculateTransformationScore(originalDizhi, changeDizhi, index, 
     // 更新爻位顯示
     if (transformationType) {
         let displayText = `${relation} ${transformationType} ${finalScore}`;
-        if (!yaoInfo.includes(displayText) && !yaoInfo.includes('被用神入墓')) {
+        if (!yaoInfo.includes(displayText) && !yaoInfo.includes('被用神入')) {
             yaoDiv.textContent = yaoInfo ? `${yaoInfo} ${displayText} ` : displayText;
         }
     }

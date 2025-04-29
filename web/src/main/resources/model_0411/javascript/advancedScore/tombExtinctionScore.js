@@ -161,35 +161,36 @@ export function checkYaotoTombExtinction(originalDizhi, index, relation, transfo
 // 情況3: 用神入非用神動爻墓絕
 // 檢查用神地支是否入非用神六親的動爻墓絕
 // 修改其他爻的分數內容，非當前INDEX動化分數
-export function mainGodtoTombExtinctionScore(originalDizhi, index, relation) {
-    if (relation === '用神') {
-        // 獲取所有非用神的動爻
-        const changingYaos = document.querySelectorAll('.original-yao');
-        changingYaos.forEach(yao => {
-            const yaoValue = yao.value;
-            if (yaoValue === 'O' || yaoValue === 'X') {
-                const yaoIndex = 71 - parseInt(Array.from(yao.classList).find(cls => cls.startsWith('div')).substring(3));
-                if (yaoIndex !== index) { // 不是當前爻
-                    const otherYaoRelation = convertRelationToGodType(document.querySelector(`.div${53 - yaoIndex}`).textContent.charAt(0));
+export function mainGodtoTombExtinctionScore(index) {
+    const mainGodElement = document.querySelector('.mainGodInfo').textContent.slice(0, 1);
+    console.log(mainGodElement);
+    // 獲取所有非用神的動爻
+    const changingYaos = document.querySelectorAll('.original-yao');
+    changingYaos.forEach(yao => {
+        const yaoValue = yao.value;
+        if (yaoValue === 'O' || yaoValue === 'X') {
+            const yaoIndex = 71 - parseInt(Array.from(yao.classList).find(cls => cls.startsWith('div')).substring(3));
+            if (yaoIndex !== index) { // 不是當前爻
+                const otherYaoRelation = convertRelationToGodType(document.querySelector(`.div${53 - yaoIndex}`).textContent.charAt(0));
 
-                    // 如果不是用神六親
-                    if (otherYaoRelation !== '用神') {
-                        const otherYaoDizhi = document.querySelector(`.div${59 - yaoIndex}`).textContent.charAt(0);
-                        const { isTomb, isExtinction } = checkTombExtinction(originalDizhi, otherYaoDizhi);
+                // 如果不是用神六親
+                if (otherYaoRelation !== '用神') {
+                    const otherYaoDizhi = document.querySelector(`.div${59 - yaoIndex}`).textContent.charAt(0);
+                    const { isTomb, isExtinction } = checkTombExtinction(mainGodElement, otherYaoDizhi);
 
-                        // 如果用神地支入非用神六親的動爻墓絕
-                        if (isTomb || isExtinction) {
-                            // 非用神六親動化分數直接為-15
-                            const nonMainGodYaoDiv = document.querySelector(`.${yaoClasses[yaoIndex]}`);
-                            let nonMainGodYaoInfo = nonMainGodYaoDiv.textContent || '';
-                            let displayText = isTomb ? `${otherYaoRelation} 被用神入墓 -15` : `${otherYaoRelation} 被用神入絕 -15`;
-                            if (!nonMainGodYaoInfo.includes(displayText)) {
-                                nonMainGodYaoDiv.textContent = displayText;
-                            }
+                    // 如果用神地支入非用神六親的動爻墓絕
+                    if (isTomb || isExtinction) {
+                        // 非用神六親動化分數直接為-15
+                        const nonMainGodYaoDiv = document.querySelector(`.${yaoClasses[yaoIndex]}`);
+                        let nonMainGodYaoInfo = nonMainGodYaoDiv.textContent || '';
+                        let displayText = isTomb ? `${otherYaoRelation} 被用神入墓 -15` : `${otherYaoRelation} 被用神入絕 -15`;
+                        if (!nonMainGodYaoInfo.includes(displayText)) {
+                            nonMainGodYaoDiv.textContent = displayText;
                         }
                     }
                 }
             }
-        });
-    }
+        }
+    });
+
 }

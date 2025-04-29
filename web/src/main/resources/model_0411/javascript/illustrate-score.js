@@ -70,7 +70,7 @@ export function updateScoreDisplay() {
     });
     const totalScoreSpan = document.createElement('span');
     totalScoreSpan.className = 'number';
-    totalScoreSpan.textContent = totalScore;
+    totalScoreSpan.textContent = parseFloat((totalScore).toFixed(2));;
     // 更新總分
     totalScoreElement.textContent = `總分： `;
     totalScoreElement.appendChild(totalScoreSpan);
