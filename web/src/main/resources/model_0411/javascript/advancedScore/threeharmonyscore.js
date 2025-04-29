@@ -383,7 +383,7 @@ function calculateHarmonyScore(element, yaos, type, changeDizhi = null) {
     }
 
     // 三合分數乘以1.5倍
-    const finalScore = score * 1.5;
+    const finalScore = parseFloat((score * 1.5).toFixed(2));
 
     let count = 0;
     // 更新爻位顯示
