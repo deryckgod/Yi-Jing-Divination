@@ -175,6 +175,13 @@ export function calculateTransformationScore(originalDizhi, changeDizhi, index, 
             scoreMultiplier = 1;
             transformationType = isTomb ? ' 入日墓' : ' 入日絕';
         }
+    } else if (relation != '用神' && originalDizhi &&
+        !(transformationType.includes("回頭剋") || transformationType.includes("沖散") || transformationType.includes("空"))) {
+        const { isTomb, isExtinction } = checkTombExtinction(originalDizhi, dayBranch);
+        if (isTomb || isExtinction) {
+            scoreMultiplier *= 0.1;
+            transformationType += isTomb ? ' 入日墓' : ' 入日絕';
+        }
     }
 
     // 化洩、化制 加減分

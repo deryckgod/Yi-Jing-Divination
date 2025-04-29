@@ -111,17 +111,10 @@ export function calculateTombExtinctionScore() {
 export function checkYaotoTombExtinction(originalDizhi, index, relation, transformationTypeOrigin) {
     let scoreMultiplier = 1;
     let transformationType = '';
-
-    // 獲取日辰地支
-    const dayBranch = document.querySelector('.div12').textContent.slice(-1);
-
     // 情況2: 動爻間入墓絕
     // 檢查非用神六親的原爻地支是否入日辰墓絕或其他動爻地支的墓絕
     if (relation !== '用神' && originalDizhi &&
         !(transformationTypeOrigin.includes("回頭剋") || transformationTypeOrigin.includes("沖散") || transformationTypeOrigin.includes("空"))) {
-        // 檢查是否入日辰墓絕
-        const { isTomb: isTombDay, isExtinction: isExtinctionDay } = checkTombExtinction(originalDizhi, dayBranch);
-
         // 檢查是否入其他動爻地支的墓絕
         let isTombOther = false;
         let isExtinctionOther = false;
@@ -155,10 +148,7 @@ export function checkYaotoTombExtinction(originalDizhi, index, relation, transfo
         });
 
         // 如果非用神六親的原爻地支入日辰墓絕或其他動爻地支的墓絕 非用神六親的動化分數要乘10%
-        if (isTombDay || isExtinctionDay) {
-            scoreMultiplier *= 0.1;
-            transformationType += isTombDay ? ' 入日墓' : ' 入日絕';
-        } else if (isTombOther || isExtinctionOther) {
+        if (isTombOther || isExtinctionOther) {
             scoreMultiplier *= 0.1;
             transformationType += isTombOther ? ' 入墓' : ' 入絕';
         }
