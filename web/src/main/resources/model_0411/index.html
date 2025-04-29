@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="./css/index.css">
     <link rel="stylesheet" href="./css/widget-calendar-custom.css">
     <link rel="stylesheet" href="./css/history-manager.css">
+    <link rel="stylesheet" href="./css/illustrate-score.css">
     <!-- 引入 Web Components 的 Polyfill -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/2.4.4/webcomponents-bundle.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image-more/3.1.1/dom-to-image-more.min.js"></script>
@@ -44,15 +45,20 @@
 
     <div id="record-preview-container" class="record-preview-container"></div>
     
-    <div class="god-willing">
-        <div class="mainGod">用神：</div>
-        <div class="mainGodInfo">main</div>
-        <div class="sun">日辰：</div>
-        <div class="sunInfo">sun</div>
-        <div class="moon">月建：</div>
-        <div class="moonInfo">moon</div>
-        <div class="willing">天意：</div>
-        <div class="willingInfo">willing</div>
+    <div class="content-wrapper">
+        <div class="god-willing">
+            <div class="mainGod">用神：</div>
+            <div class="mainGodInfo">main</div>
+            <div class="sun">日辰：</div>
+            <div class="sunInfo">sun</div>
+            <div class="moon">月建：</div>
+            <div class="moonInfo">moon</div>
+            <div class="willing">天意：</div>
+            <div class="willingInfo">willing</div>
+        </div>
+        <div class="illustate-score">
+            <div class="totalScore">totalScore</div>
+        </div>
     </div>
 
     <div class="parent">
@@ -209,15 +215,19 @@
         import { updateDate, updateGua, updateSixRelations } from './javascript/lunar-utils.js';
         import { toggleCalendar } from './javascript/calendar-ui.js';
         import './javascript/history-manager.js';
+        import {updateScoreDisplay} from"./javascript/illustrate-score.js";
 
         // 添加按鈕點擊事件
         document.getElementById('query-btn').addEventListener('click', function(e){
             updateGua();
+            // 查詢後更新分數顯示
+            setTimeout(updateScoreDisplay, 100); // 給予一些時間讓其他更新完成
         });
         
         // 監聽六親選擇變化
         document.querySelector('.div28').addEventListener('change', function(e) {
             updateSixRelations(e.target.value);
+            setTimeout(updateScoreDisplay, 100);
         });
 
         // 監聽原爻選單變化
@@ -225,6 +235,7 @@
             if (e.target.classList.contains('original-yao')) {
                 updateGua();
                 e.target.setAttribute('data-selected', e.target.value);
+                setTimeout(updateScoreDisplay, 100);
             }
         });
 
@@ -233,6 +244,7 @@
             updateDate(event);
             //toggleCalendar(); // 選擇日期後自動關閉日曆
         });
+        
         // document.addEventListener('DOMContentLoaded', function() {
         //     // 設置日期選擇器的默認值為今天
         //     const datePicker = document.getElementById('date-picker');

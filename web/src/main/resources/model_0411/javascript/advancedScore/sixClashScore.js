@@ -13,8 +13,7 @@ import {
     markupStyle,
     yaoClasses,
     godScores,
-    zhiList,
-    yaoNameClasses
+    zhiList
 } from '../yijing-constants.js';
 
 import { isScoreAboveThreshold } from './transformationScore.js';
@@ -99,15 +98,54 @@ function checkSixClashRelation(yao1, yao2) {
  * @param {object} yao2 - 第二個動爻
  */
 function calculateClashScore(yao1, yao2) {
+    // 獲取用神五行
+    const selectedRelation = document.querySelector('.six-relation-select').value;
+
+    // 計算分數
+    let score1 = 0;
+    let score2 = 0;
+
+    // 根據六親關係計算分數
+    if (yao1.relation === '用神') {
+        // 用神被沖，分數為-12
+        score1 = -12;
+    } else if (yao1.relation === '原神') {
+        // 原神被沖，分數為-10
+        score1 = -10;
+    } else if (yao1.relation === '忌神') {
+        // 忌神被沖，分數為10
+        score1 = 10;
+    } else if (yao1.relation === '仇神') {
+        // 仇神被沖，分數為8
+        score1 = 8;
+    } else if (yao1.relation === '閒神') {
+        // 閒神被沖，分數為0
+        score1 = 0;
+    }
+
+    if (yao2.relation === '用神') {
+        // 用神被沖，分數為-12
+        score2 = -12;
+    } else if (yao2.relation === '原神') {
+        // 原神被沖，分數為-10
+        score2 = -10;
+    } else if (yao2.relation === '忌神') {
+        // 忌神被沖，分數為10
+        score2 = 10;
+    } else if (yao2.relation === '仇神') {
+        // 仇神被沖，分數為8
+        score2 = 8;
+    } else if (yao2.relation === '閒神') {
+        // 閒神被沖，分數為0
+        score2 = 0;
+    }
+
     // 更新爻位顯示
     const yaoDiv1 = document.querySelector(`.${yaoClasses[yao1.index]}`);
     const yaoDiv2 = document.querySelector(`.${yaoClasses[yao2.index]}`);
 
-    // 計算分數
-    const score1 = parseFloat((yao1.score * 0.1).toFixed(2));
-    const score2 = parseFloat((yao2.score * 0.1).toFixed(2));
-    const clashText1 = `與${yaoNameClasses[yao2.index]} ${yao2.dizhi} 相沖 ${score1}`;
-    const clashText2 = `與${yaoNameClasses[yao1.index]} ${yao1.dizhi} 相沖 ${score2}`;
+    const clashText1 = `${yao1.relation} 被${yao2.dizhi}沖 ${score1}`;
+    const clashText2 = `${yao2.relation} 被${yao1.dizhi}沖 ${score2}`;
 
     // 更新爻位顯示
     if (!yaoDiv1.textContent.includes(clashText1)) {

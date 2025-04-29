@@ -91,7 +91,6 @@ function checkGreedyLifeRelation(yao1, yao2) {
     // 檢查五行生剋關係
     const isYao1GeneratingYao2 = generatingElements[yao1.element] === yao2.element; // yao1生yao2
     const isYao2GeneratingYao1 = generatingElements[yao2.element] === yao1.element; // yao2生yao1
-    console.log(yao1, yao2, isYao1GeneratingYao2, isYao2GeneratingYao1);
 
     // 獲取用神五行
     const selectedRelation = document.querySelector('.six-relation-select').value;
@@ -145,7 +144,7 @@ function processGreedyLife(greedyYao, otherYao) {
     const greedyText = `貪生忘剋 ${yaoNameClasses[otherYao.index]} 不計分 0`;
 
     // 更新爻位顯示
-    if (!yaoDiv.textContent.includes(greedyText)) {
+    if (!yaoDiv.textContent.includes(greedyText) && !yaoDiv.textContent.includes("貪生忘剋")) {
         yaoDiv.textContent = yaoDiv.textContent ? `${yaoDiv.textContent} ${greedyText}` : greedyText;
     }
 }

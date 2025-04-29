@@ -674,7 +674,7 @@ textarea.askInfo::placeholder {
 }
 
 .first-yao {
-    font-size: 15px !important;
+    font-size: 10px !important;
     text-align: center;
     grid-column-start: 9;
     grid-column: span 2 / span 2;
@@ -683,7 +683,7 @@ textarea.askInfo::placeholder {
 }
 
 .second-yao {
-    font-size: 15px !important;
+    font-size: 10px !important;
     text-align: center;
     grid-column-start: 9;
     grid-column: span 2 / span 2;
@@ -692,7 +692,7 @@ textarea.askInfo::placeholder {
 }
 
 .third-yao {
-    font-size: 15px !important;
+    font-size: 10px !important;
     text-align: center;
     grid-column-start: 9;
     grid-column: span 2 / span 2;
@@ -701,7 +701,7 @@ textarea.askInfo::placeholder {
 }
 
 .fourth-yao {
-    font-size: 15px !important;
+    font-size: 10px !important;
     text-align: center;
     grid-column-start: 9;
     grid-column: span 2 / span 2;
@@ -710,7 +710,7 @@ textarea.askInfo::placeholder {
 }
 
 .fifth-yao {
-    font-size: 15px !important;
+    font-size: 10px !important;
     text-align: center;
     grid-column-start: 9;
     grid-column: span 2 / span 2;
@@ -719,7 +719,7 @@ textarea.askInfo::placeholder {
 }
 
 .sixth-yao {
-    font-size: 15px !important;
+    font-size: 10px !important;
     text-align: center;
     grid-column-start: 9;
     grid-column: span 2 / span 2;

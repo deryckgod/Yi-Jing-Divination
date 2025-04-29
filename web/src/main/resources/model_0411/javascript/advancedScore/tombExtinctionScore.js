@@ -54,7 +54,6 @@ export function calculateTombExtinctionScore() {
 
             // 檢查分數是否達到閾值
             if (isScoreAboveThreshold(score, godType)) {
-                console.log(score, godType);
                 movingYaos.push({
                     index: yaoIndex,
                     dizhi,
@@ -142,10 +141,10 @@ export function checkYaotoTombExtinction(originalDizhi, index, relation, transfo
                     const otherYaoInfo = otherYaoDiv.textContent || '';
                     const scoreMatch = otherYaoInfo.match(/[-+]?\d+(\.\d+)?$/);
                     const score = scoreMatch ? parseFloat(scoreMatch[0]) : 0;
-                    console.log(score, otherYaoRelation);
+
                     // 檢查分數是否達到閾值，只有達到閾值的動爻才會影響用神
                     if (isScoreAboveThreshold(score, otherYaoRelation) && !otherYaoInfo.includes("三合") && !otherYaoInfo.includes("貪生")) {
-                        console.log(score, otherYaoRelation);
+
                         const { isTomb, isExtinction } = checkTombExtinction(originalDizhi, otherYaoDizhi);
                         // 迴圈檢查全部可能會入墓絕的爻
                         isTombOther = isTombOther || isTomb;

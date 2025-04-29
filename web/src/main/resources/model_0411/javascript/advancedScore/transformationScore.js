@@ -245,7 +245,7 @@ export function calculateHiddenTransformation(originalDizhi, index, relation) {
 
     // 更新爻位顯示
     if (transformationType) {
-        let displayText = `${relation} ${transformationType} ${finalScore} `;
+        let displayText = `${relation} ${transformationType} ${finalScore}`;
         if (!yaoInfo.includes(displayText)) {
             yaoDiv.textContent = yaoInfo ? `${yaoInfo} ${displayText} ` : displayText;
         }
