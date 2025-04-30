@@ -122,7 +122,7 @@
 @media (max-width: 600px) {
     .god-willing {
         max-width: 50vw;
-        width: auto;
+        width: 14vw;
         grid-template-columns: 1fr 1fr;
         font-size: 14px;
         padding: 1vw;
