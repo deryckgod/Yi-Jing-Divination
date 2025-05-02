@@ -164,8 +164,6 @@ export function calculateTransformationScore(originalDizhi, changeDizhi, index, 
     // 獲取日辰地支
     const dayBranch = document.querySelector('.div12').textContent.slice(-1);
 
-    // 情況3: 用神入非用神動爻墓絕 被入動爻直接為-15
-    mainGodtoTombExtinctionScore(originalDizhi, index, relation);
 
     // 最後檢查如果用神是動爻且入日墓絕 動化分數直接為-15
     if (relation === '用神' && originalDizhi) {
@@ -174,6 +172,10 @@ export function calculateTransformationScore(originalDizhi, changeDizhi, index, 
             score = -15;
             scoreMultiplier = 1;
             transformationType = isTomb ? ' 入日墓' : ' 入日絕';
+        }
+        else {
+            // 情況3: 用神入非用神動爻墓絕 被入動爻直接為-15 (動爻用神入日墓絕不能再入其他動爻墓絕)
+            mainGodtoTombExtinctionScore(index);
         }
     } else if (relation != '用神' && originalDizhi &&
         !(transformationType.includes("回頭剋") || transformationType.includes("沖散") || transformationType.includes("空"))) {
@@ -245,7 +247,7 @@ export function calculateHiddenTransformation(originalDizhi, index, relation) {
     }
 
     // 用神靜爻入其他動爻墓絕，影響其他動爻
-    mainGodtoTombExtinctionScore(originalDizhi, index, relation);
+    mainGodtoTombExtinctionScore(index);
 
     // 計算最終分數
     const finalScore = parseFloat((score * scoreMultiplier).toFixed(2));
