@@ -265,6 +265,12 @@ export function updateBianYao() {
 }
 
 export function updateBianGua(bianUpper, bianLower, bianYaoPositions) {
+    if (bianYaoPositions.length === 0) {
+        // 如果沒有變爻，則不更新變卦
+        document.querySelector('.div33').textContent = '';
+        return;
+    }
+
     bianYaoPositions.forEach(pos => {
         if (pos < 3) {
             bianUpper[pos] = bianUpper[pos] === '1' ? '0' : '1';
