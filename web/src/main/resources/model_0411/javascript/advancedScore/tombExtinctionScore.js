@@ -163,7 +163,7 @@ export function checkYaotoTombExtinction(originalDizhi, index, relation, transfo
 // 修改其他爻的分數內容，非當前INDEX動化分數
 export function mainGodtoTombExtinctionScore(index) {
     const mainGodElement = document.querySelector('.mainGodInfo').textContent.slice(0, 1);
-    console.log(mainGodElement);
+
     // 獲取所有非用神的動爻
     const changingYaos = document.querySelectorAll('.original-yao');
     changingYaos.forEach(yao => {
@@ -183,10 +183,16 @@ export function mainGodtoTombExtinctionScore(index) {
                         // 非用神六親動化分數直接為-15
                         const nonMainGodYaoDiv = document.querySelector(`.${yaoClasses[yaoIndex]}`);
                         let nonMainGodYaoInfo = nonMainGodYaoDiv.textContent || '';
-                        let displayText = isTomb ? `${otherYaoRelation} 被用神入墓 -15` : `${otherYaoRelation} 被用神入絕 -15`;
-                        if (!nonMainGodYaoInfo.includes(displayText)) {
-                            nonMainGodYaoDiv.textContent = displayText;
+
+                        const scoreMatch = nonMainGodYaoInfo.match(/[-+]?\d+(\.\d+)?$/);
+                        const score = scoreMatch ? parseFloat(scoreMatch[0]) : 0;
+                        if (isScoreAboveThreshold(score, otherYaoRelation)) {
+                            let displayText = isTomb ? `${otherYaoRelation} 被用神入墓 -15` : `${otherYaoRelation} 被用神入絕 -15`;
+                            if (!nonMainGodYaoInfo.includes(displayText)) {
+                                nonMainGodYaoDiv.textContent = displayText;
+                            }
                         }
+
                     }
                 }
             }
