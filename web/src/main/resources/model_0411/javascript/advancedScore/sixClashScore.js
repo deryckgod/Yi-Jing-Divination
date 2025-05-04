@@ -17,10 +17,10 @@ import {
     yaoNameClasses
 } from '../yijing-constants.js';
 
-import { isScoreAboveThreshold } from './transformationScore.js';
 
 import {
-    convertRelationToGodType
+    convertRelationToGodType,
+    isScoreAboveThreshold
 } from './utils.js';
 /**
  * 計算六沖分數

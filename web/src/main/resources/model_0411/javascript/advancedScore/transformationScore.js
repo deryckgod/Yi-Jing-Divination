@@ -20,6 +20,10 @@ import {
     mainGodtoTombExtinctionScore
 } from './tombExtinctionScore.js';
 
+import {
+    convertRelationToGodType,
+    isScoreAboveThreshold
+} from './utils.js';
 /**
  * 計算動爻的動化分數
  * @param {string} originalDizhi - 原爻地支
@@ -164,18 +168,13 @@ export function calculateTransformationScore(originalDizhi, changeDizhi, index, 
     // 獲取日辰地支
     const dayBranch = document.querySelector('.div12').textContent.slice(-1);
 
-
-    // 最後檢查如果用神是動爻且入日墓絕 動化分數直接為-15
+    // 情況1: 最後檢查如果用神是動爻且入日墓絕 動化分數直接為-15
     if (relation === '用神' && originalDizhi) {
         const { isTomb, isExtinction } = checkTombExtinction(originalDizhi, dayBranch);
         if (isTomb || isExtinction) {
             score = -15;
             scoreMultiplier = 1;
             transformationType = isTomb ? ' 入日墓' : ' 入日絕';
-        }
-        else {
-            // 情況3: 用神入非用神動爻墓絕 被入動爻直接為-15 (動爻用神入日墓絕不能再入其他動爻墓絕)
-            mainGodtoTombExtinctionScore(index);
         }
     } else if (relation != '用神' && originalDizhi &&
         !(transformationType.includes("回頭剋") || transformationType.includes("沖散") || transformationType.includes("空"))) {
@@ -246,9 +245,6 @@ export function calculateHiddenTransformation(originalDizhi, index, relation) {
         scoreMultiplier = 0.2; // 分數*20%
     }
 
-    // 用神靜爻入其他動爻墓絕，影響其他動爻
-    mainGodtoTombExtinctionScore(index);
-
     // 計算最終分數
     const finalScore = parseFloat((score * scoreMultiplier).toFixed(2));
 
@@ -273,30 +269,4 @@ export function checkTombExtinction(dizhi, targetDizhi) {
     const isTomb = EarthlyBranchTomb[dizhi] === targetDizhi;
     const isExtinction = EarthlyBranchExtinction[dizhi] === targetDizhi;
     return { isTomb, isExtinction };
-}
-
-
-/**
- * 檢查動爻分數是否達到原六親對應神分數的40%
- * @param {number} currentScore - 當前動爻分數
- * @param {string} relation - 六親關係 (用神、原神、忌神、仇神、閒神)
- * @returns {boolean} - 返回是否達到40%閾值
- */
-export function isScoreAboveThreshold(currentScore, relation) {
-    // 獲取原始分數 (根據六親關係)
-    const originalScore = godScores[relation] || 0;
-
-    // 計算40%閾值
-    const threshold = originalScore * 0.4;
-
-    // 根據原始分數的正負性質進行不同的比較
-    if (originalScore > 0) {
-        // 原分數為正，當前分數需大於等於原分數的40%
-        return originalScore >= currentScore && currentScore >= threshold;
-    } else if (originalScore < 0) {
-        // 原分數為負，當前分數需小於等於原分數的40%
-        return originalScore <= currentScore && currentScore <= threshold;
-    }
-
-    return false; // 原分數為0，可能為三合、貪生忘剋，不進行判斷
 }

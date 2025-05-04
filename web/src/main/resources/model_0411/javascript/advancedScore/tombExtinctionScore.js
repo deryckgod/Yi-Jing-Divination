@@ -17,12 +17,12 @@ import {
 } from '../yijing-constants.js';
 
 import {
-    convertRelationToGodType
+    convertRelationToGodType,
+    isScoreAboveThreshold
 } from './utils.js';
 
 import {
-    checkTombExtinction,
-    isScoreAboveThreshold
+    checkTombExtinction
 } from './transformationScore.js';
 
 /**
@@ -161,8 +161,16 @@ export function checkYaotoTombExtinction(originalDizhi, index, relation, transfo
 // 情況3: 用神入非用神動爻墓絕
 // 檢查用神地支是否入非用神六親的動爻墓絕
 // 修改其他爻的分數內容，非當前INDEX動化分數
-export function mainGodtoTombExtinctionScore(index) {
+export function mainGodtoTombExtinctionScore(index, movingFlag) {
+
+    // 獲取日辰地支
+    const dayBranch = document.querySelector('.div12').textContent.slice(-1);
+
     const mainGodElement = document.querySelector('.mainGodInfo').textContent.slice(0, 1);
+    const { isTomb, isExtinction } = checkTombExtinction(mainGodElement, dayBranch);
+    if (movingFlag && (isTomb || isExtinction)) {
+        return; // 直接返回，不再繼續執行下面的程式碼，避免重複計算和報錯
+    }
 
     // 獲取所有非用神的動爻
     const changingYaos = document.querySelectorAll('.original-yao');

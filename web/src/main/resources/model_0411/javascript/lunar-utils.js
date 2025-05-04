@@ -31,7 +31,7 @@ import {
 
 import {
     calculateTombExtinctionScore,
-    checkYaotoTombExtinction
+    mainGodtoTombExtinctionScore
 } from './advancedScore/tombExtinctionScore.js';
 
 import {
@@ -114,8 +114,8 @@ export function updateGua() {
     }
 
     // 更新用神資訊
-    const { isKongWang, isShi, isChanged, isFuShan } = determineMainGod(yaos, originalLowerDizhi.concat(originalUpperDizhi), changedLowerDizhi.concat(changedUpperDizhi),
-        bianYaoPositions, relationElements, shouGua, shiPosition, yingPosition);
+    let { isKongWang, isShi, isChanged, isFuShan, yaoPosition } = determineMainGod(yaos, originalLowerDizhi.concat(originalUpperDizhi), changedLowerDizhi.concat(changedUpperDizhi),
+        bianYaoPositions, relationElements, shouGua, shiPosition, yingPosition, -1);
 
     // 更新變爻地支六親(計算分數會看是否有變爻干支六親，故優先原爻執行)
     updateChangeDizhiAndRelation(changedLowerDizhi, changedUpperDizhi, relationElements, bianYaoPositions);
@@ -128,11 +128,39 @@ export function updateGua() {
     calculateStraightThreeHarmony();
     calculateTriangleThreeHarmony();
 
+    // 保存用神爻位置，用於檢查是否參與三合
+    const mainGodYaoPosition = yaoPosition;
+
+    // 如果用神爻參與了三合，需要標註原爻干支不可用
+    if (mainGodYaoPosition >= 0) {
+        const yaoIndex = 5 - mainGodYaoPosition;
+        // 檢查用神爻是否參與了三合
+        const yaoDisplay = document.querySelector(`.${yaoClasses[yaoIndex]} `);
+        const yaoInfo = yaoDisplay.textContent || '';
+
+        // 使用CSS類和文本內容雙重檢查是否參與三合
+        if (yaoInfo.includes('三合')) {
+            // 重找用神
+            isKongWang, isShi, isChanged, isFuShan, yaoPosition = determineMainGod(yaos, originalLowerDizhi.concat(originalUpperDizhi), changedLowerDizhi.concat(changedUpperDizhi),
+                bianYaoPositions, relationElements, shouGua, shiPosition, yingPosition, mainGodYaoPosition);
+        }
+    }
+
     // 計算貪生忘剋分數 
     calculateGreedyLifeScore();
 
     // 計算六沖分數 
     calculateSixClashScore();
+
+    // 情況3: 用神入非用神動爻墓絕 被入動爻直接為-15 (動爻用神入日墓絕不能再入其他動爻墓絕)
+    yaos.forEach((yao, index) => {
+        if (yao.value === 'O' || yao.value === 'X') {
+            mainGodtoTombExtinctionScore(index, true);
+        }
+        else {// 靜爻
+            mainGodtoTombExtinctionScore(index, false);
+        }
+    });
 
     // 計算入墓入絕分數
     calculateTombExtinctionScore();

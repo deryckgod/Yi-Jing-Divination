@@ -17,13 +17,15 @@ import {
     harmonyGroups,
     generatingElements,
     restrainingElements,
-    yaoNameClasses
+    yaoNameClasses,
+    getFirstBranchOfElement
 } from '../yijing-constants.js';
 
-import { isScoreAboveThreshold } from './transformationScore.js';
+import { checkTombExtinction } from './transformationScore.js';
 
 import {
-    convertRelationToGodType
+    convertRelationToGodType,
+    isScoreAboveThreshold
 } from './utils.js';
 /**
  * 檢查三個地支是否構成三合
@@ -382,6 +384,17 @@ function calculateHarmonyScore(element, yaos, type, changeDizhi = null) {
         score = 0;
     }
 
+
+    // 獲取日辰地支
+    const dayBranch = document.querySelector('.div12').textContent.slice(-1);
+    // 獲取三合局的五行第一個地支
+    const firstBranchOfElement = getFirstBranchOfElement(element);
+    // 檢查入日墓絕情況，分數乘以10%
+    const { isTomb, isExtinction } = checkTombExtinction(firstBranchOfElement, dayBranch);
+    if (isTomb || isExtinction) {
+        score = parseFloat((score * 0.1).toFixed(2));
+    }
+
     // 三合分數乘以1.5倍
     const finalScore = parseFloat((score * 1.5).toFixed(2));
 
@@ -397,18 +410,21 @@ function calculateHarmonyScore(element, yaos, type, changeDizhi = null) {
             const dayBranch = document.querySelector('.div12').textContent.slice(-1);
             const otherYao = yaos.find(y => y.index !== yao.index);
             harmonyText = `${yaoNameClasses[yao.index]}、${yaoNameClasses[otherYao.index]} ${otherYao.dizhi}${yao.dizhi}${dayBranch} 日辰三合合化「${element}」局 `;
-            harmonyText += (count === yaos.length) ? `${finalScore}` : '0';
+
         } else if (type === '直線') {
             // 直線三合
             const otherYaos = yaos.filter(y => y.index !== yao.index);
             harmonyText = `${yaoNameClasses[yao.index]}、${yaoNameClasses[otherYaos[0].index]}、${yaoNameClasses[otherYaos[1].index]} ${otherYaos[0].dizhi}${yao.dizhi}${otherYaos[1].dizhi} 直線三合合化「${element}」局 `;
-            harmonyText += (count === yaos.length) ? `${finalScore}` : '0';
         } else if (type === '三角') {
             // 三角三合
             const otherYao = yaos.find(y => y.index !== yao.index);
             harmonyText = `${yaoNameClasses[yao.index]}、${yaoNameClasses[otherYao.index]} ${yao.originalDizhi}${otherYao.originalDizhi}${changeDizhi} 三角三合合化「${element}」局 `;
-            harmonyText += (count === yaos.length) ? `${finalScore}` : '0';
         }
+
+        if (isTomb || isExtinction) {
+            harmonyText += (isTomb) ? '入日墓 ' : '入日絕 ';
+        }
+        harmonyText += (count === yaos.length) ? `${finalScore}` : '0';
 
         // 更新爻位顯示
         if (harmonyText && !yaoDiv.textContent.includes(harmonyText)) {

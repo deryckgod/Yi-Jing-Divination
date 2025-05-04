@@ -204,3 +204,23 @@ export let markupStyle = 'text';
 export function setMarkupStyle(style) {
     markupStyle = style;
 }
+
+/**
+ * 根據五行獲取對應的第一個地支
+ * @param {string} element - 五行（火、金、木、水、土）
+ * @returns {string} - 返回對應的第一個地支
+ */
+export function getFirstBranchOfElement(element) {
+    switch (element) {
+        case '火':
+            return '午'; // 火的主要地支（寅午戌三合火）
+        case '金':
+            return '酉'; // 金的主要地支（巳酉丑三合金）
+        case '木':
+            return '卯'; // 木的主要地支（亥卯未三合木）
+        case '水':
+            return '子'; // 水的主要地支（申子辰三合水）
+        default:
+            return '';
+    }
+}

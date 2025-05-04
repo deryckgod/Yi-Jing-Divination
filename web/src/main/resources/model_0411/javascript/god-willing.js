@@ -16,7 +16,7 @@ import {
     convertRelationToGodType
 } from './advancedScore/utils.js';
 // 用神資訊mainGodInfo處理邏輯
-export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPositions, relationElements, shouGua, shiPosition, yingPosition) {
+export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPositions, relationElements, shouGua, shiPosition, yingPosition, harmonyPosition) {
     // 獲取用神五行（div28的六親五行）
     const selectedRelation = document.querySelector('.six-relation-select').value;
     const mainGodElement = relationElements[selectedRelation];
@@ -27,6 +27,7 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
     let isFuShan = false;
     let isMoving = false;
     let isStatic = false;
+    let yaoPosition = -1; // 用於保存選中的爻的位置
 
     // 獲取空亡地支
     const kongWangText = document.querySelector('.div16').textContent;
@@ -51,7 +52,7 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
             const relation = Object.entries(relationElements)
                 .find(([_, v]) => v === element)?.[0] || '';
 
-            if (relation === selectedRelation) {
+            if (relation === selectedRelation && harmonyPosition !== position) {
                 matchingMovingYaos.push({
                     position,
                     dizhi,
@@ -70,29 +71,34 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
             const shiYao = matchingMovingYaos.find(y => y.isShi);
             // 1.0 選擇空亡地支且持世爻
             if (kongWangShiYao) {
-                mainGodInfo = `${kongWangYao.dizhi}${kongWangYao.relation}`;
+                mainGodInfo = `${kongWangShiYao.dizhi}${kongWangShiYao.relation}`;
                 isKongWang = true;
                 isShi = true;
+                yaoPosition = kongWangShiYao.position;
             }
             // 1.1 優先選擇空亡地支
             else if (kongWangYao) {
                 mainGodInfo = `${kongWangYao.dizhi}${kongWangYao.relation}`;
                 isKongWang = true;
+                yaoPosition = kongWangYao.position;
             }
             // 1.2 其次選擇世爻
             else if (shiYao) {
                 mainGodInfo = `${shiYao.dizhi}${shiYao.relation}`;
                 isShi = true;
+                yaoPosition = shiYao.position;
             }
             // 1.3 再次選擇應爻
             else if (matchingMovingYaos.find(y => y.isYing)) {
                 const yingYao = matchingMovingYaos.find(y => y.isYing);
                 mainGodInfo = `${yingYao.dizhi}${yingYao.relation}`;
+                yaoPosition = yingYao.position;
             }
             // 1.4 最後選擇第一個
             else {
                 const firstYao = matchingMovingYaos.pop();
                 mainGodInfo = `${firstYao.dizhi}${firstYao.relation}`;
+                yaoPosition = firstYao.position;
             }
 
             // 主要用神為動爻取得
@@ -135,29 +141,34 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
                 const shiYao = matchingStaticYaos.find(y => y.isShi);
                 // 2.0 選擇空亡地支且持世爻
                 if (kongWangShiYao) {
-                    mainGodInfo = `${kongWangYao.dizhi}${kongWangYao.relation}`;
+                    mainGodInfo = `${kongWangShiYao.dizhi}${kongWangShiYao.relation}`;
                     isKongWang = true;
                     isShi = true;
+                    yaoPosition = kongWangShiYao.position;
                 }
                 // 2.1 優先選擇空亡地支
                 else if (kongWangYao) {
                     mainGodInfo = `${kongWangYao.dizhi}${kongWangYao.relation}`;
                     isKongWang = true;
+                    yaoPosition = kongWangYao.position;
                 }
                 // 2.2 其次選擇世爻
                 else if (shiYao) {
                     mainGodInfo = `${shiYao.dizhi}${shiYao.relation}`;
                     isShi = true;
+                    yaoPosition = shiYao.position;
                 }
                 // 2.3 再次選擇應爻
                 else if (matchingStaticYaos.find(y => y.isYing)) {
                     const yingYao = matchingStaticYaos.find(y => y.isYing);
                     mainGodInfo = `${yingYao.dizhi}${yingYao.relation}`;
+                    yaoPosition = yingYao.position;
                 }
                 // 2.4 最後選擇第一個
                 else {
                     const firstYao = matchingStaticYaos.pop();
                     mainGodInfo = `${firstYao.dizhi}${firstYao.relation}`;
+                    yaoPosition = firstYao.position;
                 }
 
                 // 主要用神為靜爻取得
@@ -174,6 +185,7 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
         if (dayElement === mainGodElement) {
             const dayRelation = selectedRelation;
             mainGodInfo = `${dayBranch}${dayRelation} (日辰)`;
+            yaoPosition = -1; // 日辰不是爻位
         }
     }
 
@@ -185,6 +197,7 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
         if (monthElement === mainGodElement) {
             const monthRelation = selectedRelation;
             mainGodInfo = `${monthBranch}${monthRelation} (月建)`;
+            yaoPosition = -1; // 月建不是爻位
 
             // 檢查是否為空亡地支
             if (kongWangDizhi.includes(monthBranch)) {
@@ -219,12 +232,14 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
             mainGodInfo = `${kongWangYao.dizhi}${kongWangYao.relation}`;
             isKongWang = true;
             isChanged = true;
+            yaoPosition = kongWangYao.position;
         }
         // 由下往上取第一個
         else if (matchingChangedYaos.length > 0) {
             const firstChangedYao = matchingChangedYaos.pop();
             mainGodInfo = `${firstChangedYao.dizhi}${firstChangedYao.relation}`;
             isChanged = true;
+            yaoPosition = firstChangedYao.position;
         }
     }
 
@@ -240,6 +255,7 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
             }
 
             isFuShan = true;
+            yaoPosition = -1; // 伏神不是爻位
         }
     } else {
         // 清除伏神
@@ -266,7 +282,7 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
     // 更新用神資訊顯示
     document.querySelector('.mainGodInfo').textContent = mainGodInfo;
 
-    return { isKongWang, isShi, isChanged, isFuShan };
+    return { isKongWang, isShi, isChanged, isFuShan, yaoPosition };
 }
 
 // 世爻例外情況計分
