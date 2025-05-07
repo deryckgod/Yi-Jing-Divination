@@ -114,8 +114,15 @@ export function updateGua() {
     }
 
     // 更新用神資訊
-    let { isKongWang, isShi, isChanged, isFuShan, yaoPosition } = determineMainGod(yaos, originalLowerDizhi.concat(originalUpperDizhi), changedLowerDizhi.concat(changedUpperDizhi),
+    // 使用中間變量保存返回值，避免解構賦值問題
+    const mainGodResult = determineMainGod(yaos, originalLowerDizhi.concat(originalUpperDizhi), changedLowerDizhi.concat(changedUpperDizhi),
         bianYaoPositions, relationElements, shouGua, shiPosition, yingPosition, -1);
+    // 正確賦值
+    let isKongWang = mainGodResult.isKongWang;
+    let isShi = mainGodResult.isShi;
+    let isChanged = mainGodResult.isChanged;
+    let isFuShan = mainGodResult.isFuShan;
+    let yaoPosition = mainGodResult.yaoPosition;
 
     // 更新變爻地支六親(計算分數會看是否有變爻干支六親，故優先原爻執行)
     updateChangeDizhiAndRelation(changedLowerDizhi, changedUpperDizhi, relationElements, bianYaoPositions);
@@ -140,9 +147,15 @@ export function updateGua() {
 
         // 使用CSS類和文本內容雙重檢查是否參與三合
         if (yaoInfo.includes('三合')) {
-            // 重找用神
-            isKongWang, isShi, isChanged, isFuShan, yaoPosition = determineMainGod(yaos, originalLowerDizhi.concat(originalUpperDizhi), changedLowerDizhi.concat(changedUpperDizhi),
+            // 重找用神 - 使用中間變量保存返回值，避免解構賦值問題
+            const mainGodResult = determineMainGod(yaos, originalLowerDizhi.concat(originalUpperDizhi), changedLowerDizhi.concat(changedUpperDizhi),
                 bianYaoPositions, relationElements, shouGua, shiPosition, yingPosition, mainGodYaoPosition);
+            // 正確賦值
+            isKongWang = mainGodResult.isKongWang;
+            isShi = mainGodResult.isShi;
+            isChanged = mainGodResult.isChanged;
+            isFuShan = mainGodResult.isFuShan;
+            yaoPosition = mainGodResult.yaoPosition;
         }
     }
 
