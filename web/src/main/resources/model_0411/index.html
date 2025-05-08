@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <link rel="stylesheet" href="./css/widget-calendar-custom.css">
     <link rel="stylesheet" href="./css/history-manager.css">
     <link rel="stylesheet" href="./css/illustrate-score.css">
+    <link rel="stylesheet" href="./css/score-settings.css">
     <!-- 引入 Web Components 的 Polyfill -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/2.4.4/webcomponents-bundle.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image-more/3.1.1/dom-to-image-more.min.js"></script>
@@ -16,10 +18,41 @@
     <script type="module" src="../calendar-main/src/calendar.js"></script>
     <script type="module" src="../calendar-main/src/widget-calendar.js"></script>
 </head>
+
 <body>
+    <!-- 設定按鈕由JavaScript動態創建 -->
+
     <!-- 歷史記錄按鈕 -->
     <button id="history-btn" class="history-btn">📜</button>
-    
+
+    <!-- 設定視窗 -->
+    <div class="settings-overlay"></div>
+    <div class="settings-container">
+        <div class="settings-header">
+            <h2>算分邏輯設定</h2>
+            <button class="settings-close-btn">X</button>
+        </div>
+        <div class="logic-selector-container">
+            <div class="logic-selector-header">
+                <select id="logic-config-select" class="logic-config-select"></select>
+                <div class="logic-buttons">
+                    <button id="add-logic-btn" class="add-logic-btn">新增</button>
+                    <button id="delete-logic-btn" class="delete-logic-btn">刪除</button>
+                    <button id="reset-logic-btn" class="reset-logic-btn">重設</button>
+                </div>
+            </div>
+        </div>
+        <div class="settings-content">
+            <div class="module-container">
+                <p>拖拉下方模塊調整算分順序：</p>
+                <ul class="module-list" id="module-list"></ul>
+            </div>
+        </div>
+        <div class="settings-footer">
+            <button class="settings-save-btn">保存設定</button>
+        </div>
+    </div>
+
     <!-- 歷史記錄視窗 -->
     <div class="history-overlay"></div>
     <div class="history-container">
@@ -44,7 +77,7 @@
     </div>
 
     <div id="record-preview-container" class="record-preview-container"></div>
-    
+
     <div class="content-wrapper">
         <div class="god-willing">
             <div class="mainGod">用神：</div>
@@ -188,18 +221,18 @@
         <div class="div87"></div><!-- 87 -->
         <div class="div88"></div><!-- 88 -->
         <div class="div89"></div><!-- 89 -->
-        
+
         <button id="query-btn" class="query-button">查詢</button>
         <button id="store-btn" class="store-button">儲存</button>
 
         <textarea class="askInfo" placeholder="請示："></textarea>
 
-        <div class="first-yao" ></div><!-- first-yao  -->
+        <div class="first-yao"></div><!-- first-yao  -->
         <div class="second-yao"></div><!-- second-yao -->
-        <div class="third-yao" ></div><!-- third-yao  -->
+        <div class="third-yao"></div><!-- third-yao  -->
         <div class="fourth-yao"></div><!-- fourth-yao -->
-        <div class="fifth-yao" ></div><!-- fifth-yao  -->
-        <div class="sixth-yao" ></div><!-- sixth-yao  -->
+        <div class="fifth-yao"></div><!-- fifth-yao  -->
+        <div class="sixth-yao"></div><!-- sixth-yao  -->
 
     </div>
 
@@ -215,17 +248,18 @@
         import { updateDate, updateGua, updateSixRelations } from './javascript/lunar-utils.js';
         import { toggleCalendar } from './javascript/calendar-ui.js';
         import './javascript/history-manager.js';
-        import {updateScoreDisplay} from"./javascript/illustrate-score.js";
+        import { updateScoreDisplay } from "./javascript/illustrate-score.js";
+        import { initScoreSettings } from './javascript/score-settings.js';
 
         // 添加按鈕點擊事件
-        document.getElementById('query-btn').addEventListener('click', function(e){
+        document.getElementById('query-btn').addEventListener('click', function (e) {
             updateGua();
             // 查詢後更新分數顯示
             setTimeout(updateScoreDisplay, 100); // 給予一些時間讓其他更新完成
         });
-        
+
         // 監聽六親選擇變化
-        document.querySelector('.div28').addEventListener('change', function(e) {
+        document.querySelector('.div28').addEventListener('change', function (e) {
             updateSixRelations(e.target.value);
             setTimeout(updateScoreDisplay, 100);
         });
@@ -240,58 +274,14 @@
         });
 
         // 日期變更
-        document.querySelector('widget-calendar').addEventListener('onChange',function(event){
+        document.querySelector('widget-calendar').addEventListener('onChange', function (event) {
             updateDate(event);
             //toggleCalendar(); // 選擇日期後自動關閉日曆
         });
-        
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     // 設置日期選擇器的默認值為今天
-        //     const datePicker = document.getElementById('date-picker');
-        //     const today = new Date();
-        //     const formattedDate = today.toISOString().split('T')[0];
-        //     datePicker.value = formattedDate;
-            
-        //     // 初始化更新日期信息
-        //     updateDateInfo(today);
-            
-        //     // 添加日期選擇器的change事件
-        //     datePicker.addEventListener('change', function() {
-        //         console.log("日期已變更，自動更新");
-        //         const selectedDate = new Date(this.value);
-        //         updateDateInfo(selectedDate);
-        //     });
-            
-        //     // 保留更新按鈕的點擊事件作為備用
-        //     document.getElementById('update-date-btn').addEventListener('click', function() {
-        //         console.log("手動更新日期");
-        //         const selectedDate = new Date(datePicker.value);
-        //         updateDateInfo(selectedDate);
-        //     });
-            
-        //     // 更新日期信息的函數
-        //     function updateDateInfo(date) {
-        //         console.log("更新日期");
-        //         // 使用lunar-utils.js中的函數獲取農曆信息
-        //         const lunarInfo = lunarUtils.getSolarToLunar(date);
-        //         const info = calendar.getToday();
-        //         console.log(info);
 
-        //         // 更新年月日的公曆和農曆信息
-        //         const div9 = document.querySelector('.div9'); // 年
-        //         const div10 = document.querySelector('.div10'); // 月
-        //         const div12 = document.querySelector('.div12'); // 日
-                
-        //         // 格式化公曆年月日
-        //         const year = date.getFullYear();
-        //         const month = date.getMonth() + 1;
-        //         const day = date.getDate();
-                
-        //         // 更新顯示內容
-        //         div9.textContent = `${year}年\n${lunarInfo.yearGanZhi}`;
-        //         div10.textContent = `${month}月\n${lunarInfo.monthGanZhi}`;
-        //         div12.textContent = `${day}日\n${lunarInfo.dayGanZhi}`;
-        //     }
-        // });
+        // 初始化算分邏輯設定介面
+        document.addEventListener('DOMContentLoaded', function () {
+            initScoreSettings();
+        });
     </script>
 </body>

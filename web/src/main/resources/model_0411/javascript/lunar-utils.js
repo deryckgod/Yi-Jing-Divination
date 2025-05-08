@@ -47,6 +47,15 @@ import { calculateSixClashScore } from './advancedScore/sixClashScore.js';
 import {
     convertRelationToGodType
 } from './advancedScore/utils.js';
+
+// 默認的算分模塊順序
+let scoreModuleOrder = [
+    'threeHarmony',
+    'greedyLife',
+    'sixClash',
+    'tombExtinction'
+];
+
 // updateGua函數
 export function updateGua() {
     // 原爻
@@ -115,7 +124,7 @@ export function updateGua() {
 
     // 更新用神資訊
     // 使用中間變量保存返回值，避免解構賦值問題
-    const mainGodResult = determineMainGod(yaos, originalLowerDizhi.concat(originalUpperDizhi), changedLowerDizhi.concat(changedUpperDizhi),
+    let mainGodResult = determineMainGod(yaos, originalLowerDizhi.concat(originalUpperDizhi), changedLowerDizhi.concat(changedUpperDizhi),
         bianYaoPositions, relationElements, shouGua, shiPosition, yingPosition, -1);
     // 正確賦值
     let isKongWang = mainGodResult.isKongWang;
@@ -130,53 +139,19 @@ export function updateGua() {
     // 更新原爻地支六親 
     updateOriginalDizhiAndRelation(originalLowerDizhi, originalUpperDizhi, relationElements);
 
-    // 計算三合分數 
-    calculateDaySunThreeHarmony();
-    calculateStraightThreeHarmony();
-    calculateTriangleThreeHarmony();
-
-    // 保存用神爻位置，用於檢查是否參與三合
+    // 保存用神爻位置，用於後續處理
     const mainGodYaoPosition = yaoPosition;
 
-    // 如果用神爻參與了三合，需要標註原爻干支不可用
-    if (mainGodYaoPosition >= 0) {
-        const yaoIndex = 5 - mainGodYaoPosition;
-        // 檢查用神爻是否參與了三合
-        const yaoDisplay = document.querySelector(`.${yaoClasses[yaoIndex]} `);
-        const yaoInfo = yaoDisplay.textContent || '';
+    // 執行算分邏輯，根據設定的順序
+    mainGodResult = executeScoreCalculations(yaos, mainGodYaoPosition, originalLowerDizhi, originalUpperDizhi, changedLowerDizhi, changedUpperDizhi,
+        bianYaoPositions, relationElements, shouGua, shiPosition, yingPosition, isKongWang, isShi, isChanged, isFuShan, yaoPosition);
 
-        // 使用CSS類和文本內容雙重檢查是否參與三合
-        if (yaoInfo.includes('三合')) {
-            // 重找用神 - 使用中間變量保存返回值，避免解構賦值問題
-            const mainGodResult = determineMainGod(yaos, originalLowerDizhi.concat(originalUpperDizhi), changedLowerDizhi.concat(changedUpperDizhi),
-                bianYaoPositions, relationElements, shouGua, shiPosition, yingPosition, mainGodYaoPosition);
-            // 正確賦值
-            isKongWang = mainGodResult.isKongWang;
-            isShi = mainGodResult.isShi;
-            isChanged = mainGodResult.isChanged;
-            isFuShan = mainGodResult.isFuShan;
-            yaoPosition = mainGodResult.yaoPosition;
-        }
-    }
-
-    // 計算貪生忘剋分數 
-    calculateGreedyLifeScore();
-
-    // 計算六沖分數 
-    calculateSixClashScore();
-
-    // 情況3: 用神入非用神動爻墓絕 被入動爻直接為-15 (動爻用神入日墓絕不能再入其他動爻墓絕)
-    yaos.forEach((yao, index) => {
-        if (yao.value === 'O' || yao.value === 'X') {
-            mainGodtoTombExtinctionScore(index, true);
-        }
-        else {// 靜爻
-            mainGodtoTombExtinctionScore(index, false);
-        }
-    });
-
-    // 計算入墓入絕分數
-    calculateTombExtinctionScore();
+    // 正確賦值
+    isKongWang = mainGodResult.isKongWang;
+    isShi = mainGodResult.isShi;
+    isChanged = mainGodResult.isChanged;
+    isFuShan = mainGodResult.isFuShan;
+    yaoPosition = mainGodResult.yaoPosition;
 
     // 更新日辰分數 
     const { sunScore, isTomb, isExtinction } = updateSunScore(relationElements);
@@ -489,4 +464,84 @@ export function updateDate(event) {
     const dayGanZhi = info.gzDayZH;
     const kongWang = getKongWang(dayGanZhi);
     div16.textContent = `${kongWang}`;
+}
+
+// 監聽算分順序變更事件
+document.addEventListener('scoreOrderChanged', function (event) {
+    if (event.detail && event.detail.moduleOrder) {
+        scoreModuleOrder = event.detail.moduleOrder;
+    }
+});
+// 執行算分邏輯計算，根據設定的順序
+function executeScoreCalculations(yaos, mainGodYaoPosition, originalLowerDizhi, originalUpperDizhi, changedLowerDizhi, changedUpperDizhi,
+    bianYaoPositions, relationElements, shouGua, shiPosition, yingPosition, isKongWang, isShi, isChanged, isFuShan, yaoPosition) {
+
+    // 每次執行時都從localStorage獲取最新的保存順序，如果沒有則使用默認順序
+    const savedConfigs = localStorage.getItem('scoreLogicConfigs');
+    const currentConfigId = localStorage.getItem('currentLogicConfigId');
+
+    let moduleOrder = scoreModuleOrder;
+    if (savedConfigs) {
+        const configs = JSON.parse(savedConfigs);
+        const currentConfig = currentConfigId
+            ? configs.find(c => c.name === currentConfigId)
+            : configs[0];
+        if (currentConfig && currentConfig.modules) {
+            moduleOrder = currentConfig.modules.map(m => m.id);
+        }
+    }
+
+    // 根據模塊順序執行算分邏輯
+    moduleOrder.forEach(moduleId => {
+        switch (moduleId) {
+            case 'threeHarmony':
+                // 計算三合分數
+                calculateDaySunThreeHarmony();
+                calculateStraightThreeHarmony();
+                calculateTriangleThreeHarmony();
+                // 如果用神爻參與了三合，需要標註原爻干支不可用
+                if (mainGodYaoPosition >= 0) {
+                    const yaoIndex = 5 - mainGodYaoPosition;
+                    // 檢查用神爻是否參與了三合
+                    const yaoDisplay = document.querySelector(`.${yaoClasses[yaoIndex]} `);
+                    const yaoInfo = yaoDisplay.textContent || '';
+
+                    // 使用CSS類和文本內容雙重檢查是否參與三合
+                    if (yaoInfo.includes('三合')) {
+                        // 重找用神 - 使用中間變量保存返回值，避免解構賦值問題
+                        const mainGodResult = determineMainGod(yaos, originalLowerDizhi.concat(originalUpperDizhi), changedLowerDizhi.concat(changedUpperDizhi),
+                            bianYaoPositions, relationElements, shouGua, shiPosition, yingPosition, mainGodYaoPosition);
+                        // 正確賦值
+                        isKongWang = mainGodResult.isKongWang;
+                        isShi = mainGodResult.isShi;
+                        isChanged = mainGodResult.isChanged;
+                        isFuShan = mainGodResult.isFuShan;
+                        yaoPosition = mainGodResult.yaoPosition;
+                    }
+                }
+                break;
+            case 'greedyLife':
+                // 計算貪生忘剋分數
+                calculateGreedyLifeScore();
+                break;
+            case 'sixClash':
+                // 計算六沖分數
+                calculateSixClashScore();
+                break;
+            case 'tombExtinction':
+                // 計算入墓入絕分數
+                yaos.forEach((yao, index) => {
+                    if (yao.value === 'O' || yao.value === 'X') {
+                        mainGodtoTombExtinctionScore(index, true);
+                    }
+                    else { // 靜爻
+                        mainGodtoTombExtinctionScore(index, false);
+                    }
+                });
+                calculateTombExtinctionScore();
+                break;
+        }
+    });
+
+    return { isKongWang, isShi, isChanged, isFuShan, yaoPosition };
 }
