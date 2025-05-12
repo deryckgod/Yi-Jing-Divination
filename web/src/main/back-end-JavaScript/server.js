@@ -191,7 +191,8 @@ app.post('/api/generate-pdf', async (req, res) => {
       return res.status(400).send('無效的記錄數據');
     }
 
-    const browser = await puppeteer.launch({
+    let browser;
+    let launchOptions = {
       headless: true,
       args: [
         '--no-sandbox',
@@ -200,12 +201,22 @@ app.post('/api/generate-pdf', async (req, res) => {
         '--disable-gpu',
         '--no-zygote',
         '--single-process'
-      ],
-      // 在Render环境中使用可执行路径
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium-browser',
-      // 如果在Render环境中，则忽略默认的Chromium下载
-      ignoreDefaultArgs: ['--disable-extensions']
-    });
+      ]
+    };
+    try {
+      if (process.env.PUPPETEER_EXECUTABLE_PATH) {
+        launchOptions.executablePath = process.env.PUPPETEER_EXECUTABLE_PATH;
+        console.log(`Using Chromium from PUPPETEER_EXECUTABLE_PATH for PDF: ${process.env.PUPPETEER_EXECUTABLE_PATH}`);
+      } else {
+        console.log('PUPPETEER_EXECUTABLE_PATH not set, using default Chromium for PDF generation.');
+      }
+      browser = await puppeteer.launch(launchOptions);
+      console.log('Puppeteer launched successfully for PDF generation.');
+    } catch (launchError) {
+      console.error('Failed to launch Puppeteer for PDF generation:', launchError);
+      console.error('Puppeteer launch options used for PDF:', JSON.stringify(launchOptions, null, 2));
+      return res.status(500).send('Failed to launch Puppeteer for PDF generation. Check server logs for details.');
+    }
 
     // 使用遞迴方式處理所有記錄
     const pdfBuffer = await generatePDFRecursively(browser, records, 0, null);
@@ -336,11 +347,7 @@ app.post('/api/generate-jpeg', async (req, res) => {
         '--disable-gpu',
         '--no-zygote',
         '--single-process'
-      ],
-      // 在Render环境中使用可执行路径
-      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium-browser',
-      // 如果在Render环境中，则忽略默认的Chromium下载
-      ignoreDefaultArgs: ['--disable-extensions']
+      ]
     });
 
     // 使用遞迴方式處理所有記錄
