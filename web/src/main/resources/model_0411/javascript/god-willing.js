@@ -21,6 +21,7 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
     const selectedRelation = document.querySelector('.six-relation-select').value;
     const mainGodElement = relationElements[selectedRelation];
     let mainGodInfo = '';
+    let otherShiDizhi = '';
     let isKongWang = false;
     let isShi = false;
     let isChanged = false;
@@ -264,7 +265,9 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
 
     // 7. 檢查是否有其餘相同六親持世
     if (isMoving || isStatic) {
-        isShi = shiYaoExceptionScore(yaos, originalDizhi, relationElements, selectedRelation, shiYaoPosition, isShi);
+        let shiYaoExcept = shiYaoExceptionScore(yaos, originalDizhi, relationElements, selectedRelation, shiYaoPosition, isShi);
+        isShi = shiYaoExcept.isShi;
+        otherShiDizhi = shiYaoExcept.returnDizhi;
     }
 
     if (isChanged) {
@@ -282,12 +285,13 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
     // 更新用神資訊顯示
     document.querySelector('.mainGodInfo').textContent = mainGodInfo;
 
-    return { isKongWang, isShi, isChanged, isFuShan, yaoPosition };
+    return { isKongWang, isShi, isChanged, isFuShan, yaoPosition, otherShiDizhi };
 }
 
 // 世爻例外情況計分
 function shiYaoExceptionScore(yaos, originalDizhi, relationElements, selectedRelation, shiYaoPosition, isShi) {
     const matchingStaticYaos = [];
+    let returnDizhi = '';
 
     yaos.forEach(yao => {
         const position = yao.position;
@@ -298,7 +302,8 @@ function shiYaoExceptionScore(yaos, originalDizhi, relationElements, selectedRel
 
         if (relation === selectedRelation) {
             matchingStaticYaos.push({
-                isShi: position === shiYaoPosition
+                isShi: position === shiYaoPosition,
+                dizhi
             });
         }
     });
@@ -307,9 +312,11 @@ function shiYaoExceptionScore(yaos, originalDizhi, relationElements, selectedRel
         const shiYao = matchingStaticYaos.find(y => y.isShi);
         if (shiYao) {
             isShi = true;
+            returnDizhi = shiYao.dizhi;
         }
     }
-    return isShi;
+
+    return { isShi, returnDizhi };
 }
 
 export function updateSunScore(relationElements) {
@@ -385,7 +392,7 @@ export function updateMoonScore(relationElements) {
     return moonScore;
 }
 
-export function updateGodWillingScore(isKongWang, isShi, sunScore, moonScore, isChanged, isFuShan, isTomb, isExtinction) {
+export function updateGodWillingScore(isKongWang, isShi, sunScore, moonScore, isChanged, isFuShan, isTomb, isExtinction, otherShiDizhi) {
     let result = 0;
 
     // 月旺相 且 用神不為入日墓絕
@@ -403,11 +410,15 @@ export function updateGodWillingScore(isKongWang, isShi, sunScore, moonScore, is
         result = sunScore;
     }
 
+    // 獲取空亡地支
+    const kongWangText = document.querySelector('.div16').textContent;
+    const kongWangDizhi = kongWangText.split('');
+
     if (isKongWang) {
         result = sunScore > 60 ? (50 + sunScore) / 2 : 50;
     }
     if (isShi) {
-        result = !isKongWang ? result + 5 : result;
+        result = !kongWangDizhi.includes(otherShiDizhi) ? result + 5 : result;
     }
     if (isChanged || isFuShan) {
         result -= 5;

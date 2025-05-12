@@ -21,7 +21,6 @@ export function updateScoreDisplay() {
 
     // 計算總分
     let totalScore = parseFloat(document.querySelector('.willingInfo').textContent);
-    console.log(totalScore);
     const totalScoreElement = illustrateScore.querySelector('.totalScore');
 
     // 為每個有值的爻添加一行

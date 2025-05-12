@@ -132,6 +132,7 @@ export function updateGua() {
     let isChanged = mainGodResult.isChanged;
     let isFuShan = mainGodResult.isFuShan;
     let yaoPosition = mainGodResult.yaoPosition;
+    let otherShiDizhi = mainGodResult.otherShiDizhi;
 
     // 更新變爻地支六親(計算分數會看是否有變爻干支六親，故優先原爻執行)
     updateChangeDizhiAndRelation(changedLowerDizhi, changedUpperDizhi, relationElements, bianYaoPositions);
@@ -144,7 +145,7 @@ export function updateGua() {
 
     // 執行算分邏輯，根據設定的順序
     mainGodResult = executeScoreCalculations(yaos, mainGodYaoPosition, originalLowerDizhi, originalUpperDizhi, changedLowerDizhi, changedUpperDizhi,
-        bianYaoPositions, relationElements, shouGua, shiPosition, yingPosition, isKongWang, isShi, isChanged, isFuShan, yaoPosition);
+        bianYaoPositions, relationElements, shouGua, shiPosition, yingPosition, isKongWang, isShi, isChanged, isFuShan, yaoPosition, otherShiDizhi);
 
     // 正確賦值
     isKongWang = mainGodResult.isKongWang;
@@ -152,6 +153,7 @@ export function updateGua() {
     isChanged = mainGodResult.isChanged;
     isFuShan = mainGodResult.isFuShan;
     yaoPosition = mainGodResult.yaoPosition;
+    otherShiDizhi = mainGodResult.otherShiDizhi;
 
     // 更新日辰分數 
     const { sunScore, isTomb, isExtinction } = updateSunScore(relationElements);
@@ -160,7 +162,7 @@ export function updateGua() {
     const moonScore = updateMoonScore(relationElements);
 
     // 更新天意分數
-    updateGodWillingScore(isKongWang, isShi, sunScore, moonScore, isChanged, isFuShan, isTomb, isExtinction);
+    updateGodWillingScore(isKongWang, isShi, sunScore, moonScore, isChanged, isFuShan, isTomb, isExtinction, otherShiDizhi);
 }
 
 // 原爻地支六親
@@ -474,7 +476,7 @@ document.addEventListener('scoreOrderChanged', function (event) {
 });
 // 執行算分邏輯計算，根據設定的順序
 function executeScoreCalculations(yaos, mainGodYaoPosition, originalLowerDizhi, originalUpperDizhi, changedLowerDizhi, changedUpperDizhi,
-    bianYaoPositions, relationElements, shouGua, shiPosition, yingPosition, isKongWang, isShi, isChanged, isFuShan, yaoPosition) {
+    bianYaoPositions, relationElements, shouGua, shiPosition, yingPosition, isKongWang, isShi, isChanged, isFuShan, yaoPosition, otherShiDizhi) {
 
     // 每次執行時都從localStorage獲取最新的保存順序，如果沒有則使用默認順序
     const savedConfigs = localStorage.getItem('scoreLogicConfigs');
@@ -517,6 +519,7 @@ function executeScoreCalculations(yaos, mainGodYaoPosition, originalLowerDizhi, 
                         isChanged = mainGodResult.isChanged;
                         isFuShan = mainGodResult.isFuShan;
                         yaoPosition = mainGodResult.yaoPosition;
+                        otherShiDizhi = mainGodResult.otherShiDizhi;
                     }
                 }
                 break;
@@ -543,5 +546,5 @@ function executeScoreCalculations(yaos, mainGodYaoPosition, originalLowerDizhi, 
         }
     });
 
-    return { isKongWang, isShi, isChanged, isFuShan, yaoPosition };
+    return { isKongWang, isShi, isChanged, isFuShan, yaoPosition, otherShiDizhi };
 }

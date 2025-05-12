@@ -64,7 +64,7 @@ export function calculateGreedyLifeScore() {
             }
         }
     });
-    console.log(movingYaos);
+
     // 如果動爻少於2個，無法構成貪生忘剋
     if (movingYaos.length < 2) {
         return;
