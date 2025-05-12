@@ -200,7 +200,11 @@ app.post('/api/generate-pdf', async (req, res) => {
         '--disable-gpu',
         '--no-zygote',
         '--single-process'
-      ]
+      ],
+      // 在Render环境中使用可执行路径
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium-browser',
+      // 如果在Render环境中，则忽略默认的Chromium下载
+      ignoreDefaultArgs: ['--disable-extensions']
     });
 
     // 使用遞迴方式處理所有記錄
@@ -332,7 +336,11 @@ app.post('/api/generate-jpeg', async (req, res) => {
         '--disable-gpu',
         '--no-zygote',
         '--single-process'
-      ]
+      ],
+      // 在Render环境中使用可执行路径
+      executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || '/usr/bin/chromium-browser',
+      // 如果在Render环境中，则忽略默认的Chromium下载
+      ignoreDefaultArgs: ['--disable-extensions']
     });
 
     // 使用遞迴方式處理所有記錄
