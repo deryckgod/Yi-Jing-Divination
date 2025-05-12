@@ -191,7 +191,17 @@ app.post('/api/generate-pdf', async (req, res) => {
       return res.status(400).send('無效的記錄數據');
     }
 
-    const browser = await puppeteer.launch({ headless: 'new' });
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--no-zygote',
+        '--single-process'
+      ]
+    });
 
     // 使用遞迴方式處理所有記錄
     const pdfBuffer = await generatePDFRecursively(browser, records, 0, null);
@@ -313,7 +323,17 @@ app.post('/api/generate-jpeg', async (req, res) => {
       return res.status(400).send('無效的記錄數據');
     }
 
-    const browser = await puppeteer.launch({ headless: 'new' });
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-dev-shm-usage',
+        '--disable-gpu',
+        '--no-zygote',
+        '--single-process'
+      ]
+    });
 
     // 使用遞迴方式處理所有記錄
     const images = await generateJPEGRecursively(browser, records, 0, []);
