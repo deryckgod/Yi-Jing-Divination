@@ -6,11 +6,12 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "archiver": "^5.3.1",
-    "body-parser": "^1.20.2",
-    "express": "^4.18.2",
+    "archiver": "^7.0.1",
+    "body-parser": "^2.2.0",
+    "express": "^5.1.0",
     "gua-record-api": "file:",
     "pdf-lib": "^1.17.1",
-    "puppeteer": "^21.3.8"
+    "pdfkit": "^0.17.1",
+    "puppeteer": "^24.8.2"
   }
 }
