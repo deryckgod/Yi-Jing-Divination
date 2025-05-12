@@ -2,7 +2,7 @@
  * 歷史記錄管理模塊
  * 處理卦象記錄的儲存、讀取、刪除和下載功能
  */
-const downloadFlag = false; // 設置為true以開放下載功能，設置為false以關閉下載功能
+const downloadFlag = true; // 設置為true以開放下載功能，設置為false以關閉下載功能
 
 // 初始化歷史記錄管理
 document.addEventListener('DOMContentLoaded', function () {
@@ -480,6 +480,10 @@ function downloadSelectedRecords() {
         Object.values(allRecords).forEach(dateRecords => {
             const record = dateRecords.find(r => r.id === recordId);
             if (record) {
+                // 確保記錄中的HTML內容是字符串
+                record.contentWrapperHTML = record.contentWrapperHTML || '';
+                record.parentHTML = record.parentHTML || '';
+                record.askInfo = record.askInfo || '';
                 selectedRecords.push(record);
             }
         });
@@ -489,6 +493,8 @@ function downloadSelectedRecords() {
         alert('未找到選中的記錄');
         return;
     }
+
+    console.log('準備下載的記錄:', selectedRecords);
 
     // 根據格式下載
     if (format === 'pdf') {
@@ -507,160 +513,55 @@ function downloadAsPDF(records) {
         return;
     }
 
-    // 創建一個臨時容器用於渲染記錄
-    const tempContainer = document.createElement('div');
-    tempContainer.className = 'temp-preview-container';
-    tempContainer.style.position = 'absolute';
-    tempContainer.style.left = '-9999px';
-    tempContainer.style.width = '800px'; // 設定固定寬度以確保圖片質量
-    document.body.appendChild(tempContainer);
+    // 顯示下載中提示
+    const downloadingMsg = document.createElement('div');
+    downloadingMsg.className = 'downloading-message';
+    downloadingMsg.textContent = '正在生成PDF，請稍候...';
+    downloadingMsg.style.position = 'fixed';
+    downloadingMsg.style.top = '50%';
+    downloadingMsg.style.left = '50%';
+    downloadingMsg.style.transform = 'translate(-50%, -50%)';
+    downloadingMsg.style.padding = '15px 20px';
+    downloadingMsg.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    downloadingMsg.style.color = 'white';
+    downloadingMsg.style.borderRadius = '5px';
+    downloadingMsg.style.zIndex = '1000';
+    document.body.appendChild(downloadingMsg);
 
-    // 處理每條記錄
-    const processRecord = (index) => {
-        if (index >= records.length) {
-            // 所有記錄處理完畢，移除臨時容器
-            document.body.removeChild(tempContainer);
-            return;
-        }
-
-        const record = records[index];
-
-        // 清空臨時容器
-        tempContainer.innerHTML = '';
-
-        // 創建記錄標題
-        const titleDiv = document.createElement('div');
-        titleDiv.className = 'record-title';
-        titleDiv.style.padding = '10px';
-        titleDiv.style.backgroundColor = '#f8f8f8';
-        titleDiv.style.borderBottom = '1px solid #ddd';
-        titleDiv.style.fontWeight = 'bold';
-        titleDiv.style.textAlign = 'center';
-
-        // 格式化日期時間
-        const recordDate = new Date(record.timestamp);
-        const formattedDate = `${recordDate.getFullYear()}-${(recordDate.getMonth() + 1).toString().padStart(2, '0')}-${recordDate.getDate().toString().padStart(2, '0')} ${recordDate.toLocaleTimeString()}`;
-        titleDiv.textContent = `卦象記錄 (${formattedDate})`;
-
-        tempContainer.appendChild(titleDiv);
-
-        // 添加記錄內容
-        const contentDiv = document.createElement('div');
-        contentDiv.className = 'record-preview-container';
-        contentDiv.style.padding = '15px';
-        contentDiv.style.backgroundColor = 'white';
-        contentDiv.innerHTML = `        
-            <div class="preview-content">
-                ${record.contentWrapperHTML}
-                ${record.parentHTML}
-            </div>
-        `;
-        tempContainer.appendChild(contentDiv);
-
-        // 處理原爻值顯示
-        if (record.yaoValues && Array.isArray(record.yaoValues)) {
-            const previewParent = contentDiv.querySelector('.parent');
-            if (previewParent) {
-                const selects = previewParent.querySelectorAll('.original-yao');
-                selects.forEach((select, idx) => {
-                    if (record.yaoValues[idx] !== undefined) {
-                        // 創建一個div元素來替換select
-                        const div = document.createElement('div');
-                        div.className = 'original-yao-text';
-                        div.textContent = record.yaoValues[idx];
-                        div.style.padding = '2px 5px';
-                        div.style.border = '1px solid black';
-                        div.style.backgroundColor = '#f8f8f8';
-                        div.style.display = 'inline-block';
-                        div.style.minWidth = '20px';
-                        div.style.textAlign = 'center';
-                        div.style.writingMode = 'horizontal-tb';
-                        div.style.textOrientation = 'mixed';
-                        div.style.gridColumnStart = 4;
-                        div.style.gridRowStart = 14 + idx;
-                        div.style.fontFamily = '標楷體, KaiTi, serif';
-
-                        // 替換select元素
-                        select.parentNode.replaceChild(div, select);
-                    }
-                });
-
-                // 處理六親選擇器
-                const sixRelationSelect = contentDiv.querySelector('.six-relation-select');
-                if (sixRelationSelect) {
-                    const sixRelationValue = sixRelationSelect.value;
-                    const div = document.createElement('div');
-                    div.className = 'original-yao-text';
-                    div.textContent = sixRelationValue;
-                    div.style.padding = '2px 5px';
-                    div.style.backgroundColor = '#f8f8f8';
-                    div.style.display = 'inline-block';
-                    div.style.minWidth = '20px';
-                    div.style.textAlign = 'center';
-                    div.style.writingMode = 'horizontal-tb';
-                    div.style.textOrientation = 'mixed';
-                    div.style.gridColumnStart = 6;
-                    div.style.gridRowStart = 7;
-                    div.style.fontFamily = '標楷體, KaiTi, serif';
-
-                    // 替換select元素
-                    sixRelationSelect.parentNode.replaceChild(div, sixRelationSelect);
-                }
+    fetch('http://localhost:3000/api/generate-pdf', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ records })
+    })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error(`下載 PDF 失敗: ${res.status} ${res.statusText}`);
             }
-        }
-
-        // 使用dom-to-image-more將容器轉換為圖片
-        domtoimage.toJpeg(tempContainer, {
-            quality: 0.95,
-            bgcolor: 'white',
-            style: {
-                'transform': 'none'
+            return res.blob();
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${records[0].askInfo}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            // 釋放URL對象
+            window.URL.revokeObjectURL(url);
+            // 移除下載提示
+            document.body.removeChild(downloadingMsg);
+        })
+        .catch(err => {
+            console.error('PDF下載錯誤:', err);
+            alert(`下載PDF時發生錯誤: ${err.message}`);
+            // 移除下載提示
+            if (document.body.contains(downloadingMsg)) {
+                document.body.removeChild(downloadingMsg);
             }
-        }).then(dataUrl => {
-            // 使用jsPDF創建PDF文檔
-            const { jsPDF } = window.jspdf;
-            const pdf = new jsPDF({
-                orientation: 'portrait',
-                unit: 'mm',
-                format: 'a4'
-            });
-
-            // 創建臨時圖片以獲取尺寸
-            const img = new Image();
-            img.src = dataUrl;
-            img.onload = function () {
-                // 計算PDF頁面尺寸
-                const pageWidth = pdf.internal.pageSize.getWidth();
-                const pageHeight = pdf.internal.pageSize.getHeight();
-                const imgWidth = img.width;
-                const imgHeight = img.height;
-                const ratio = Math.min(pageWidth / imgWidth, pageHeight / imgHeight);
-                const imgX = (pageWidth - imgWidth * ratio) / 2;
-                const imgY = 10; // 頂部留出一些空間
-
-                // 添加圖片到PDF
-                pdf.addImage(dataUrl, 'JPEG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
-
-                // 保存PDF
-                pdf.save(`卦象記錄_${record.dateKey}_${index + 1}.pdf`);
-
-                // 處理下一條記錄
-                setTimeout(() => {
-                    processRecord(index + 1);
-                }, 500); // 添加延遲以避免瀏覽器阻止多次下載
-            };
-        }).catch(error => {
-            console.error('生成PDF時發生錯誤:', error);
-            alert(`生成PDF時發生錯誤: ${error.message}`);
-            // 即使出錯也繼續處理下一條記錄
-            setTimeout(() => {
-                processRecord(index + 1);
-            }, 500);
         });
-    };
-
-    // 開始處理第一條記錄
-    processRecord(0);
 }
 
 /**
@@ -673,139 +574,77 @@ function downloadAsJPEG(records) {
         return;
     }
 
-    // 創建一個臨時容器用於渲染記錄
-    const tempContainer = document.createElement('div');
-    tempContainer.className = 'temp-preview-container';
-    tempContainer.style.position = 'absolute';
-    tempContainer.style.left = '-9999px';
-    tempContainer.style.width = '800px'; // 設定固定寬度以確保圖片質量
-    document.body.appendChild(tempContainer);
+    // 顯示下載中提示
+    const downloadingMsg = document.createElement('div');
+    downloadingMsg.className = 'downloading-message';
+    downloadingMsg.textContent = '正在生成圖片，請稍候...';
+    downloadingMsg.style.position = 'fixed';
+    downloadingMsg.style.top = '50%';
+    downloadingMsg.style.left = '50%';
+    downloadingMsg.style.transform = 'translate(-50%, -50%)';
+    downloadingMsg.style.padding = '15px 20px';
+    downloadingMsg.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+    downloadingMsg.style.color = 'white';
+    downloadingMsg.style.borderRadius = '5px';
+    downloadingMsg.style.zIndex = '1000';
+    document.body.appendChild(downloadingMsg);
 
-    // 處理每條記錄
-    const processRecord = (index) => {
-        if (index >= records.length) {
-            // 所有記錄處理完畢，移除臨時容器
-            document.body.removeChild(tempContainer);
-            return;
-        }
+    fetch('http://localhost:3000/api/generate-jpeg', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ records })
+    })
+        .then(res => {
+            if (!res.ok) {
+                throw new Error(`下載 JPEG 失敗: ${res.status} ${res.statusText}`);
+            }
+            return res.blob();
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
 
-        const record = records[index];
+            // 根據記錄數量和內容類型決定檔案名稱和副檔名
+            const contentType = blob.type;
+            let fileName;
 
-        // 清空臨時容器
-        tempContainer.innerHTML = '';
+            if (records.length === 1) {
+                // 單個記錄，使用記錄的askInfo作為檔案名
+                fileName = `${records[0].askInfo || '卦象記錄'}.jpeg`;
+            } else {
+                // 多個記錄，使用當前日期作為檔案名
+                const today = new Date();
+                const dateStr = `${today.getFullYear()}${(today.getMonth() + 1).toString().padStart(2, '0')}${today.getDate().toString().padStart(2, '0')}`;
+                fileName = `卦象記錄_${dateStr}`;
 
-        // 創建記錄標題
-        const titleDiv = document.createElement('div');
-        titleDiv.className = 'record-title';
-        titleDiv.style.padding = '10px';
-        titleDiv.style.backgroundColor = '#f8f8f8';
-        titleDiv.style.borderBottom = '1px solid #ddd';
-        titleDiv.style.fontWeight = 'bold';
-        titleDiv.style.textAlign = 'center';
-
-        // 格式化日期時間
-        const recordDate = new Date(record.timestamp);
-        const formattedDate = `${recordDate.getFullYear()}-${(recordDate.getMonth() + 1).toString().padStart(2, '0')}-${recordDate.getDate().toString().padStart(2, '0')} ${recordDate.toLocaleTimeString()}`;
-        titleDiv.textContent = `卦象記錄 (${formattedDate})`;
-
-        tempContainer.appendChild(titleDiv);
-
-        // 添加記錄內容
-        const contentDiv = document.createElement('div');
-        contentDiv.className = 'record-preview-container';
-        contentDiv.style.padding = '15px';
-        contentDiv.style.backgroundColor = 'white';
-        contentDiv.innerHTML = `        
-            <div class="preview-content">
-                ${record.contentWrapperHTML}
-                ${record.parentHTML}
-            </div>
-        `;
-
-        // 處理原爻值顯示
-        if (record.yaoValues && Array.isArray(record.yaoValues)) {
-            const previewParent = contentDiv.querySelector('.parent');
-            if (previewParent) {
-                const selects = previewParent.querySelectorAll('.original-yao');
-                selects.forEach((select, idx) => {
-                    if (record.yaoValues[idx] !== undefined) {
-                        // 創建一個div元素來替換select
-                        const div = document.createElement('div');
-                        div.className = 'original-yao-text';
-                        div.textContent = record.yaoValues[idx];
-                        div.style.padding = '2px 5px';
-                        div.style.border = '1px solid black';
-                        div.style.backgroundColor = '#f8f8f8';
-                        div.style.display = 'inline-block';
-                        div.style.minWidth = '20px';
-                        div.style.textAlign = 'center';
-                        div.style.writingMode = 'horizontal-tb';
-                        div.style.textOrientation = 'mixed';
-                        div.style.gridColumnStart = 4;
-                        div.style.gridRowStart = 14 + idx;
-                        div.style.fontFamily = '標楷體, KaiTi, serif';
-
-                        // 替換select元素
-                        select.parentNode.replaceChild(div, select);
-                    }
-                });
-
-                // 處理六親選擇器
-                const sixRelationSelect = contentDiv.querySelector('.six-relation-select');
-                if (sixRelationSelect) {
-                    const sixRelationValue = sixRelationSelect.value;
-                    const div = document.createElement('div');
-                    div.className = 'original-yao-text';
-                    div.textContent = sixRelationValue;
-                    div.style.padding = '2px 5px';
-                    div.style.backgroundColor = '#f8f8f8';
-                    div.style.display = 'inline-block';
-                    div.style.minWidth = '20px';
-                    div.style.textAlign = 'center';
-                    div.style.writingMode = 'horizontal-tb';
-                    div.style.textOrientation = 'mixed';
-                    div.style.gridColumnStart = 6;
-                    div.style.gridRowStart = 7;
-                    div.style.fontFamily = '標楷體, KaiTi, serif';
-
-                    // 替換select元素
-                    sixRelationSelect.parentNode.replaceChild(div, sixRelationSelect);
+                // 根據內容類型設置正確的副檔名
+                if (contentType === 'application/zip') {
+                    fileName += '.zip';
+                } else {
+                    fileName += '.jpeg';
                 }
             }
-        }
 
-        // 使用dom-to-image-more將容器轉換為圖片
-        domtoimage.toJpeg(tempContainer, {
-            quality: 0.95,
-            bgcolor: 'white',
-            style: {
-                'transform': 'none'
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            // 釋放URL對象
+            window.URL.revokeObjectURL(url);
+            // 移除下載提示
+            document.body.removeChild(downloadingMsg);
+        })
+        .catch(err => {
+            console.error('JPEG下載錯誤:', err);
+            alert(`下載圖片時發生錯誤: ${err.message}`);
+            // 移除下載提示
+            if (document.body.contains(downloadingMsg)) {
+                document.body.removeChild(downloadingMsg);
             }
-        }).then(dataUrl => {
-            // 創建下載連結
-            const link = document.createElement('a');
-            link.href = dataUrl;
-            link.download = `卦象記錄_${record.dateKey}_${index + 1}.jpg`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-            // 處理下一條記錄
-            setTimeout(() => {
-                processRecord(index + 1);
-            }, 500); // 添加延遲以避免瀏覽器阻止多次下載
-        }).catch(error => {
-            console.error('生成圖片時發生錯誤:', error);
-            alert(`生成圖片時發生錯誤: ${error.message}`);
-            // 即使出錯也繼續處理下一條記錄
-            setTimeout(() => {
-                processRecord(index + 1);
-            }, 500);
         });
-    };
-
-    // 開始處理第一條記錄
-    processRecord(0);
 }
 
 /**

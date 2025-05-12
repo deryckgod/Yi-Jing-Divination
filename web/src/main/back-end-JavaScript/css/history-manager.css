@@ -1,0 +1,287 @@
+/**
+ * 歷史記錄管理樣式
+ */
+
+/* 歷史記錄按鈕 */
+.history-btn {
+    position: fixed;
+    left: 20px;
+    bottom: 0%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.history-btn:hover {
+    background-color: #357abd;
+    transform: translateY(-50%) scale(1.05);
+}
+
+/* 歷史記錄遮罩層 */
+.history-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 200;
+    display: none;
+}
+
+.history-overlay.visible {
+    display: block;
+}
+
+/* 歷史記錄容器 */
+.history-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 800px;
+    height: 80%;
+    max-height: 600px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 300;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.history-container.visible {
+    display: flex;
+}
+
+.history-records {
+    overflow-y: auto;
+}
+
+/* 歷史記錄標題欄 */
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #4a90e2;
+    color: white;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.history-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.history-close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+/* 歷史記錄工具欄 */
+.history-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.toolbar-left,
+.toolbar-right {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.history-toolbar button {
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    background-color: #f8f8f8;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.history-toolbar button:hover {
+    background-color: #e8e8e8;
+}
+
+.history-toolbar select {
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+/* 歷史記錄內容區 */
+.history-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+/* 無記錄提示 */
+.no-records {
+    text-align: center;
+    padding: 40px 0;
+    color: #888;
+    font-size: 16px;
+}
+
+/* 日期區塊 */
+.date-section {
+    margin-bottom: 20px;
+}
+
+.date-section h3 {
+    margin: 0 0 10px 0;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+    font-size: 16px;
+    margin-left: 10px;
+}
+
+/* 記錄列表 */
+.records-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+/* 記錄項目 */
+.record-item {
+    border: 1px solid #eee;
+    border-radius: 6px;
+    overflow: hidden;
+    transition: all 0.2s ease;
+}
+
+.record-item:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.record-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #eee;
+}
+
+.record-time {
+    font-size: 14px;
+    color: #666;
+}
+
+.record-preview {
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fafafa;
+    cursor: pointer;
+    overflow: hidden;
+    position: relative;
+}
+
+.preview-icon {
+    font-size: 24px;
+    color: #4a90e2;
+}
+
+.preview-loading {
+    font-size: 14px;
+    color: #666;
+    position: absolute;
+}
+
+/* 記錄預覽容器 */
+#record-preview-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 900px;
+    height: 90%;
+    max-height: 700px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    z-index: 400;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#record-preview-container.visible {
+    display: flex;
+}
+
+.preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #4a90e2;
+    color: white;
+}
+
+.preview-header h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.preview-close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.preview-content {
+    overflow-y: auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin: 0;
+    padding: 2px;
+    font-family: "標楷體", KaiTi, serif;
+    position: relative;
+}
+
+/* 預覽內容中的卦象樣式調整 */
+.preview-content .god-willing,
+.preview-content .parent {
+    /* margin: 0 auto 20px; */
+    /* transform: scale(0.9); */
+    transform-origin: top center;
+}

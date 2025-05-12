@@ -1,7 +1,7 @@
 .illustate-score {
     display: grid;
     grid-template-columns: 1fr;
-    grid-auto-rows: minmax(40px, auto);
+    /* grid-auto-rows: minmax(40px, auto); */
     border: 1px solid black;
     background-color: rgb(255, 255, 255);
     /* 在god-willing左側時的間距 */
@@ -41,17 +41,20 @@
 .totalScore {
     font-weight: bold;
     color: red;
+    font-size: 18px !important;
 }
 
 .score-item {
     color: #333;
     border: #333 solid 1px;
+    font-size: 13px !important;
 }
 
 /* 響應式布局 */
 @media screen and (max-width: 900px) {
     .illustate-score {
         margin-right: 0;
+        max-height: 600;
     }
 
     .illustate-score>div {
@@ -59,29 +62,8 @@
     }
 }
 
-/* 在較大屏幕上，將illustrate-score和god-willing並排顯示 */
-@media screen and (min-width: 769px) {
-    .content-wrapper {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-    }
-}
-
-/* 在較小屏幕上，將illustrate-score放在god-willing下方 */
-@media screen and (max-width: 768px) {
-    .content-wrapper {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
-}
-
-@media (max-width: 600px) {
-    .illustate-score>div {
-        font-size: 14px;
-        min-width: 10px;
-        min-height: 18px;
-        padding: 1px;
-    }
+.content-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }

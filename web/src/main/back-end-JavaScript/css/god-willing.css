@@ -1,5 +1,5 @@
 .god-willing {
-    display: grid;
+    /* display: grid; */
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(16, 1fr);
     border: 1px solid black;
@@ -111,7 +111,6 @@
         width: auto;
         grid-template-columns: 1fr 1fr;
         font-size: 18px;
-        padding: 2vw;
         margin-left: auto;
     }
 

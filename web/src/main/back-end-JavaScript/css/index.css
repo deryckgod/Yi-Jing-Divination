@@ -1,0 +1,878 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    margin: 0;
+    padding: 2px;
+    font-family: "標楷體", KaiTi, serif;
+    position: relative;
+    /* transform-origin: top; */
+}
+
+/* 空亡沖標記樣式 */
+.markup {
+    font-size: 15px;
+    display: flex;
+    width: 100%;
+    writing-mode: horizontal-tb;
+}
+
+.markup span {
+    align-self: flex-end;
+}
+
+.markup-both {
+    justify-content: space-between;
+}
+
+.markup-kong {
+    justify-content: flex-start;
+}
+
+.markup-clash {
+    justify-content: flex-end;
+}
+
+/* 響應式調整標記字體大小 */
+@media screen and (max-width: 768px) {
+    .markup {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .markup {
+        font-size: 10px;
+    }
+}
+
+.parent {
+    max-width: 500px;
+    width: 90%;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    /* grid-template-rows: repeat(17, 1fr); */
+    border: 1px solid black;
+    /* 添加外邊框 */
+    background-color: rgb(255, 255, 255);
+    /* 設置網格線顏色 */
+    margin-bottom: 20px;
+}
+
+/* 為所有單元格添加邊框和垂直文字排列 */
+.parent>div {
+    border: 1px solid black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    writing-mode: vertical-rl;
+    /* 垂直文字方向，從右到左 */
+    text-orientation: mixed;
+    /* 允許漢字自然垂直排列 */
+    padding: 5px;
+    box-sizing: border-box;
+    min-height: 40px;
+    min-width: 30px;
+    font-size: 30px;
+    overflow: hidden;
+    background-color: white;
+    /* 設置單元格背景為白色 */
+}
+
+.div1 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 8;
+    grid-row-start: 1;
+}
+
+.div2 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 7;
+    grid-row-start: 1;
+}
+
+.div3 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 6;
+    grid-row-start: 1;
+}
+
+.div4 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 5;
+    grid-row-start: 1;
+}
+
+.div5 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 4;
+    grid-row-start: 1;
+}
+
+.div6 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 3;
+    grid-row-start: 1;
+}
+
+.div7 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 2;
+    grid-row-start: 1;
+}
+
+.div8 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 1;
+    grid-row-start: 1;
+}
+
+.div9 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 8;
+    grid-row-start: 3;
+}
+
+.div10 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 7;
+    grid-row-start: 3;
+}
+
+.div12 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 6;
+    grid-row-start: 3;
+}
+
+.div13 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 5;
+    grid-row-start: 3;
+}
+
+.div14 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 4;
+    grid-row-start: 3;
+}
+
+.div15 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 3;
+    grid-row-start: 3;
+}
+
+.div16 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 2;
+    grid-row-start: 3;
+}
+
+.div17 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 1;
+    grid-row-start: 3;
+}
+
+.div18 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 8;
+    grid-row-start: 5;
+}
+
+.div19 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 7;
+    grid-row-start: 5;
+}
+
+.div20 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 6;
+    grid-row-start: 5;
+}
+
+.div21 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 5;
+    grid-row-start: 5;
+}
+
+.div22 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 4;
+    grid-row-start: 5;
+}
+
+.div23 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 3;
+    grid-row-start: 5;
+}
+
+.div24 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 2;
+    grid-row-start: 5;
+}
+
+.div25 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 1;
+    grid-row-start: 5;
+}
+
+.div26 {
+    grid-row: span 3 / span 3;
+    grid-column-start: 8;
+    grid-row-start: 7;
+}
+
+.div27 {
+    grid-row: span 3 / span 3;
+    grid-column-start: 7;
+    grid-row-start: 7;
+}
+
+.div28 {
+    font-size: 25px;
+    text-align: center;
+    grid-row: span 3 / span 3;
+    grid-column-start: 6;
+    grid-row-start: 7;
+}
+
+/* 
+.six-relation-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+} */
+
+.six-relation-item-upper {
+    flex: 1 1 0%;
+    text-align: center;
+    min-width: 0;
+    padding: 0 0px;
+    top: 0px;
+    margin-bottom: 10px;
+}
+
+.six-relation-item-lower {
+    flex: 1 1 0%;
+    text-align: center;
+    min-width: 0;
+    padding: 0 0px;
+    margin-top: 10px;
+    bottom: 0px;
+}
+
+.six-relation-select {
+    top: 0px;
+    font-size: 25px;
+    text-align: center;
+    grid-row: span 3 / span 3;
+    grid-column-start: 6;
+    grid-row-start: 7;
+    writing-mode: horizontal-tb;
+}
+
+.div29 {
+    grid-row: span 3 / span 3;
+    grid-column-start: 5;
+    grid-row-start: 7;
+}
+
+.div30 {
+    grid-row: span 3 / span 3;
+    grid-column-start: 4;
+    grid-row-start: 7;
+}
+
+.div31 {
+    grid-row: span 3 / span 3;
+    grid-column-start: 3;
+    grid-row-start: 7;
+}
+
+.div32 {
+    grid-row: span 3 / span 3;
+    grid-column-start: 2;
+    grid-row-start: 7;
+}
+
+.div33 {
+    grid-row: span 3 / span 3;
+    grid-column-start: 1;
+    grid-row-start: 7;
+}
+
+.div34 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 8;
+    grid-row-start: 10;
+}
+
+.div35 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 7;
+    grid-row-start: 10;
+}
+
+.div36 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 6;
+    grid-row-start: 10;
+}
+
+.div37 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 5;
+    grid-row-start: 10;
+}
+
+.div38 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 4;
+    grid-row-start: 10;
+}
+
+.div39 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 3;
+    grid-row-start: 10;
+}
+
+.div40 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 2;
+    grid-row-start: 10;
+}
+
+.div41 {
+    grid-row: span 2 / span 2;
+    grid-column-start: 1;
+    grid-row-start: 10;
+}
+
+.div42 {
+    grid-column-start: 8;
+    grid-row-start: 12;
+}
+
+.div43 {
+    grid-column-start: 8;
+    grid-row-start: 13;
+}
+
+.div44 {
+    grid-column-start: 8;
+    grid-row-start: 14;
+}
+
+.div45 {
+    grid-column-start: 8;
+    grid-row-start: 15;
+}
+
+.div46 {
+    grid-column-start: 8;
+    grid-row-start: 16;
+}
+
+.div47 {
+    grid-column-start: 8;
+    grid-row-start: 17;
+}
+
+.div48 {
+    grid-column-start: 7;
+    grid-row-start: 12;
+}
+
+.div49 {
+    grid-column-start: 7;
+    grid-row-start: 13;
+}
+
+.div50 {
+    grid-column-start: 7;
+    grid-row-start: 14;
+}
+
+.div51 {
+    grid-column-start: 7;
+    grid-row-start: 15;
+}
+
+.div52 {
+    grid-column-start: 7;
+    grid-row-start: 16;
+}
+
+.div53 {
+    grid-column-start: 7;
+    grid-row-start: 17;
+}
+
+.div54 {
+    grid-column-start: 6;
+    grid-row-start: 12;
+}
+
+.div55 {
+    grid-column-start: 6;
+    grid-row-start: 13;
+}
+
+.div56 {
+    grid-column-start: 6;
+    grid-row-start: 14;
+}
+
+.div57 {
+    grid-column-start: 6;
+    grid-row-start: 15;
+}
+
+.div58 {
+    grid-column-start: 6;
+    grid-row-start: 16;
+}
+
+.div59 {
+    grid-column-start: 6;
+    grid-row-start: 17;
+}
+
+.div60 {
+    grid-column-start: 5;
+    grid-row-start: 12;
+}
+
+.div61 {
+    grid-column-start: 5;
+    grid-row-start: 13;
+}
+
+.div62 {
+    grid-column-start: 5;
+    grid-row-start: 14;
+}
+
+.div63 {
+    grid-column-start: 5;
+    grid-row-start: 15;
+}
+
+.div64 {
+    grid-column-start: 5;
+    grid-row-start: 16;
+}
+
+.div65 {
+    grid-column-start: 5;
+    grid-row-start: 17;
+}
+
+.div66 {
+    grid-column-start: 4;
+    grid-row-start: 12;
+}
+
+.div67 {
+    grid-column-start: 4;
+    grid-row-start: 13;
+}
+
+.div68 {
+    grid-column-start: 4;
+    grid-row-start: 14;
+}
+
+.div69 {
+    grid-column-start: 4;
+    grid-row-start: 15;
+}
+
+.div70 {
+    grid-column-start: 4;
+    grid-row-start: 16;
+}
+
+.div71 {
+    grid-column-start: 4;
+    grid-row-start: 17;
+}
+
+.div72 {
+    grid-column-start: 3;
+    grid-row-start: 12;
+    writing-mode: horizontal-tb !important;
+}
+
+.div73 {
+    grid-column-start: 3;
+    grid-row-start: 13;
+    writing-mode: horizontal-tb !important;
+}
+
+.div74 {
+    grid-column-start: 3;
+    grid-row-start: 14;
+    writing-mode: horizontal-tb !important;
+}
+
+.div75 {
+    grid-column-start: 3;
+    grid-row-start: 15;
+    writing-mode: horizontal-tb !important;
+}
+
+.div76 {
+    grid-column-start: 3;
+    grid-row-start: 16;
+    writing-mode: horizontal-tb !important;
+}
+
+.div77 {
+    grid-column-start: 3;
+    grid-row-start: 17;
+    writing-mode: horizontal-tb !important;
+}
+
+.div78 {
+    grid-column-start: 2;
+    grid-row-start: 12;
+}
+
+.div79 {
+    grid-column-start: 2;
+    grid-row-start: 13;
+}
+
+.div80 {
+    grid-column-start: 2;
+    grid-row-start: 14;
+}
+
+.div81 {
+    grid-column-start: 2;
+    grid-row-start: 15;
+}
+
+.div82 {
+    grid-column-start: 2;
+    grid-row-start: 16;
+}
+
+.div83 {
+    grid-column-start: 2;
+    grid-row-start: 17;
+}
+
+.div84 {
+    grid-column-start: 1;
+    grid-row-start: 12;
+}
+
+.div85 {
+    grid-column-start: 1;
+    grid-row-start: 13;
+}
+
+.div86 {
+    grid-column-start: 1;
+    grid-row-start: 14;
+}
+
+.div87 {
+    grid-column-start: 1;
+    grid-row-start: 15;
+}
+
+.div88 {
+    grid-column-start: 1;
+    grid-row-start: 16;
+}
+
+.div89 {
+    grid-column-start: 1;
+    grid-row-start: 17;
+}
+
+.original-yao {
+    font-size: 30px;
+    text-align: center;
+    appearance: none;
+    /* 移除預設的下拉箭頭樣式 */
+    padding-right: 15px;
+    /* 為自定義箭頭留出空間 */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>');
+    /* 自定義下拉箭頭 */
+    background-repeat: no-repeat;
+    background-position: right 3px center;
+    background-size: 15px;
+}
+
+.hidden-god {
+    font-size: 15px !important;
+    /* !important => 不受父類別影響 */
+    text-align: center;
+    writing-mode: horizontal-tb;
+}
+
+.query-button {
+    grid-row-start: 18;
+    width: 100%;
+    padding: 8px 16px;
+    font-family: 標楷體;
+    font-size: 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: 1px solid black;
+    cursor: pointer;
+    grid-column: span 8 / span 8;
+}
+
+.store-button {
+    grid-row-start: 19;
+    width: 100%;
+    padding: 8px 16px;
+    font-family: 標楷體;
+    font-size: 20px;
+    background-color: #002df8;
+    color: white;
+    border: 1px solid black;
+    cursor: pointer;
+    grid-column: span 8 / span 8;
+}
+
+.askInfo {
+    grid-column-start: 9;
+    grid-column: span 2 / span 2;
+    grid-row-start: 1;
+    grid-row: span 11 / span 11;
+    border: 1px solid black;
+    transform-origin: top right !important;
+    writing-mode: vertical-rl !important;
+    text-orientation: upright !important;
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+    padding: 10px !important;
+    overflow-wrap: break-word !important;
+    font-size: 30px !important;
+    background-color: white;
+    resize: none;
+    font-family: "標楷體", KaiTi, serif;
+}
+
+textarea.askInfo::placeholder {
+    color: #888;
+}
+
+.first-yao {
+    font-size: 10px !important;
+    text-align: center;
+    grid-column-start: 9;
+    grid-column: span 2 / span 2;
+    grid-row-start: 17;
+    writing-mode: horizontal-tb !important;
+}
+
+.second-yao {
+    font-size: 10px !important;
+    text-align: center;
+    grid-column-start: 9;
+    grid-column: span 2 / span 2;
+    grid-row-start: 16;
+    writing-mode: horizontal-tb !important;
+}
+
+.third-yao {
+    font-size: 10px !important;
+    text-align: center;
+    grid-column-start: 9;
+    grid-column: span 2 / span 2;
+    grid-row-start: 15;
+    writing-mode: horizontal-tb !important;
+}
+
+.fourth-yao {
+    font-size: 10px !important;
+    text-align: center;
+    grid-column-start: 9;
+    grid-column: span 2 / span 2;
+    grid-row-start: 14;
+    writing-mode: horizontal-tb !important;
+}
+
+.fifth-yao {
+    font-size: 10px !important;
+    text-align: center;
+    grid-column-start: 9;
+    grid-column: span 2 / span 2;
+    grid-row-start: 13;
+    writing-mode: horizontal-tb !important;
+}
+
+.sixth-yao {
+    font-size: 10px !important;
+    text-align: center;
+    grid-column-start: 9;
+    grid-column: span 2 / span 2;
+    grid-row-start: 12;
+    writing-mode: horizontal-tb !important;
+}
+
+@media (max-width: 900px) {
+    .body {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .record-preview-content {
+        page-break-after: always;
+        margin-bottom: 30px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .record-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        text-align: center;
+        width: 100%;
+    }
+
+    .record-preview-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .preview-content {
+        width: 100%;
+    }
+
+    .askInfo {
+        display: block;
+        width: 100%;
+        margin-bottom: 15px;
+        font-size: 16px;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    /* 上面是A4設定 */
+    .parent {
+        width: 500vw;
+        grid-template-columns: repeat(10, 1fr);
+        font-size: 18px;
+    }
+
+    .parent>div,
+    .parent select {
+        font-size: 18px;
+        min-width: 20px;
+        min-height: 28px;
+    }
+
+    .original-yao {
+        font-size: 18px;
+        background-size: 8px;
+        padding-right: 12px;
+        background-position: right 2px center;
+    }
+
+    .askInfo {
+        width: auto;
+        font-size: 18px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .parent {
+        max-width: 300vw;
+        width: 300vw;
+        grid-template-columns: repeat(10, 1fr);
+        font-size: 14px;
+    }
+
+    .parent>div,
+    .parent select {
+        font-size: 14px;
+        min-width: 16px;
+        min-height: 24px;
+    }
+
+    .original-yao {
+        font-size: 14px;
+        background-size: 6px;
+        padding-right: 8px;
+        background-position: right 0px center;
+        padding-left: 2px;
+    }
+
+    .query-button,
+    .store-button {
+        font-size: 14px;
+        padding: 4px 8px;
+    }
+
+    .first-yao,
+    .second-yao,
+    .third-yao,
+    .fourth-yao,
+    .fifth-yao,
+    .sixth-yao,
+    .hidden-god {
+        font-size: 10px !important;
+    }
+
+    .askInfo {
+        width: auto;
+        font-size: 14px !important;
+    }
+}
+
+.markup {
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+    border-radius: 50%;
+    padding: 0 2px;
+    border: none;
+    justify-content: space-between;
+}
+
+/* 視覺標記模式下的紅色圓圈和藍色底線可由 JS 動態加上 style 或 class，這裡只設基本樣式 */
+
+@media (max-width: 600px) {
+    .markup {
+        font-size: 12px;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 900px) {
+    .markup {
+        font-size: 14px;
+    }
+}
+
+@media (min-width: 901px) {
+    .markup {
+        font-size: 15px;
+    }
+}

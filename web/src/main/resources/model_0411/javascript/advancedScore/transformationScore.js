@@ -125,8 +125,8 @@ export function calculateTransformationScore(originalDizhi, changeDizhi, index, 
                 transformationType = '回頭剋';
                 scoreMultiplier = 0.1; // 分數*10%
 
-                // 例外情況：用神的六親如果是回頭剋，則分數直接為-15，因可能"沖散"，故沒與化空、空化空一起寫
-                if (relation === '用神') {
+                // 例外情況：用神的六親如果是回頭剋且原爻不空亡，則分數直接為-15，因可能"沖散"，故沒與化空、空化空一起寫
+                if (relation === '用神' && !isKongWang) {
                     score = -15;
                     scoreMultiplier = 1;
                 }
