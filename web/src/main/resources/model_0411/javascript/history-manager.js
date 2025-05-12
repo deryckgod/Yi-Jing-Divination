@@ -528,7 +528,7 @@ function downloadAsPDF(records) {
     downloadingMsg.style.zIndex = '1000';
     document.body.appendChild(downloadingMsg);
 
-    fetch('http://localhost:3000/api/generate-pdf', {
+    fetch('https://yi-jing-divination.vercel.app/api/generate-pdf', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -589,7 +589,7 @@ function downloadAsJPEG(records) {
     downloadingMsg.style.zIndex = '1000';
     document.body.appendChild(downloadingMsg);
 
-    fetch('http://localhost:3000/api/generate-jpeg', {
+    fetch('https://yi-jing-divination.vercel.app/api/generate-jpeg', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
