@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "postinstall": "node -e \"try { require('puppeteer').launch({executablePath: '/usr/bin/chromium-browser'}) } catch (e) { console.log('Puppeteer检查失败，但继续安装') }\""
+    "start": "node server.js"
   },
   "dependencies": {
     "archiver": "^7.0.1",
@@ -14,11 +13,5 @@
     "pdf-lib": "^1.17.1",
     "pdfkit": "^0.17.1",
     "puppeteer": "^24.8.2"
-  },
-  "engines": {
-    "node": ">=16"
-  },
-  "puppeteerOptions": {
-    "executablePath": "/usr/bin/chromium-browser"
   }
 }
