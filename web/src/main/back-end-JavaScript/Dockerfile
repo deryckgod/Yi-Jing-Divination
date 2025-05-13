@@ -33,7 +33,7 @@ ENV PUPPETEER_NO_SANDBOX=true
 
 # 複製 package.json 和 package-lock.json (如果存在)
 # 這樣可以利用 Docker 的層快取機制，只有當這些文件變更時才重新安裝依賴
-COPY package*.json ./
+COPY web/src/main/back-end-JavaScript/package*.json ./
 
 # 安裝應用程式依賴
 # 使用 --production 參數可以避免安裝開發依賴，如果您的應用程式不需要它們的話
@@ -41,7 +41,7 @@ COPY package*.json ./
 RUN npm install --production
 
 # 複製應用程式的其餘原始碼到工作目錄
-COPY . .
+COPY web/src/main/back-end-JavaScript ./
 
 # 您的應用程式監聽的端口 (從 server.js 得知是 3000)
 EXPOSE 3000
