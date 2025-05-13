@@ -21,6 +21,8 @@ RUN apt-get update \
     libxrandr2 \
     libgbm1 \
     libasound2 \
+    # 新增 Noto CJK 完整字型
+    fonts-noto-cjk \
     # 清理 apt 快取以減少映像大小
     && rm -rf /var/lib/apt/lists/*
 

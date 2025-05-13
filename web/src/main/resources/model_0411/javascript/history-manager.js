@@ -528,7 +528,7 @@ function downloadAsPDF(records) {
     downloadingMsg.style.zIndex = '1000';
     document.body.appendChild(downloadingMsg);
 
-    fetch('https://yi-jing-divination.onrender.com/api/generate-pdf', {
+    fetch('https://yi-jing-divination-docker.onrender.com/api/generate-pdf', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -589,7 +589,7 @@ function downloadAsJPEG(records) {
     downloadingMsg.style.zIndex = '1000';
     document.body.appendChild(downloadingMsg);
 
-    fetch('https://yi-jing-divination.onrender.com/api/generate-jpeg', {
+    fetch('https://yi-jing-divination-docker.onrender.com/api/generate-jpeg', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
