@@ -164,59 +164,88 @@ function initDragAndDrop() {
         // 鼠標按下事件 - 整個模塊項都可以拖拉
         item.addEventListener('mousedown', function (e) {
             e.preventDefault();
-            draggedItem = item;
-            isDragging = true;
+            startDrag(e, item);
+        });
 
-            // 添加拖拉中的樣式
-            draggedItem.classList.add('dragging');
-
-            // 創建拖拉時的視覺效果
-            const rect = draggedItem.getBoundingClientRect(); // Get original rect first
-            // 保存鼠標在元素內的相對位置
-            initialMouseOffsetX = e.clientX - rect.left;
-            initialMouseOffsetY = e.clientY - rect.top;
-
-            draggedItem.style.position = 'absolute'; // Set position to allow offsetParent calculation
-            // 設置較高的z-index確保元素在最上層
-            draggedItem.style.zIndex = '1010';       // Set z-index
-            draggedItem.style.width = rect.width + 'px'; // Set width
-
-            // Calculate position relative to offset parent
-            const offsetParent = draggedItem.offsetParent || document.body;
-            const offsetParentRect = offsetParent.getBoundingClientRect();
-            draggedItem.style.left = (rect.left - offsetParentRect.left) + 'px';
-            draggedItem.style.top = (rect.top - offsetParentRect.top) + 'px';
-            draggedItem.style.cursor = 'grabbing';
-            // 確保內容在拖拉時保持可見
-            draggedItem.style.opacity = '1';
-            draggedItem.style.backgroundColor = '#4CAF50';
-            // 添加陰影效果增強視覺層次感
-            draggedItem.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.3)';
-            // 確保所有子元素都可見
-            Array.from(draggedItem.children).forEach(child => {
-                child.style.visibility = 'visible';
-                child.style.opacity = '1';
-            });
-            // 防止pointer-events被設為none
-            draggedItem.style.pointerEvents = 'auto';
-
-            // 創建佔位元素
-            const placeholder = document.createElement('li');
-            placeholder.className = 'module-item placeholder';
-            placeholder.style.height = rect.height + 'px';
-            placeholder.style.opacity = '0.3';
-            moduleList.insertBefore(placeholder, draggedItem);
+        // 觸控開始事件 - 支持手機觸控
+        item.addEventListener('touchstart', function (e) {
+            // 防止頁面滾動
+            e.preventDefault();
+            // 使用第一個觸摸點
+            const touch = e.touches[0];
+            startDrag(touch, item);
         });
 
         // 添加視覺提示，讓用戶知道整個模塊可以拖拉
         item.style.cursor = 'grab';
     });
 
+    // 開始拖拉的共用函數
+    function startDrag(e, item) {
+        draggedItem = item;
+        isDragging = true;
+
+        // 添加拖拉中的樣式
+        draggedItem.classList.add('dragging');
+
+        // 創建拖拉時的視覺效果
+        const rect = draggedItem.getBoundingClientRect(); // Get original rect first
+        // 保存鼠標/觸摸點在元素內的相對位置
+        initialMouseOffsetX = e.clientX - rect.left;
+        initialMouseOffsetY = e.clientY - rect.top;
+
+        draggedItem.style.position = 'absolute'; // Set position to allow offsetParent calculation
+        // 設置較高的z-index確保元素在最上層
+        draggedItem.style.zIndex = '1010';       // Set z-index
+        draggedItem.style.width = rect.width + 'px'; // Set width
+
+        // Calculate position relative to offset parent
+        const offsetParent = draggedItem.offsetParent || document.body;
+        const offsetParentRect = offsetParent.getBoundingClientRect();
+        draggedItem.style.left = (rect.left - offsetParentRect.left) + 'px';
+        draggedItem.style.top = (rect.top - offsetParentRect.top) + 'px';
+        draggedItem.style.cursor = 'grabbing';
+        // 確保內容在拖拉時保持可見
+        draggedItem.style.opacity = '1';
+        draggedItem.style.backgroundColor = '#4CAF50';
+        // 添加陰影效果增強視覺層次感
+        draggedItem.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.3)';
+        // 確保所有子元素都可見
+        Array.from(draggedItem.children).forEach(child => {
+            child.style.visibility = 'visible';
+            child.style.opacity = '1';
+        });
+        // 防止pointer-events被設為none
+        draggedItem.style.pointerEvents = 'auto';
+
+        // 創建佔位元素
+        const placeholder = document.createElement('li');
+        placeholder.className = 'module-item placeholder';
+        placeholder.style.height = rect.height + 'px';
+        placeholder.style.opacity = '0.3';
+        moduleList.insertBefore(placeholder, draggedItem);
+    }
+
     // 鼠標移動事件
     document.addEventListener('mousemove', function (e) {
         if (!isDragging || !draggedItem) return;
 
         e.preventDefault();
+        moveItem(e);
+    });
+
+    // 觸控移動事件
+    document.addEventListener('touchmove', function (e) {
+        if (!isDragging || !draggedItem) return;
+
+        e.preventDefault(); // 防止頁面滾動
+        // 使用第一個觸摸點
+        const touch = e.touches[0];
+        moveItem(touch);
+    });
+
+    // 移動項目的共用函數
+    function moveItem(e) {
         currentY = e.clientY; // This is for placeholder logic, keep it.
 
         // 更新拖拉元素位置
@@ -224,7 +253,6 @@ function initDragAndDrop() {
         const offsetParentRect = offsetParent.getBoundingClientRect();
         draggedItem.style.left = (e.clientX - initialMouseOffsetX - offsetParentRect.left) + 'px';
         draggedItem.style.top = (e.clientY - initialMouseOffsetY - offsetParentRect.top) + 'px';
-        // startY = currentY; // No longer needed for this positioning method
 
         // 檢查是否需要重新排序
         const placeholder = document.querySelector('.placeholder');
@@ -246,10 +274,17 @@ function initDragAndDrop() {
         } else {
             moduleList.appendChild(placeholder);
         }
-    });
+    }
 
     // 鼠標釋放事件
-    document.addEventListener('mouseup', function () {
+    document.addEventListener('mouseup', endDrag);
+
+    // 觸控結束事件
+    document.addEventListener('touchend', endDrag);
+    document.addEventListener('touchcancel', endDrag);
+
+    // 結束拖拉的共用函數
+    function endDrag() {
         if (!isDragging || !draggedItem) return;
 
         // 恢復拖拉元素的樣式
@@ -282,8 +317,9 @@ function initDragAndDrop() {
         // 重置拖拉狀態
         isDragging = false;
         draggedItem = null;
-    });
+    }
 }
+
 
 // 切換設定視窗顯示
 function toggleSettings() {

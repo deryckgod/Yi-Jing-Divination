@@ -9,14 +9,17 @@
     border-radius: 50%;
     background-color: #2b60f1;
     color: white;
-    font-size: 20px;
+    font-size: 24px;
     border: none;
     cursor: pointer;
     z-index: 1000;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+    /* 增加觸控友好性 */
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .settings-overlay {
@@ -96,6 +99,11 @@
     display: flex;
     align-items: center;
     transition: background-color 0.2s;
+    /* 增加觸控友好性 */
+    touch-action: none;
+    /* 防止瀏覽器默認的觸控行為 */
+    user-select: none;
+    /* 防止文本選擇 */
 }
 
 .module-item:hover {
@@ -103,16 +111,22 @@
 }
 
 .module-item.dragging {
-    opacity: 1.0;
-    background-color: #e0e0e0;
-    cursor: grabbing;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    border: 2px solid #4CAF50;
+    opacity: 0.8;
+    background-color: #e0f7fa;
     transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    cursor: grabbing;
     z-index: 1000;
     pointer-events: none;
-    display: flex;
-    align-items: center;
+    border: 2px solid #4CAF50;
+}
+
+/* 佔位元素樣式 - 確保在觸控設備上也有清晰的視覺提示 */
+.module-item.placeholder {
+    background-color: #f0f8ff;
+    border: 2px dashed #2196F3;
+    box-shadow: none;
+    pointer-events: none;
 }
 
 .module-item.placeholder {
@@ -126,6 +140,14 @@
 .module-handle {
     margin-right: 10px;
     color: #999;
+    cursor: grab;
+    font-size: 18px;
+    /* 增加把手大小 */
+    padding: 5px;
+    /* 增加可點擊區域 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .module-name {
@@ -142,13 +164,20 @@
 }
 
 .settings-save-btn {
-    padding: 8px 16px;
+    padding: 12px 24px;
     background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
+    font-size: 18px;
     font-weight: 500;
+    margin-top: 10px;
+    /* 增加觸控友好性 */
+    min-height: 48px;
+    min-width: 120px;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
 }
 
 .settings-save-btn:hover {
@@ -188,12 +217,15 @@
 .add-logic-btn,
 .delete-logic-btn,
 .reset-logic-btn {
-    padding: 6px 12px;
+    padding: 8px 14px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
+    /* 增加觸控友好性 */
+    min-height: 44px;
+    min-width: 44px;
 }
 
 .add-logic-btn {
