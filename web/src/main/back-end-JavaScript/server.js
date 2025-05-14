@@ -8,18 +8,13 @@ const { PDFDocument } = require('pdf-lib');
 const app = express();
 const port = 3000;
 
-// 添加CORS中間件，允許跨域請求
-app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-
-  // 處理OPTIONS預檢請求
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(200);
-  }
-  next();
-});
+// 使用cors套件處理CORS，允許所有來源的跨域請求
+const cors = require('cors');
+app.use(cors({
+  origin: '*', // 允許任何來源
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept']
+}));
 
 app.use(bodyParser.json({ limit: '5mb' }));
 
