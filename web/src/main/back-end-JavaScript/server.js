@@ -37,8 +37,8 @@ function buildHTML(record, locale) {
       ${(() => {
       // 格式化日期時間
       const recordDate = new Date(record.timestamp);
-      const formattedDate = `${recordDate.getFullYear()}-${(recordDate.getMonth() + 1).toString().padStart(2, '0')}-${recordDate.getDate().toString().padStart(2, '0')} ${recordDate.toLocaleTimeString(locale || 'zh-TW')}`;
-      console.log(`Formatted Date: ${formattedDate}, Locale: ${locale}, LocaleTime: ${recordDate.toLocaleTimeString('zh-TW', { hour12: false })})}`);
+      const formattedDate = `${recordDate.getFullYear()}-${(recordDate.getMonth() + 1).toString().padStart(2, '0')}-${recordDate.getDate().toString().padStart(2, '0')} ${recordDate.toLocaleTimeString(locale || 'zh-TW', { hour12: false, timeZone: 'UTC' })}`;
+      console.log(`Formatted Date: ${formattedDate}, Locale: ${locale}, LocaleTime: ${recordDate.toLocaleTimeString('zh-TW', { hour12: false, timeZone: 'UTC' })})}`);
       // 處理原爻值和六親選擇器
       let processedHTML = '';
 
