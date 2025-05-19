@@ -531,7 +531,8 @@ function downloadAsPDF(records) {
     fetch('https://yi-jing-divination-docker.onrender.com/api/generate-pdf', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept-Language': navigator.language
         },
         body: JSON.stringify({ records })
     })
@@ -592,7 +593,8 @@ function downloadAsJPEG(records) {
     fetch('https://yi-jing-divination-docker.onrender.com/api/generate-jpeg', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Accept-Language': navigator.language
         },
         body: JSON.stringify({ records })
     })
