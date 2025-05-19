@@ -65,6 +65,7 @@ function buildHTML(record, locale) {
     <body>
       ${(() => {
       // 格式化日期時間
+      console.log('Original record.timestamp:', record.timestamp);
       const recordDate = new Date(record.timestamp);
       const formattedDate = `${recordDate.getFullYear()}-${(recordDate.getMonth() + 1).toString().padStart(2, '0')}-${recordDate.getDate().toString().padStart(2, '0')} ${recordDate.toLocaleTimeString(locale || 'zh-TW')}`;
       console.log('Formatted Date:', formattedDate, ' locale:', locale);
@@ -146,24 +147,39 @@ async function generatePDFRecursively(browser, records, index, pdfDoc) {
 
   // 設置內容並等待渲染完成
   await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
-  
-  // 添加字體檢測和調試信息
+
+  // 添加字體檢測和調試信息，使用更通用的字體配置以確保兼容性
   await page.addStyleTag({
     content: `
       @font-face {
         font-family: 'NotoSansTC';
-        src: local('Noto Sans TC'), local('NotoSansTC');
+        src: local('Noto Sans TC'), local('NotoSansTC'), local('Microsoft JhengHei'), local('微軟正黑體'), local('SimHei'), local('黑體');
         font-weight: normal;
         font-style: normal;
       }
       
-      /* 確保所有文字元素使用正確的字體 */
+      /* 確保所有文字元素使用正確的字體，提供多種備選字體 */
       body, div, span, p, h1, h2, h3, h4, h5, h6, textarea {
-        font-family: 'NotoSansTC', 'Noto Sans TC', sans-serif !important;
+        font-family: 'NotoSansTC', 'Noto Sans TC', 'Microsoft JhengHei', '微軟正黑體', 'SimHei', '黑體', 'Arial Unicode MS', sans-serif !important;
       }
     `
   });
-  
+
+  // 添加內聯樣式以確保PDF中的中文字符能夠正確顯示
+  await page.evaluate(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: 'FallbackFont';
+        src: local('Arial'), local('Helvetica'), local('sans-serif');
+      }
+      * {
+        font-family: 'NotoSansTC', 'Noto Sans TC', 'Microsoft JhengHei', '微軟正黑體', 'SimHei', '黑體', 'Arial Unicode MS', 'FallbackFont', sans-serif !important;
+      }
+    `;
+    document.head.appendChild(style);
+  });
+
   // 記錄頁面中使用的字體
   console.log(`為記錄 ${index + 1} 設置頁面內容，準備渲染...`);
 
@@ -194,18 +210,18 @@ async function generatePDFRecursively(browser, records, index, pdfDoc) {
     document.fonts.ready.then(() => {
       console.log('所有字體已加載完成');
     });
-    
+
     // 檢查特定字體是否可用
     const fontAvailable = document.fonts.check('12px "NotoSansTC"');
     console.log('NotoSansTC字體是否可用:', fontAvailable);
-    
+
     // 將所有文字元素的字體設置為NotoSansTC
     const textElements = document.querySelectorAll('div, span, p, h1, h2, h3, h4, h5, h6, textarea');
     textElements.forEach(el => {
       el.style.fontFamily = '"NotoSansTC", "Noto Sans TC", sans-serif';
     });
   });
-  
+
   // 生成PDF頁面，添加更多選項以確保字體嵌入
   console.log(`正在為記錄 ${index + 1} 生成PDF...`);
   const pdfBuffer = await page.pdf({
@@ -223,7 +239,7 @@ async function generatePDFRecursively(browser, records, index, pdfDoc) {
     displayHeaderFooter: false,
     omitBackground: false
   });
-  
+
   // 檢查生成的PDF大小
   console.log(`記錄 ${index + 1} 的PDF大小: ${pdfBuffer.length} 字節`);
 
@@ -280,7 +296,10 @@ app.post('/api/generate-pdf', async (req, res) => {
     }
 
     // 從請求頭中獲取Accept-Language
-    const locale = req.headers['accept-language'] || 'zh-TW';
+    const acceptLanguageHeader = req.headers['accept-language'];
+    console.log('Received Accept-Language header:', acceptLanguageHeader);
+    const locale = acceptLanguageHeader || 'zh-TW';
+    console.log('Using locale for date formatting:', locale);
 
     let browser;
     let launchOptions = {
@@ -301,20 +320,20 @@ app.post('/api/generate-pdf', async (req, res) => {
       } else {
         console.log('PUPPETEER_EXECUTABLE_PATH not set, using default Chromium for PDF generation.');
       }
-      
+
       // 添加字體目錄配置，確保Chromium能夠找到系統字體
       if (process.platform === 'linux') {
         // 在Linux環境（如Render）中，添加字體目錄
         launchOptions.args.push('--font-render-hinting=none');
         console.log('Running on Linux, adding font rendering options');
       }
-      
+
       console.log('Launching Puppeteer with options:', JSON.stringify(launchOptions, null, 2));
       browser = await puppeteer.launch(launchOptions);
       // 將locale保存到browser實例中，以便在generatePDFRecursively中使用
       browser.__locale = locale;
       console.log('Puppeteer launched successfully for PDF generation.');
-      
+
       // 檢查可用的字體
       const page = await browser.newPage();
       const fontList = await page.evaluate(() => {
@@ -368,24 +387,39 @@ async function generateJPEGRecursively(browser, records, index, images) {
 
   // 設置內容並等待渲染完成
   await page.setContent(htmlContent, { waitUntil: 'networkidle0' });
-  
-  // 添加字體檢測和調試信息
+
+  // 添加字體檢測和調試信息，使用更通用的字體配置以確保兼容性
   await page.addStyleTag({
     content: `
       @font-face {
         font-family: 'NotoSansTC';
-        src: local('Noto Sans TC'), local('NotoSansTC');
+        src: local('Noto Sans TC'), local('NotoSansTC'), local('Microsoft JhengHei'), local('微軟正黑體'), local('SimHei'), local('黑體');
         font-weight: normal;
         font-style: normal;
       }
       
-      /* 確保所有文字元素使用正確的字體 */
+      /* 確保所有文字元素使用正確的字體，提供多種備選字體 */
       body, div, span, p, h1, h2, h3, h4, h5, h6, textarea {
-        font-family: 'NotoSansTC', 'Noto Sans TC', sans-serif !important;
+        font-family: 'NotoSansTC', 'Noto Sans TC', 'Microsoft JhengHei', '微軟正黑體', 'SimHei', '黑體', 'Arial Unicode MS', sans-serif !important;
       }
     `
   });
-  
+
+  // 添加內聯樣式以確保PDF中的中文字符能夠正確顯示
+  await page.evaluate(() => {
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: 'FallbackFont';
+        src: local('Arial'), local('Helvetica'), local('sans-serif');
+      }
+      * {
+        font-family: 'NotoSansTC', 'Noto Sans TC', 'Microsoft JhengHei', '微軟正黑體', 'SimHei', '黑體', 'Arial Unicode MS', 'FallbackFont', sans-serif !important;
+      }
+    `;
+    document.head.appendChild(style);
+  });
+
   // 記錄頁面中使用的字體
   console.log(`為記錄 ${index + 1} 設置頁面內容，準備渲染...`);
 
@@ -474,7 +508,10 @@ app.post('/api/generate-jpeg', async (req, res) => {
     }
 
     // 從請求頭中獲取Accept-Language
-    const locale = req.headers['accept-language'] || 'zh-TW';
+    const acceptLanguageHeader = req.headers['accept-language'];
+    console.log('Received Accept-Language header:', acceptLanguageHeader);
+    const locale = acceptLanguageHeader || 'zh-TW';
+    console.log('Using locale for date formatting:', locale);
 
     const browser = await puppeteer.launch({
       headless: true,

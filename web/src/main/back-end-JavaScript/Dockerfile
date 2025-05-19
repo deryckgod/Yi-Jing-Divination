@@ -40,7 +40,7 @@ COPY web/src/main/back-end-JavaScript/package*.json ./
 # 安裝應用程式依賴
 # 使用 --production 參數可以避免安裝開發依賴，如果您的應用程式不需要它們的話
 # 如果您的 server.js 依賴於 devDependencies 中的某些包，請移除 --production
-RUN npm install --production
+RUN npm install
 
 # 複製應用程式的其餘原始碼到工作目錄
 COPY web/src/main/back-end-JavaScript ./
