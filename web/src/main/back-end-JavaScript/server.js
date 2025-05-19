@@ -5,10 +5,6 @@ const fs = require('fs');
 const path = require('path');
 const archiver = require('archiver');
 const { PDFDocument } = require('pdf-lib');
-
-// 設置環境變數，避免path-to-regexp錯誤
-process.env.DEBUG_URL = 'path-to-regexp-error';
-
 const app = express();
 const port = 3000;
 
@@ -17,26 +13,13 @@ const cors = require('cors');
 app.use(cors({
   origin: '*', // 允許任何來源
   methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Accept-Language'],
-  credentials: true, // 允許跨域請求攜帶憑證
-  preflightContinue: false, // 不繼續處理預檢請求
-  optionsSuccessStatus: 204 // 預檢請求的成功狀態碼
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept']
 }));
-
-// 添加自定義中間件處理預檢請求
-app.options('*', (req, res) => {
-  // 設置CORS頭部
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Accept-Language');
-  res.header('Access-Control-Max-Age', '86400'); // 預檢請求結果緩存24小時
-  res.sendStatus(204); // 返回204狀態碼
-});
 
 app.use(bodyParser.json({ limit: '5mb' }));
 
 // 產生 HTML 用來渲染 PDF/JPEG
-function buildHTML(record, locale) {
+function buildHTML(record) {
   return `
     <html>
     <head>
@@ -54,8 +37,8 @@ function buildHTML(record, locale) {
       ${(() => {
       // 格式化日期時間
       const recordDate = new Date(record.timestamp);
-      const formattedDate = `${recordDate.getFullYear()}-${(recordDate.getMonth() + 1).toString().padStart(2, '0')}-${recordDate.getDate().toString().padStart(2, '0')} ${recordDate.toLocaleTimeString(locale || 'zh-TW')}`;
-      console.log('Formatted Date:', formattedDate, ' locale:', locale);
+      const formattedDate = `${recordDate.getFullYear()}-${(recordDate.getMonth() + 1).toString().padStart(2, '0')}-${recordDate.getDate().toString().padStart(2, '0')} ${recordDate.toLocaleTimeString()}`;
+
       // 處理原爻值和六親選擇器
       let processedHTML = '';
 
@@ -126,7 +109,7 @@ async function generatePDFRecursively(browser, records, index, pdfDoc) {
   }
 
   const record = records[index];
-  const htmlContent = buildHTML(record, browser.__locale);
+  const htmlContent = buildHTML(record);
   const page = await browser.newPage();
 
   // 設置頁面大小為A4尺寸
@@ -203,9 +186,6 @@ app.post('/api/generate-pdf', async (req, res) => {
       return res.status(400).send('無效的記錄數據');
     }
 
-    // 從請求頭中獲取Accept-Language
-    const locale = req.headers['accept-language'] || 'zh-TW';
-
     let browser;
     let launchOptions = {
       headless: true,
@@ -226,8 +206,6 @@ app.post('/api/generate-pdf', async (req, res) => {
         console.log('PUPPETEER_EXECUTABLE_PATH not set, using default Chromium for PDF generation.');
       }
       browser = await puppeteer.launch(launchOptions);
-      // 將locale保存到browser實例中，以便在generatePDFRecursively中使用
-      browser.__locale = locale;
       console.log('Puppeteer launched successfully for PDF generation.');
     } catch (launchError) {
       console.error('Failed to launch Puppeteer for PDF generation:', launchError);
@@ -267,7 +245,7 @@ async function generateJPEGRecursively(browser, records, index, images) {
   }
 
   const record = records[index];
-  const htmlContent = buildHTML(record, browser.__locale);
+  const htmlContent = buildHTML(record);
   const page = await browser.newPage();
 
   // 設置頁面大小為A4尺寸
@@ -355,9 +333,6 @@ app.post('/api/generate-jpeg', async (req, res) => {
       return res.status(400).send('無效的記錄數據');
     }
 
-    // 從請求頭中獲取Accept-Language
-    const locale = req.headers['accept-language'] || 'zh-TW';
-
     const browser = await puppeteer.launch({
       headless: true,
       args: [
@@ -369,9 +344,6 @@ app.post('/api/generate-jpeg', async (req, res) => {
         '--single-process'
       ]
     });
-
-    // 將locale保存到browser實例中，以便在generateJPEGRecursively中使用
-    browser.__locale = locale;
 
     // 使用遞迴方式處理所有記錄
     const images = await generateJPEGRecursively(browser, records, 0, []);
