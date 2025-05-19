@@ -13,13 +13,13 @@ const cors = require('cors');
 app.use(cors({
   origin: '*', // 允許任何來源
   methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept']
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Accept-Language']
 }));
 
 app.use(bodyParser.json({ limit: '5mb' }));
 
 // 產生 HTML 用來渲染 PDF/JPEG
-function buildHTML(record) {
+function buildHTML(record, locale) {
   return `
     <html>
     <head>
@@ -37,8 +37,8 @@ function buildHTML(record) {
       ${(() => {
       // 格式化日期時間
       const recordDate = new Date(record.timestamp);
-      const formattedDate = `${recordDate.getFullYear()}-${(recordDate.getMonth() + 1).toString().padStart(2, '0')}-${recordDate.getDate().toString().padStart(2, '0')} ${recordDate.toLocaleTimeString()}`;
-
+      const formattedDate = `${recordDate.getFullYear()}-${(recordDate.getMonth() + 1).toString().padStart(2, '0')}-${recordDate.getDate().toString().padStart(2, '0')} ${recordDate.toLocaleTimeString(locale || 'zh-TW')}`;
+      console.log(`Formatted Date: ${formattedDate}, Locale: ${locale}, LocaleTime: ${recordDate.toLocaleTimeString('zh-TW', { hour12: false })})}`);
       // 處理原爻值和六親選擇器
       let processedHTML = '';
 
@@ -109,7 +109,7 @@ async function generatePDFRecursively(browser, records, index, pdfDoc) {
   }
 
   const record = records[index];
-  const htmlContent = buildHTML(record);
+  const htmlContent = buildHTML(record, browser.__locale);
   const page = await browser.newPage();
 
   // 設置頁面大小為A4尺寸
@@ -186,6 +186,9 @@ app.post('/api/generate-pdf', async (req, res) => {
       return res.status(400).send('無效的記錄數據');
     }
 
+    // 從請求頭中獲取Accept-Language
+    const locale = req.headers['accept-language'] || 'zh-TW';
+
     let browser;
     let launchOptions = {
       headless: true,
@@ -206,6 +209,8 @@ app.post('/api/generate-pdf', async (req, res) => {
         console.log('PUPPETEER_EXECUTABLE_PATH not set, using default Chromium for PDF generation.');
       }
       browser = await puppeteer.launch(launchOptions);
+      // 將locale保存到browser實例中，以便在generatePDFRecursively中使用
+      browser.__locale = locale;
       console.log('Puppeteer launched successfully for PDF generation.');
     } catch (launchError) {
       console.error('Failed to launch Puppeteer for PDF generation:', launchError);
@@ -245,7 +250,7 @@ async function generateJPEGRecursively(browser, records, index, images) {
   }
 
   const record = records[index];
-  const htmlContent = buildHTML(record);
+  const htmlContent = buildHTML(record, browser.__locale);
   const page = await browser.newPage();
 
   // 設置頁面大小為A4尺寸
@@ -333,6 +338,9 @@ app.post('/api/generate-jpeg', async (req, res) => {
       return res.status(400).send('無效的記錄數據');
     }
 
+    // 從請求頭中獲取Accept-Language
+    const locale = req.headers['accept-language'] || 'zh-TW';
+
     const browser = await puppeteer.launch({
       headless: true,
       args: [
@@ -344,6 +352,9 @@ app.post('/api/generate-jpeg', async (req, res) => {
         '--single-process'
       ]
     });
+
+    // 將locale保存到browser實例中，以便在generateJPEGRecursively中使用
+    browser.__locale = locale;
 
     // 使用遞迴方式處理所有記錄
     const images = await generateJPEGRecursively(browser, records, 0, []);
