@@ -13,8 +13,21 @@ const cors = require('cors');
 app.use(cors({
   origin: '*', // 允許任何來源
   methods: ['GET', 'POST', 'OPTIONS'],
-  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Accept-Language']
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Accept-Language'],
+  credentials: true, // 允許跨域請求攜帶憑證
+  preflightContinue: false, // 不繼續處理預檢請求
+  optionsSuccessStatus: 204 // 預檢請求的成功狀態碼
 }));
+
+// 添加自定義中間件處理預檢請求
+app.options('*', (req, res) => {
+  // 設置CORS頭部
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Accept-Language');
+  res.header('Access-Control-Max-Age', '86400'); // 預檢請求結果緩存24小時
+  res.sendStatus(204); // 返回204狀態碼
+});
 
 app.use(bodyParser.json({ limit: '5mb' }));
 
@@ -180,6 +193,11 @@ async function generatePDFRecursively(browser, records, index, pdfDoc) {
 
 // PDF 下載 API
 app.post('/api/generate-pdf', async (req, res) => {
+  // 設置CORS頭部
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Accept-Language');
+
   try {
     const { records } = req.body;
     if (!records || !Array.isArray(records) || records.length === 0) {
@@ -332,6 +350,11 @@ async function createZipFromImages(images) {
 
 // JPEG 下載 API
 app.post('/api/generate-jpeg', async (req, res) => {
+  // 設置CORS頭部
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Accept-Language');
+
   try {
     const { records } = req.body;
     if (!records || !Array.isArray(records) || records.length === 0) {
