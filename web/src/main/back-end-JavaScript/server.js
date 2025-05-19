@@ -197,11 +197,6 @@ async function generatePDFRecursively(browser, records, index, pdfDoc) {
 
 // PDF 下載 API
 app.post('/api/generate-pdf', async (req, res) => {
-  // 設置CORS頭部
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Accept-Language');
-
   try {
     const { records } = req.body;
     if (!records || !Array.isArray(records) || records.length === 0) {
@@ -354,11 +349,6 @@ async function createZipFromImages(images) {
 
 // JPEG 下載 API
 app.post('/api/generate-jpeg', async (req, res) => {
-  // 設置CORS頭部
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Accept-Language');
-
   try {
     const { records } = req.body;
     if (!records || !Array.isArray(records) || records.length === 0) {
