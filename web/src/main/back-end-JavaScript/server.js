@@ -5,6 +5,10 @@ const fs = require('fs');
 const path = require('path');
 const archiver = require('archiver');
 const { PDFDocument } = require('pdf-lib');
+
+// 設置環境變數，避免path-to-regexp錯誤
+process.env.DEBUG_URL = 'path-to-regexp-error';
+
 const app = express();
 const port = 3000;
 
