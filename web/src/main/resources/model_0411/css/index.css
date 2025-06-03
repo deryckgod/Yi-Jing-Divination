@@ -846,7 +846,7 @@ textarea.askInfo::placeholder {
     border-radius: 50%;
     padding: 0 2px;
     border: none;
-    justify-content: space-between;
+    /* justify-content: space-between; */
 }
 
 /* 視覺標記模式下的紅色圓圈和藍色底線可由 JS 動態加上 style 或 class，這裡只設基本樣式 */
