@@ -126,10 +126,10 @@ export function calculateTransformationScore(originalDizhi, changeDizhi, index, 
                 scoreMultiplier = 0.1; // 分數*10%
 
                 // 例外情況：用神的六親如果是回頭剋且原爻不空亡，則分數直接為-15，因可能"沖散"，故沒與化空、空化空一起寫
-                if (relation === '用神' && !isKongWang) {
-                    score = -15;
-                    scoreMultiplier = 1;
-                }
+                // if (relation === '用神' && !isKongWang) {
+                //     score = -15;
+                //     scoreMultiplier = 1;
+                // }
             }
         }
     }
@@ -160,9 +160,12 @@ export function calculateTransformationScore(originalDizhi, changeDizhi, index, 
     }
 
     // 例外情況：用神的六親如果是化空或空化空，則分數直接為-15
-    if (relation === '用神' && (transformationType === '化空' || transformationType === '空化空')) {
+    if (relation === '用神' && (transformationType === '化空' || transformationType === '空化空' || transformationType.includes('回頭剋'))) {
         score = -15;
         scoreMultiplier = 1;
+        if (transformationType.includes('回頭剋') && (transformationType.includes('沖實') || transformationType.includes('沖散'))) {
+            transformationType += ' 用神只計回頭剋';
+        }
     }
 
     // 獲取日辰地支

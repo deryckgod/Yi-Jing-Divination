@@ -44,7 +44,7 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
 
     if (movingYaos.length > 0) {
         // 收集所有符合用神五行的動爻
-        const matchingMovingYaos = [];
+        let matchingMovingYaos = [];
 
         movingYaos.forEach(yao => {
             const position = yao.position;
@@ -64,6 +64,8 @@ export function determineMainGod(yaos, originalDizhi, changedDizhi, bianYaoPosit
                 });
             }
         });
+
+        matchingMovingYaos = matchingMovingYaos.reverse(); // 倒序排序
 
         // 按優先順序選擇用神
         if (matchingMovingYaos.length > 0) {
