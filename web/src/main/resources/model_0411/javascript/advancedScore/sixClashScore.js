@@ -83,7 +83,7 @@ export function calculateSixClashScore() {
  * @param {object} yao1 - 第一個動爻
  * @param {object} yao2 - 第二個動爻
  */
-function checkSixClashRelation(yao1, yao2) {
+export function checkSixClashRelation(yao1, yao2) {
     // 檢查地支是否相沖
     const isClash = EarthlyBranchClash[yao1.dizhi] === yao2.dizhi;
 

@@ -25,6 +25,7 @@ import {
     checkTombExtinction
 } from './transformationScore.js';
 
+import { checkSixClashRelation } from './sixClashScore.js';
 /**
  * 計算所有動爻的入墓入絕情況
  * 此函數將在calculateSixClashScore和updateSunScore之間被調用
@@ -79,14 +80,14 @@ export function calculateTombExtinctionScore() {
         // 獲取爻位顯示元素
         const yaoDiv = document.querySelector(`.${yaoClasses[index]}`);
         let yaoInfo = yaoDiv.textContent || '';
+        // 獲取當前爻動化分數 
+        let score = yao.score;
 
         // 檢查入墓入絕情況
-        const { scoreMultiplier, transformationType } = checkYaotoTombExtinction(originalDizhi, index, relation, '');
+        const { scoreMultiplier, transformationType } = checkYaotoTombExtinction(originalDizhi, index, relation, '', score);
 
         // 如果有入墓入絕情況，更新顯示
         if (transformationType) {
-            // 獲取當前爻動化分數 
-            let score = yao.score;
 
             // 計算最終分數
             const finalScore = parseFloat((score * scoreMultiplier).toFixed(2));
@@ -108,7 +109,7 @@ export function calculateTombExtinctionScore() {
  * @param {string} relation - 六親關係 (用神、原神、忌神、仇神、閒神)
  * @returns {object} - 返回是否入墓或入絕、分數調整倍數和類型描述
  */
-export function checkYaotoTombExtinction(originalDizhi, index, relation, transformationTypeOrigin) {
+export function checkYaotoTombExtinction(originalDizhi, index, relation, transformationTypeOrigin, originScore) {
     let scoreMultiplier = 1;
     let transformationType = '';
     // 情況2: 動爻間入墓絕
@@ -118,6 +119,16 @@ export function checkYaotoTombExtinction(originalDizhi, index, relation, transfo
         // 檢查是否入其他動爻地支的墓絕
         let isTombOther = false;
         let isExtinctionOther = false;
+
+        // 檢查特殊的六沖關係（寅申、巳亥）
+        let isSpecialClash = false;
+        const movingYaos = [];
+        // 原爻狀態(給特殊情況用)
+        movingYaos.push({
+            index: index,
+            dizhi: originalDizhi,
+            score: originScore
+        });
 
         // 獲取所有動爻地支
         const originalYao = document.querySelectorAll('.original-yao');
@@ -142,16 +153,33 @@ export function checkYaotoTombExtinction(originalDizhi, index, relation, transfo
                         // 迴圈檢查全部可能會入墓絕的爻
                         isTombOther = isTombOther || isTomb;
                         isExtinctionOther = isExtinctionOther || isExtinction;
+                        // 檢查是否是特殊的六沖關係（寅申、巳亥）
+                        if ((originalDizhi === '寅' && otherYaoDizhi === '申') || (originalDizhi === '申' && otherYaoDizhi === '寅') ||
+                            (originalDizhi === '巳' && otherYaoDizhi === '亥') || (originalDizhi === '亥' && otherYaoDizhi === '巳')) {
+                            movingYaos.push({
+                                index: yaoIndex,
+                                dizhi: otherYaoDizhi,
+                                score: score
+                            });
+                            const yao1 = movingYaos[0];
+                            const yao2 = movingYaos[1];
+                            console.log(movingYaos);
+                            console.log('檢查特殊的六沖關係（寅申、巳亥）', yao1, yao2);
+                            // 檢查是否有六沖關係
+                            checkSixClashRelation(yao1, yao2);
+                            isSpecialClash = true;
+                        }
                     }
                 }
             }
         });
 
-        // 如果非用神六親的原爻地支入日辰墓絕或其他動爻地支的墓絕 非用神六親的動化分數要乘10%
-        if (isTombOther || isExtinctionOther) {
+        // 如果不是 特殊六沖 且 非用神六親的原爻地支入日辰墓絕或其他動爻地支的墓絕 非用神六親的動化分數要乘10%
+        if (!isSpecialClash && (isTombOther || isExtinctionOther)) {
             scoreMultiplier *= 0.1;
             transformationType += isTombOther ? ' 入墓' : ' 入絕';
         }
+
     }
 
     return { scoreMultiplier, transformationType };
