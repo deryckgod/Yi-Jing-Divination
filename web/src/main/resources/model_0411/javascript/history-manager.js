@@ -376,13 +376,18 @@ function previewRecord(record) {
 
     // 設置askInfo文本區域的值
     const askInfoTextarea = previewContainer.querySelector('.askInfo');
-    if (askInfoTextarea){
+    if (askInfoTextarea) {
         // 禁用文本框
         askInfoTextarea.disabled = true;
         askInfoTextarea.style.backgroundColor = '#f0f0f0';
         askInfoTextarea.style.cursor = 'not-allowed';
-         
+
+        // 設置值
         askInfoTextarea.value = record.askInfo ?? "";
+
+        // 移除所有事件監聽器
+        const newAskInfoTextarea = askInfoTextarea.cloneNode(true);
+        askInfoTextarea.parentNode.replaceChild(newAskInfoTextarea, askInfoTextarea);
     }
 
     // 設定預覽內容的原爻值並將選單替換為純文本顯示
