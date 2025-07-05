@@ -51,7 +51,7 @@ export function calculateGreedyLifeScore() {
             const score = scoreMatch ? parseFloat(scoreMatch[0]) : 0;
 
             // 檢查分數是否達到閾值
-            if ((isScoreAboveThreshold(score, godType) && !yaoInfo.includes("三合")) || (yaoInfo.includes("被用神") && score === -15)) {
+            if ((isScoreAboveThreshold(score, godType) && !(yaoInfo.includes("三合") || yaoInfo.includes("入墓"))) || (yaoInfo.includes("被用神") && score === -15)) {
                 // 獲取地支對應的五行
                 const element = earthlyBranchToElement[dizhi];
                 movingYaos.push({

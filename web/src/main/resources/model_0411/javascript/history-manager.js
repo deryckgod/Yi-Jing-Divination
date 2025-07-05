@@ -376,8 +376,13 @@ function previewRecord(record) {
 
     // 設置askInfo文本區域的值
     const askInfoTextarea = previewContainer.querySelector('.askInfo');
-    if (askInfoTextarea && record.askInfo) {
-        askInfoTextarea.value = record.askInfo;
+    if (askInfoTextarea){
+        // 禁用文本框
+        askInfoTextarea.disabled = true;
+        askInfoTextarea.style.backgroundColor = '#f0f0f0';
+        askInfoTextarea.style.cursor = 'not-allowed';
+         
+        askInfoTextarea.value = record.askInfo ?? "";
     }
 
     // 設定預覽內容的原爻值並將選單替換為純文本顯示
@@ -441,6 +446,29 @@ function previewRecord(record) {
         }
     }
 
+
+    // 禁用查詢和儲存按鈕
+    const queryBtn = previewContainer.querySelector('#query-btn');
+    if (queryBtn) {
+        queryBtn.disabled = true;
+        queryBtn.style.backgroundColor = '#f0f0f0';
+        queryBtn.style.color = '#999';
+        queryBtn.style.cursor = 'not-allowed';
+        // 移除所有事件監聽器
+        const newQueryBtn = queryBtn.cloneNode(true);
+        queryBtn.parentNode.replaceChild(newQueryBtn, queryBtn);
+    }
+
+    const storeBtn = previewContainer.querySelector('#store-btn');
+    if (storeBtn) {
+        storeBtn.disabled = true;
+        storeBtn.style.backgroundColor = '#f0f0f0';
+        storeBtn.style.color = '#999';
+        storeBtn.style.cursor = 'not-allowed';
+        // 移除所有事件監聽器
+        const newStoreBtn = storeBtn.cloneNode(true);
+        storeBtn.parentNode.replaceChild(newStoreBtn, storeBtn);
+    }
 
     // 設置關閉按鈕事件
     previewContainer.querySelector('.preview-close-btn').addEventListener('click', function () {

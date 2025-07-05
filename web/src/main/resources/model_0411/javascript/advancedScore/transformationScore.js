@@ -154,9 +154,15 @@ export function calculateTransformationScore(originalDizhi, changeDizhi, index, 
         transformationType += ' 沖實';
         scoreMultiplier *= 0.9; // 分數再乘90%
     } else if (isKongWang && !(transformationType === '化空' || transformationType === '空化空')) {
-        // 10. 空動
-        transformationType = '空動';
-        scoreMultiplier = 0.1; // 分數*10%
+        if (relation !== '用神') {
+            // 10. 空動
+            transformationType = '空動';
+            scoreMultiplier = 0.1; // 分數*10%
+        } else if (relation === '用神' && !(transformationType === '回頭剋')) {
+            // 10. 空動 用神回頭剋 不空動 2025/7/5
+            transformationType = '空動';
+            scoreMultiplier = 0.1; // 分數*10%
+        }
     }
 
     // 例外情況：用神的六親如果是化空或空化空，則分數直接為-15
@@ -171,8 +177,8 @@ export function calculateTransformationScore(originalDizhi, changeDizhi, index, 
     // 獲取日辰地支
     const dayBranch = document.querySelector('.div12').textContent.slice(-1);
 
-    // 情況1: 最後檢查如果用神是動爻且入日墓絕 動化分數直接為-15
-    if (relation === '用神' && originalDizhi) {
+    // 情況1: 最後檢查如果用神是動爻且入日墓絕 動化分數直接為-15 (沖散不入日墓絕)
+    if (relation === '用神' && originalDizhi && !(transformationType.includes('沖散'))) {
         const { isTomb, isExtinction } = checkTombExtinction(originalDizhi, dayBranch);
         if (isTomb || isExtinction) {
             score = -15;
