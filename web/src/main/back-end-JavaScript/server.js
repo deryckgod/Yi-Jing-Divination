@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const archiver = require('archiver');
 const { PDFDocument } = require('pdf-lib');
+const licenseKeyManager = require('./license-key-manager');
 const app = express();
 const port = 3000;
 
@@ -402,6 +403,71 @@ app.post('/api/generate-jpeg', async (req, res) => {
   }
 });
 
+// 金鑰驗證 API
+app.post('/api/verify-license-key', (req, res) => {
+  try {
+    const { licenseKey } = req.body;
+    
+    if (!licenseKey) {
+      return res.status(400).json({
+        valid: false,
+        message: '請提供金鑰'
+      });
+    }
+    
+    // 驗證金鑰
+    const result = licenseKeyManager.verifyLicenseKey(licenseKey);
+    
+    res.json(result);
+  } catch (error) {
+    console.error('驗證金鑰時發生錯誤:', error);
+    res.status(500).json({
+      valid: false,
+      message: '驗證過程中發生錯誤，請稍後再試'
+    });
+  }
+});
+
+// 生成金鑰 API（僅供管理員使用，實際應用中應添加身份驗證）
+app.post('/api/generate-license-key', (req, res) => {
+  try {
+    const { maxUses } = req.body;
+    
+    // 生成新的金鑰
+    const licenseKey = licenseKeyManager.generateLicenseKey(maxUses || 10);
+    
+    res.json({
+      success: true,
+      licenseKey: licenseKey
+    });
+  } catch (error) {
+    console.error('生成金鑰時發生錯誤:', error);
+    res.status(500).json({
+      success: false,
+      message: '生成金鑰時發生錯誤'
+    });
+  }
+});
+
+// 獲取所有金鑰 API（僅供管理員使用，實際應用中應添加身份驗證）
+app.get('/api/license-keys', (req, res) => {
+  try {
+    const licenseKeys = licenseKeyManager.getAllLicenseKeys();
+    
+    res.json({
+      success: true,
+      licenseKeys: licenseKeys
+    });
+  } catch (error) {
+    console.error('獲取金鑰時發生錯誤:', error);
+    res.status(500).json({
+      success: false,
+      message: '獲取金鑰時發生錯誤'
+    });
+  }
+});
+
 app.listen(port, () => {
   console.log(`PDF / JPEG 伺服器正在運行：http://localhost:${port}`);
+  console.log(`金鑰驗證 API 已啟用`);
 });

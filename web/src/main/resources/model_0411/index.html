@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./css/history-manager.css">
     <link rel="stylesheet" href="./css/illustrate-score.css">
     <link rel="stylesheet" href="./css/score-settings.css">
+    <link rel="stylesheet" href="./css/license-key.css">
     <!-- 引入 Web Components 的 Polyfill -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/webcomponentsjs/2.4.4/webcomponents-bundle.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image-more/3.1.1/dom-to-image-more.min.js"></script>
@@ -103,14 +104,14 @@
         <div class="div6">日沖</div>
         <div class="div7">空亡</div>
         <div class="div8">卦身</div>
-        <div class="div9">9</div><!-- 9 -->
-        <div class="div10">10</div><!-- 10 -->
-        <div class="div12">12</div><!-- 12 -->
+        <div class="div9"></div><!-- 9 -->
+        <div class="div10"></div><!-- 10 -->
+        <div class="div12"></div><!-- 12 -->
         <div class="div13"></div>
-        <div class="div14">14</div><!-- 14 -->
-        <div class="div15">15</div><!-- 15 -->
-        <div class="div16">16</div><!-- 16 -->
-        <div class="div17">17</div><!-- 17 -->
+        <div class="div14"></div><!-- 14 -->
+        <div class="div15"></div><!-- 15 -->
+        <div class="div16"></div><!-- 16 -->
+        <div class="div17"></div><!-- 17 -->
         <div class="div18">首卦</div>
         <div class="div19">原卦</div>
         <div class="div20">用神</div>
@@ -250,9 +251,26 @@
         import './javascript/history-manager.js';
         import { updateScoreDisplay } from "./javascript/illustrate-score.js";
         import { initScoreSettings } from './javascript/score-settings.js';
+        import { initLicenseKeyUI } from './javascript/license-key.js';
 
         // 添加按鈕點擊事件
         document.getElementById('query-btn').addEventListener('click', function (e) {
+            // 檢查是否已選擇日期 2025/7/5
+            const div9 = document.querySelector('.div9'); // 年
+            const div10 = document.querySelector('.div10'); // 月
+            const div12 = document.querySelector('.div12'); // 日
+
+            if (!div9.textContent || !div10.textContent || !div12.textContent) {
+                // 如果未選擇日期，顯示提示訊息
+                const confirmResult = confirm('尚未選擇日期，請先選擇日期再進行查詢。是否前往選擇日期？');
+                if (confirmResult) {
+                    // 用戶點擊確認，打開日曆
+                    document.getElementById('calendar-toggle-btn').click();
+                }
+                return; // 阻止繼續執行
+            }
+
+            // 已選擇日期，執行查詢
             updateGua();
             // 查詢後更新分數顯示
             setTimeout(updateScoreDisplay, 100); // 給予一些時間讓其他更新完成
@@ -261,17 +279,17 @@
         // 監聽六親選擇變化
         document.querySelector('.div28').addEventListener('change', function (e) {
             updateSixRelations(e.target.value);
-            setTimeout(updateScoreDisplay, 100);
+            //setTimeout(updateScoreDisplay, 100);
         });
 
-        // 監聽原爻選單變化
-        document.querySelector('.parent').addEventListener('change', function (e) {
-            if (e.target.classList.contains('original-yao')) {
-                updateGua();
-                e.target.setAttribute('data-selected', e.target.value);
-                setTimeout(updateScoreDisplay, 100);
-            }
-        });
+        // // 監聽原爻選單變化
+        // document.querySelector('.parent').addEventListener('change', function (e) {
+        //     if (e.target.classList.contains('original-yao')) {
+        //         updateGua();
+        //         e.target.setAttribute('data-selected', e.target.value);
+        //         setTimeout(updateScoreDisplay, 100);
+        //     }
+        // });
 
         // 日期變更
         document.querySelector('widget-calendar').addEventListener('onChange', function (event) {
@@ -282,6 +300,7 @@
         // 初始化算分邏輯設定介面
         document.addEventListener('DOMContentLoaded', function () {
             initScoreSettings();
+            initLicenseKeyUI();
         });
     </script>
 </body>

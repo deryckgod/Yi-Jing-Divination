@@ -1,0 +1,198 @@
+/**
+ * 金鑰驗證樣式
+ */
+
+/* 金鑰按鈕 */
+.license-key-btn {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #3fad3b;
+    color: white;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.license-key-btn:hover {
+    background-color: #e67e22;
+    transform: scale(1.05);
+}
+
+/* 金鑰遮罩層 */
+.license-key-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 200;
+    display: none;
+}
+
+.license-key-overlay.visible {
+    display: block;
+}
+
+/* 金鑰容器 */
+.license-key-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    max-width: 90%;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 300;
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.license-key-container.visible {
+    display: flex;
+}
+
+/* 金鑰標題欄 */
+.license-key-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #f39c12;
+    color: white;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.license-key-header h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.license-key-close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+/* 金鑰內容區 */
+.license-key-content {
+    padding: 20px;
+}
+
+.license-key-input-group {
+    margin-bottom: 20px;
+}
+
+.license-key-input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.license-key-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.license-key-verify-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #f39c12;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.license-key-verify-btn:hover {
+    background-color: #e67e22;
+}
+
+.license-key-verify-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.license-key-status {
+    margin-top: 15px;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
+    display: none;
+}
+
+.license-key-status.success {
+    display: block;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.license-key-status.error {
+    display: block;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.license-key-info {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #e9f7fe;
+    border: 1px solid #b3e0ff;
+    border-radius: 4px;
+    color: #0c5460;
+}
+
+.license-key-info p {
+    margin: 5px 0;
+}
+
+.license-key-info .remaining-uses {
+    font-weight: bold;
+    color: #155724;
+}
+
+/* 響應式調整 */
+@media (max-width: 480px) {
+    .license-key-container {
+        width: 90%;
+    }
+
+    .license-key-header h2 {
+        font-size: 18px;
+    }
+
+    .license-key-input {
+        font-size: 14px;
+    }
+
+    .license-key-verify-btn {
+        font-size: 14px;
+    }
+}
