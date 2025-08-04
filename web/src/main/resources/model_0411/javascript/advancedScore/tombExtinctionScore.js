@@ -193,10 +193,64 @@ export function mainGodtoTombExtinctionScore(index, movingFlag) {
 
     // 獲取日辰地支
     const dayBranch = document.querySelector('.div12').textContent.slice(-1);
-
-    const mainGodElement = document.querySelector('.mainGodInfo').textContent.slice(0, 1);
-    const { isTomb, isExtinction } = checkTombExtinction(mainGodElement, dayBranch);
-    if (movingFlag && (isTomb || isExtinction)) {
+    
+    // 創建一個HashMap來存儲動爻中用神的位置和對應的地支
+    const mainGodYaos = new Map();
+    let allMainGodHasSpecialCondition = true; // 標記所有用神是否都有特殊條件
+    
+    // 獲取所有爻
+    const allYaos = document.querySelectorAll('.original-yao');
+    allYaos.forEach(yao => {
+        const yaoValue = yao.value;
+        if (yaoValue === 'O' || yaoValue === 'X') { // 只處理動爻
+            const yaoIndex = 71 - parseInt(Array.from(yao.classList).find(cls => cls.startsWith('div')).substring(3));
+            const relation = convertRelationToGodType(document.querySelector(`.div${53 - yaoIndex}`).textContent.charAt(0));
+            
+            // 如果是用神，則添加到HashMap中
+            if (relation === '用神') {
+                const dizhi = document.querySelector(`.div${59 - yaoIndex}`).textContent.charAt(0);
+                mainGodYaos.set(yaoIndex, dizhi);
+                
+                // 檢查該用神爻的文本內容是否包含回頭剋、化空或空化空
+                const yaoDiv = document.querySelector(`.${yaoClasses[yaoIndex]}`);
+                const yaoText = yaoDiv.textContent || '';
+                const hasSpecialCondition = yaoText.includes('回頭剋') || yaoText.includes('化空') || yaoText.includes('空化空');
+                
+                // 如果有一個用神爻不包含特殊條件，則標記為false
+                if (!hasSpecialCondition) {
+                    allMainGodHasSpecialCondition = false;
+                }
+            }
+        }
+    });
+    
+    // 如果有用神且所有用神都有特殊條件（回頭剋、化空或空化空），則直接返回
+    if (mainGodYaos.size > 0 && allMainGodHasSpecialCondition) {
+        return; // 直接返回，不再繼續執行下面的程式碼，避免重複計算和報錯
+    }
+    
+    // 獲取用神元素並檢查入墓絕情況
+    let hasMainGodTombExtinction = false;
+    
+    // 如果有用神在HashMap中，則使用HashMap中的信息檢查入墓絕
+    if (mainGodYaos.size > 0) {
+        // 檢查每個用神是否入墓絕
+        for (const [yaoIndex, dizhi] of mainGodYaos.entries()) {
+            const { isTomb, isExtinction } = checkTombExtinction(dizhi, dayBranch);
+            if (isTomb || isExtinction) {
+                hasMainGodTombExtinction = true;
+                break;
+            }
+        }
+    } else {
+        // 如果HashMap中沒有用神，則使用舊方法獲取用神元素（向後兼容）
+        const mainGodElement = document.querySelector('.mainGodInfo').textContent.slice(0, 1);
+        const { isTomb, isExtinction } = checkTombExtinction(mainGodElement, dayBranch);
+        hasMainGodTombExtinction = isTomb || isExtinction;
+    }
+    
+    // 如果用神入墓絕，則直接返回
+    if (movingFlag && hasMainGodTombExtinction) {
         return; // 直接返回，不再繼續執行下面的程式碼，避免重複計算和報錯
     }
 
@@ -212,10 +266,29 @@ export function mainGodtoTombExtinctionScore(index, movingFlag) {
                 // 如果不是用神六親
                 if (otherYaoRelation !== '用神') {
                     const otherYaoDizhi = document.querySelector(`.div${59 - yaoIndex}`).textContent.charAt(0);
-                    const { isTomb, isExtinction } = checkTombExtinction(mainGodElement, otherYaoDizhi);
+                    
+                    // 檢查是否有任何用神地支入非用神六親的動爻墓絕
+                    let hasAnyMainGodTombExtinction = false;
+                    
+                    // 如果有用神在HashMap中，則使用HashMap中的信息檢查入墓絕
+                    if (mainGodYaos.size > 0) {
+                        // 檢查每個用神是否入墓絕
+                        for (const [mainGodYaoIndex, mainGodDizhi] of mainGodYaos.entries()) {
+                            const { isTomb, isExtinction } = checkTombExtinction(mainGodDizhi, otherYaoDizhi);
+                            if (isTomb || isExtinction) {
+                                hasAnyMainGodTombExtinction = true;
+                                break;
+                            }
+                        }
+                    } else {
+                        // 如果HashMap中沒有用神，則使用舊方法獲取用神元素（向後兼容）
+                        const mainGodElement = document.querySelector('.mainGodInfo').textContent.slice(0, 1);
+                        const { isTomb, isExtinction } = checkTombExtinction(mainGodElement, otherYaoDizhi);
+                        hasAnyMainGodTombExtinction = isTomb || isExtinction;
+                    }
 
                     // 如果用神地支入非用神六親的動爻墓絕
-                    if (isTomb || isExtinction) {
+                    if (hasAnyMainGodTombExtinction) {
                         // 非用神六親動化分數直接為-15
                         const nonMainGodYaoDiv = document.querySelector(`.${yaoClasses[yaoIndex]}`);
                         let nonMainGodYaoInfo = nonMainGodYaoDiv.textContent || '';
@@ -223,12 +296,42 @@ export function mainGodtoTombExtinctionScore(index, movingFlag) {
                         const scoreMatch = nonMainGodYaoInfo.match(/[-+]?\d+(\.\d+)?$/);
                         const score = scoreMatch ? parseFloat(scoreMatch[0]) : 0;
                         if (isScoreAboveThreshold(score, otherYaoRelation)) {
-                            let displayText = isTomb ? `${otherYaoRelation} 被用神入墓 -15` : `${otherYaoRelation} 被用神入絕 -15`;
+                            // 找出具體是哪個用神地支入墓絕
+                            let mainGodDizhiText = '';
+                            let isTombFound = false;
+                            let isExtinctionFound = false;
+                            
+                            // 如果有用神在HashMap中，則使用HashMap中的信息
+                            if (mainGodYaos.size > 0) {
+                                for (const [mainGodYaoIndex, mainGodDizhi] of mainGodYaos.entries()) {
+                                    const { isTomb, isExtinction } = checkTombExtinction(mainGodDizhi, otherYaoDizhi);
+                                    if (isTomb || isExtinction) {
+                                        mainGodDizhiText = mainGodDizhi;
+                                        isTombFound = isTomb;
+                                        isExtinctionFound = isExtinction;
+                                        break;
+                                    }
+                                }
+                            } else {
+                                // 如果HashMap中沒有用神，則使用舊方法獲取用神元素
+                                const mainGodElement = document.querySelector('.mainGodInfo').textContent.slice(0, 1);
+                                const { isTomb, isExtinction } = checkTombExtinction(mainGodElement, otherYaoDizhi);
+                                if (isTomb || isExtinction) {
+                                    mainGodDizhiText = mainGodElement;
+                                    isTombFound = isTomb;
+                                    isExtinctionFound = isExtinction;
+                                }
+                            }
+                            
+                            // 顯示具體的用神地支
+                            let displayText = isTombFound ? 
+                                `${otherYaoRelation} 被用神${mainGodDizhiText}入墓 -15` : 
+                                `${otherYaoRelation} 被用神${mainGodDizhiText}入絕 -15`;
+                                
                             if (!nonMainGodYaoInfo.includes(displayText)) {
                                 nonMainGodYaoDiv.textContent = displayText;
                             }
                         }
-
                     }
                 }
             }
