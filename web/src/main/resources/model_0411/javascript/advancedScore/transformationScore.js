@@ -166,7 +166,7 @@ export function calculateTransformationScore(originalDizhi, changeDizhi, index, 
     }
 
     // 例外情況：用神的六親如果是化空或空化空，則分數直接為-15
-    if (relation === '用神' && (transformationType === '化空' || transformationType === '空化空' || transformationType.includes('回頭剋'))) {
+    if (relation === '用神' && (transformationType.includes('化空') || transformationType.includes('空化空') || transformationType.includes('回頭剋'))) {
         score = -15;
         scoreMultiplier = 1;
         if (transformationType.includes('回頭剋') && (transformationType.includes('沖實') || transformationType.includes('沖散'))) {
@@ -183,7 +183,11 @@ export function calculateTransformationScore(originalDizhi, changeDizhi, index, 
         if (isTomb || isExtinction) {
             score = -15;
             scoreMultiplier = 1;
-            transformationType = isTomb ? ' 入日墓' : ' 入日絕';
+            if (transformationType.includes('化空') || transformationType.includes('空化空') || transformationType.includes('回頭剋')) {
+                transformationType = "動化分只論 " + transformationType + " ，不論" + (isTomb ? ' 入日墓' : ' 入日絕');
+            } else {
+                transformationType = isTomb ? ' 入日墓' : ' 入日絕';
+            }
         }
     } else if (relation != '用神' && originalDizhi &&
         !(transformationType.includes("回頭剋") || transformationType.includes("沖散") || transformationType.includes("空"))) {
